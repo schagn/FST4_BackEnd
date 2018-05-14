@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="BackEndView.Views.KundenverwaltungView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:pw="clr-namespace:BackEndView"
+             xmlns:local="clr-namespace:BackEndView.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" DataContext="{Binding Kunde, Mode=OneWay, Source={StaticResource Locator}}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="291*"/>
+            <ColumnDefinition Width="109*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="260*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Margin="20,10,10,5" Grid.Row="0" Grid.ColumnSpan="2">
+            <Label Content="Neuen Kunden hinzufügen oder Kunden bearbeiten:" FontStyle="Oblique"/>
+            <StackPanel Orientation="Horizontal"  >
+                <Label Content="Vorname:"/>
+                <TextBox Width="120" Height="20" Margin="10,0,10,0" Text="{Binding VorName}"/>
+                <Label Content="Nachname:"/>
+                <TextBox Width="120" Height="20" Margin="10,0,10,0" Text="{Binding NachName}"/>
+                <Label Content="Geburtsdatum:"/>
+                <TextBox Width="120" Height="20" Margin="10,0,10,0" Text="{Binding Geburtsdatum}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,2,0,0" >
+                <Label Content="Strasse:"/>
+                <TextBox Width="120" Height="20" Margin="20,0,10,0" Text="{Binding Strasse}"/>
+                <Label Content="Ort:"/>
+                <TextBox Width="120" Height="20" Margin="50,0,10,0" Text="{Binding Ort}"/>
+                <Label Content="PLZ:"/>
+                <TextBox Width="100" Height="20" Margin="66,0,10,0" Text="{Binding PLZ}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                <Label Content="E-Mail:"/>
+                <TextBox Width="120" Height="20" Margin="23,0,10,0" Text="{Binding EMail}"/>
+                <Label Content="Passwort:"/>
+                <PasswordBox MaxLength="10" PasswordChar="*" Width="120" Height="20" Margin="20,0,10,0" 
+                             pw:PasswordHelper.Attach="True" pw:PasswordHelper.Password="{Binding Path=Password}"/>
+                <Label Content="Land:"/>
+                <TextBox Width="100" Height="20" Margin="60,0,10,0" Text="{Binding Land}" CharacterCasing="Upper"/>
+                <Button Content="Speichern" Width="100"  Margin="28,0,0,0" Command="{Binding SaveKundeBtnClick}"/>
+            </StackPanel>
+        </StackPanel>
+
+        <DataGrid Margin="10" Grid.Row="2" ItemsSource="{Binding Kunden}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedKunde}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Vorname" Binding="{Binding VorName}"/>
+                <DataGridTextColumn Header="Nachname" Binding="{Binding NachName}"/>
+                <DataGridTextColumn Header="Geburtsdatum" Binding="{Binding Geburtsdatum}"/>
+                <DataGridTextColumn Header="Strasse" Binding="{Binding Strasse}"/>
+                <DataGridTextColumn Header="Ort" Binding="{Binding Ort}" />
+                <DataGridTextColumn Header="PLZ" Binding="{Binding PLZ}" />
+                <DataGridTextColumn Header="Land" Binding="{Binding Land}" />
+                <DataGridTextColumn Header="E-Mail" Binding="{Binding EMail}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
+            <Button Content="Bearbeiten" Width="150" Command="{Binding EditKundeBtnClick}" Margin="10" Height="30"/>
+            <Button Content="Löschen" Width="150" Command="{Binding DeleteKundeBtnClick}" Margin="10" Height="30"/>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

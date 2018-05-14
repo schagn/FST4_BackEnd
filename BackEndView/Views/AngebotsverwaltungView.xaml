@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="BackEndView.Views.AngebotsverwaltungView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BackEndView.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" DataContext="{Binding Angebot, Mode=OneWay, Source={StaticResource Locator}}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="291*"/>
+            <ColumnDefinition Width="109*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="260*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Margin="20,30,10,10" Grid.Row="0" Grid.ColumnSpan="2">
+            <Label Content="Neues Sonderangebot hinzufügen oder Sonderangebot ändern:" FontStyle="Oblique"/>
+            <StackPanel Orientation="Horizontal"  >
+                <Label Content="Code:"/>
+                <TextBox Width="120" Height="20" Margin="28,0,10,0" Text="{Binding Code}"/>
+                <Label Content="Prozent:"/>
+                <TextBox Width="100" Height="20" Margin="36,0,10,0" Text="{Binding Prozent}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <Label Content="Zeitraum Start:"/>
+                <TextBox Width="100" Height="20" Margin="0,0,10,0" Text="{Binding StartDatum}"/>
+                <Label Content="Zeitraum Ende:"/>
+                <TextBox Width="100" Height="20" Margin="0,0,10,0" Text="{Binding EndDatum}"/>
+                <Button Content="Speichern" Width="100"  Margin="55,0,0,0" Command="{Binding SaveAngebotBtnClick}"/>
+            </StackPanel>
+        </StackPanel>
+
+        <DataGrid Margin="10" Grid.Row="2" ItemsSource="{Binding Angebote}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedAngebot}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Code" Binding="{Binding Code}"/>
+                <DataGridTextColumn Header="Prozent" Binding="{Binding Prozent}"/>
+                <DataGridTextColumn Header="StartDatum" Binding="{Binding StartDatum}" />
+                <DataGridTextColumn Header="EndDatum" Binding="{Binding EndDatum}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Orientation="Vertical" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Label Content="Nach Datums filtern:" FontStyle="Oblique" Margin="0,10,0,0" />
+            <ComboBox Width="150" Height="25" Margin="0,10,0,0" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
+            <Button Content="Bearbeiten" Width="150" Command="{Binding EditAngebotBtnClick}" Margin="10" Height="30"/>
+            <Button Content="Löschen" Width="150" Command="{Binding DeleteAngebotBtnClick}" Margin="10" Height="30"/>
+        </StackPanel>
+
+    </Grid>
+
+</UserControl>
