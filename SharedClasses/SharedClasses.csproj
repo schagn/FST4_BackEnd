@@ -63,7 +63,9 @@
     <Compile Include="SharedIngredient.cs" />
     <Compile Include="SharedArticle.cs" />
     <Compile Include="SharedKunde.cs" />
+    <Compile Include="SharedPackage.cs" />
     <Compile Include="SharedRegelwerk.cs" />
+    <Compile Include="SharedVerpackung.cs" />
     <Compile Include="SharedZutat.cs" />
   </ItemGroup>
   <ItemGroup>
