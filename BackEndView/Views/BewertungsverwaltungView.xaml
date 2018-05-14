@@ -36,7 +36,7 @@
             </StackPanel>
         </StackPanel>
 
-        <DataGrid Margin="10" Grid.Row="2" MaxHeight="300"  MaxColumnWidth="200" ItemsSource="{Binding Bewertungen}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedBewertung}">
+        <DataGrid Margin="10" Grid.Row="2" MinHeight="100"  MinWidth="150" ItemsSource="{Binding Bewertungen}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedBewertung}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Artikelname" Binding="{Binding ArtikelName}"/>
                 <DataGridTextColumn Header="Kundenname" Binding="{Binding KundenName}"/>
