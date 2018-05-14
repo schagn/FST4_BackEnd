@@ -7,6 +7,56 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="291*"/>
+            <ColumnDefinition Width="109*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="200*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Margin="20,10,10,10" Grid.Row="0" Grid.ColumnSpan="2">
+            <Label Content="Neue Verpackung hinzufügen oder Verpackung ändern:" FontStyle="Oblique"/>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,5" >
+                <Label Content="Beschreibung:"/>
+                <TextBox Width="120" Height="20" Margin="0,0,15,0" Text="{Binding Beschreibung}"/>
+                <Label Content="Preis:"/>
+                <TextBox Width="80" Height="20" Margin="0,0,15,0" Text="{Binding Beschreibung}"/>
+                <Label Content="Availability:"/>
+                <CheckBox Margin="0,0,15,0" VerticalAlignment="Center" IsChecked="{Binding Visibility}"/>
+                <Button Content="Speichern" Width="100" Command="{Binding SaveRegelwerkBtnClick}"/>
+            </StackPanel>
+            <Label Content="Elemente zur Verpackung hinzufügen:" FontStyle="Oblique"/>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0" >
+                <Label Content="Beschreibung:"/>
+                <ComboBox Width="120" Height="20" Margin="0,0,15,0" Text="{Binding Beschreibung}"/>
+                <Label Content="Preis:"/>
+                <TextBox Width="80" Height="20" Margin="0,0,15,0" Text="{Binding Beschreibung}"/>
+                <Label Content="Availability:"/>
+                <CheckBox Margin="0,0,15,0" VerticalAlignment="Center" IsChecked="{Binding Visibility}"/>
+                <Button Content="Hinzufügen" Width="100" Command="{Binding SaveRegelwerkBtnClick}"/>
+            </StackPanel>
+        </StackPanel>
+
+        <DataGrid Margin="10" Grid.Row="2" ItemsSource="{Binding Regelwerke}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedRegelwerk}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Beschreibung" Binding="{Binding Beschreibung}"/>
+
+                <DataGridTemplateColumn Header="Availabilty">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox  HorizontalAlignment="Center" IsChecked="{Binding IsAvailable}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
+            <Button Content="Bearbeiten" Width="150" Command="{Binding EditRegelwerkBtnClick}" Margin="10" Height="30"/>
+            <Button Content="Löschen" Width="150" Command="{Binding DeleteRegelwerkBtnClick}" Margin="10" Height="30"/>
+        </StackPanel>
+
     </Grid>
 </UserControl>
