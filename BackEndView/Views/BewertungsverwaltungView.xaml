@@ -19,11 +19,12 @@
             <ColumnDefinition Width="109*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="100*"/>
-            <RowDefinition Height="300*"/>
+            <RowDefinition Height="15*"/>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Margin="20,10,10,10" Grid.Row="0" Grid.ColumnSpan="2">
+        <StackPanel Orientation="Vertical" Margin="20,10,10,10" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">
             <Label Content="Bewertung unsichtbar setzen:" FontStyle="Oblique"/>
             <StackPanel Orientation="Horizontal" >
                 <Label Content="Artikel:" FontWeight="Bold"/>
@@ -36,7 +37,7 @@
             </StackPanel>
         </StackPanel>
 
-        <DataGrid Margin="10" Grid.Row="2" MinHeight="100"  MinWidth="150" ItemsSource="{Binding Bewertungen}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedBewertung}">
+        <DataGrid Margin="10" Grid.Row="1" MinHeight="100"  MinWidth="150" ItemsSource="{Binding Bewertungen}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedBewertung}" Grid.ColumnSpan="2" HorizontalAlignment="Center">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Artikelname" Binding="{Binding ArtikelName}"/>
                 <DataGridTextColumn Header="Kundenname" Binding="{Binding KundenName}"/>
@@ -61,13 +62,13 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Orientation="Vertical" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Label Content="Nach Visibility filtern:" FontStyle="Oblique" Margin="0,10,0,0" />
-            <ComboBox Width="150" Height="25" Margin="0,10,0,0" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
+        <StackPanel Orientation="Vertical" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="34,10">
+            <Label Content="Nach Visibility filtern:" FontStyle="Oblique" Margin="0,5,0,0" />
+            <ComboBox Width="150" Height="25" Margin="0,5,0,0" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
 
         </StackPanel>
 
-        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="2">
             <Button Content="Bearbeiten" Width="150" Command="{Binding EditBewertungBtnClick}" Margin="10" Height="30"/>
             <Button Content="Löschen" Width="150" Command="{Binding DeleteBewertungBtnClick}" Margin="10" Height="30"/>
         </StackPanel>

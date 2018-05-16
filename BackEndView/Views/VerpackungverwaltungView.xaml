@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BackEndView.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" DataContext="{Binding Verpackung, Mode=OneWay, Source={StaticResource Locator}}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="291*"/>
@@ -22,20 +22,18 @@
                 <Label Content="Beschreibung:"/>
                 <TextBox Width="120" Height="20" Margin="0,0,15,0" Text="{Binding Beschreibung}"/>
                 <Label Content="Preis:"/>
-                <TextBox Width="80" Height="20" Margin="0,0,15,0" Text="{Binding Beschreibung}"/>
+                <TextBox Width="120" Height="20" Margin="46,0,15,0" Text="{Binding Preis}"/>
                 <Label Content="Availability:"/>
                 <CheckBox Margin="0,0,15,0" VerticalAlignment="Center" IsChecked="{Binding Visibility}"/>
-                <Button Content="Speichern" Width="100" Command="{Binding SaveRegelwerkBtnClick}"/>
+                <Button Content="Speichern" Width="100" Command="{Binding SaveVerpackungBtnClick}"/>
             </StackPanel>
             <Label Content="Elemente zur Verpackung hinzufügen:" FontStyle="Oblique"/>
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0" >
+                <Label Content="Art:"/>
+                <ComboBox Width="120" Height="20" Margin="55,0,15,0" Text="{Binding Beschreibung}"/>
                 <Label Content="Beschreibung:"/>
-                <ComboBox Width="120" Height="20" Margin="0,0,15,0" Text="{Binding Beschreibung}"/>
-                <Label Content="Preis:"/>
-                <TextBox Width="80" Height="20" Margin="0,0,15,0" Text="{Binding Beschreibung}"/>
-                <Label Content="Availability:"/>
-                <CheckBox Margin="0,0,15,0" VerticalAlignment="Center" IsChecked="{Binding Visibility}"/>
-                <Button Content="Hinzufügen" Width="100" Command="{Binding SaveRegelwerkBtnClick}"/>
+                <ComboBox Width="120" Height="20" Margin="0,0,115,0" Text="{Binding Beschreibung}"/>
+              <Button Content="Hinzufügen" Width="100" Command="{Binding SaveVerpackungsItemBtnClick}"/>
             </StackPanel>
         </StackPanel>
 
@@ -54,8 +52,8 @@
         </DataGrid>
 
         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
-            <Button Content="Bearbeiten" Width="150" Command="{Binding EditRegelwerkBtnClick}" Margin="10" Height="30"/>
-            <Button Content="Löschen" Width="150" Command="{Binding DeleteRegelwerkBtnClick}" Margin="10" Height="30"/>
+            <Button Content="Bearbeiten" Width="150" Command="{Binding EditVerpackungBtnClick}" Margin="10" Height="30"/>
+            <Button Content="Löschen" Width="150" Command="{Binding DeleteVerpackungBtnClick}" Margin="10" Height="30"/>
         </StackPanel>
 
     </Grid>
