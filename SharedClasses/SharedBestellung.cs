@@ -11,17 +11,17 @@ namespace SharedClasses
     {
         public Guid BestellId { get; set; }
 
-        private DateTime bestellDatum;
+        private DateTime? bestellDatum;
 
-        public DateTime BestellDatum
+        public DateTime? BestellDatum
         {
             get { return bestellDatum; }
             set { bestellDatum = value; RaisePropertyChanged(); }
         }
 
-        private int gesamtSumme;
+        private int? gesamtSumme;
 
-        public int GesamtSumme
+        public int? GesamtSumme
         {
             get { return gesamtSumme; }
             set { gesamtSumme = value; RaisePropertyChanged(); }
@@ -35,17 +35,17 @@ namespace SharedClasses
             set { kundenName = value; RaisePropertyChanged(); }
         }
 
-        private bool gutscheinUsed;
+        private bool? gutscheinUsed;
 
-        public bool GutscheinUsed
+        public bool? GutscheinUsed
         {
             get { return gutscheinUsed; }
             set { gutscheinUsed = value; RaisePropertyChanged(); }
         }
 
-        private int gutscheinWert;
+        private int? gutscheinWert;
 
-        public int GutscheinWert
+        public int? GutscheinWert
         {
             get { return gutscheinWert; }
             set { gutscheinWert = value; RaisePropertyChanged(); }

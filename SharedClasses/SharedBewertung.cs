@@ -9,11 +9,13 @@ namespace SharedClasses
 {
     public class SharedBewertung : ViewModelBase
     {
-        public Guid BewertungId { get; set; }
+        public Guid ArticleId { get; set; }
 
-        private int sterne;
+        public Guid PersonId { get; set; }
 
-        public int Sterne
+        private int? sterne;
+
+        public int? Sterne
         {
             get { return sterne; }
             set { sterne = value; RaisePropertyChanged(); }
@@ -27,9 +29,9 @@ namespace SharedClasses
             set { kommentar = value; RaisePropertyChanged(); }
         }
 
-        private bool visible;
+        private bool? visible;
 
-        public bool Visible
+        public bool? Visible
         {
             get { return visible; }
             set { visible = value; RaisePropertyChanged(); }

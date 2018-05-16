@@ -62,6 +62,7 @@
     <Compile Include="SharedBewertung.cs" />
     <Compile Include="SharedIngredient.cs" />
     <Compile Include="SharedArticle.cs" />
+    <Compile Include="SharedKategorie.cs" />
     <Compile Include="SharedKunde.cs" />
     <Compile Include="SharedPackage.cs" />
     <Compile Include="SharedRegelwerk.cs" />

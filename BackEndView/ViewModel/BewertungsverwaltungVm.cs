@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using DataRepository;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using SharedClasses;
 using System;
@@ -14,8 +15,8 @@ namespace BackEndView.ViewModel
         public RelayCommand SaveBewertungBtnClick { get; set; }
         public ObservableCollection<SharedBewertung> Bewertungen { get; set; }
 
-        private bool visibility;
-        public bool Visibility
+        private bool? visibility;
+        public bool? Visibility
         {
             get { return visibility; }
             set { visibility = value; RaisePropertyChanged(); }
@@ -49,127 +50,77 @@ namespace BackEndView.ViewModel
         public string SelectedFilterMethode
         {
             get { return selectedFilterMethode; }
-            set { selectedFilterMethode = value; RaisePropertyChanged(); LoadNewData(); }
+            set { selectedFilterMethode = value; RaisePropertyChanged(); }
         }
+
+        private DataHandler dataHandler;
 
         public BewertungsverwaltungVm()
         {
-            Bewertungen = new ObservableCollection<SharedBewertung>();
+            dataHandler = new DataHandler();
 
-            Bewertungen.Add(new SharedBewertung()
-            {
-                BewertungId = Guid.NewGuid(),
-                ArtikelName = "RegenbogenTorte",
-                KundenName = "Helle",
-                Kommentar = "Sehr lecker",
-                Sterne = 3,
-                Visible = true
-            });
-
-            Bewertungen.Add(new SharedBewertung()
-            {
-                BewertungId = Guid.NewGuid(),
-                ArtikelName = "Sachertorte",
-                KundenName = "Christl Sch",
-                Kommentar = "Super Gut",
-                Sterne = 5,
-                Visible = true
-            });
-
-            EditBewertungBtnClick = new RelayCommand(EditZutat);
-
-            SaveBewertungBtnClick = new RelayCommand(SaveZutat);
-
+            EditBewertungBtnClick = new RelayCommand(Edit);
+            SaveBewertungBtnClick = new RelayCommand(Save);
             DeleteBewertungBtnClick = new RelayCommand(
                 () =>
                 {
-                    DeleteSelectedProduct(SelectedBewertung);
+                    Delete(SelectedBewertung);
                 });
 
             FilterMethoden = new ObservableCollection<string>();
             FilterMethoden.Add("Visible");
             FilterMethoden.Add("Non-Visible");
             FilterMethoden.Add("Alle");
+
+            RefreshList(selectedFilterMethode);
         }
 
-        private void EditZutat()
+        private void RefreshList(string selected)
         {
-            Visibility = SelectedBewertung.Visible;
+
+            if(selected == null)
+            {
+                Bewertungen = new ObservableCollection<SharedBewertung>(dataHandler.GetRatingAll());
+            }
+            else if (selected.Equals("Visible")) 
+            {
+                Bewertungen = new ObservableCollection<SharedBewertung>(dataHandler.GetRatingVisible());
+            }
+            else if (selected.Equals("Non-Visible"))
+            {
+                Bewertungen = new ObservableCollection<SharedBewertung>(dataHandler.GetRatingNonVisible());
+            }
+            else
+            {
+                Bewertungen = new ObservableCollection<SharedBewertung>(dataHandler.GetRatingAll());
+            }
+            RaisePropertyChanged("Bewertungen");
+        }
+
+        private void Edit()
+        {
+            Visibility= SelectedBewertung.Visible;
             ArtikelName = SelectedBewertung.ArtikelName;
             KundenName = SelectedBewertung.KundenName;
         }
 
-        private void DeleteSelectedProduct(SharedBewertung p)
+        private void Delete(SharedBewertung p)
         {
-            //client.deleteZutat
-            //client Zutaten neu abfragen
-            Bewertungen.Remove(p);
-            RaisePropertyChanged("Bewertungen");
+            dataHandler.DeleteRating(p);
+            RefreshList(selectedFilterMethode);
         }
 
-        private void SaveZutat()
+        private void Save()
         {
-                foreach (var item in Bewertungen)
-                {
-                    if (item.BewertungId == SelectedBewertung.BewertungId)
-                    {
-                    item.Visible = Visibility;
-
-                    }
-                }
-
-            RaisePropertyChanged("Bewertungen");
+            var tempRating = selectedBewertung;
+            tempRating.Visible = visibility;
+            dataHandler.UpdateRatingVisibility(tempRating);
 
             KundenName = "";
             ArtikelName = "";
             Visibility = false;
 
-            // client. SaveList 
-
+            RefreshList(selectedFilterMethode);
         }
-
-        private void LoadNewData()
-        {
-            // db lade neue Daten, abfrage direkt über query
-            ObservableCollection<SharedBewertung> list = new ObservableCollection<SharedBewertung>();
-
-            //ALL: To be deleted after implemented with DB 
-
-            foreach (var item in Bewertungen)
-            {
-                list.Add(item);
-            }
-            Bewertungen.Clear();
-
-            if(SelectedFilterMethode.Equals("Alle"))
-            {
-                foreach (var item in list)
-                {
-                    Bewertungen.Add(item);
-                }
-            } else if (SelectedFilterMethode.Equals("Visible"))
-            {
-                foreach (var item in list)
-                {
-                    if(item.Visible == true)
-                    {
-                        Bewertungen.Add(item);
-                    }    
-                }
-            } else if (SelectedFilterMethode.Equals("Non-Visible"))
-            {
-                foreach (var item in list)
-                {
-                    if (item.Visible == false)
-                    {
-                        Bewertungen.Add(item);
-                    }
-                }
-            }
-
-            RaisePropertyChanged("Bewertungen");
-           
-        }
-
     }
 }

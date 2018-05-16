@@ -110,5 +110,148 @@ namespace DataRepository
             article.visible = tempArticle.Visible;
             model.SaveChanges();
         }
+
+        public List<SharedBewertung> GetRatingAll()
+        {
+            return model.rating.Select(x => new SharedBewertung()
+            {
+                ArticleId = x.article_id,
+                ArtikelName = x.article.description,
+                PersonId = x.person_id,
+                KundenName = x.person.firstname + " " + x.person.lastname,
+                Sterne = x.stars,
+                Kommentar = x.comment,
+                Visible = x.visible
+            }).ToList();
+        }
+
+        public List<SharedBewertung> GetRatingVisible()
+        {
+            return model.rating.Where(x => x.visible == true).Select(x => new SharedBewertung()
+            {
+                ArticleId = x.article_id,
+                ArtikelName = x.article.description,
+                PersonId = x.person_id,
+                KundenName = x.person.firstname + " " + x.person.lastname,
+                Sterne = x.stars,
+                Kommentar = x.comment,
+                Visible = x.visible
+            }).ToList();
+        }
+
+        public List<SharedBewertung> GetRatingNonVisible()
+        {
+            return model.rating.Where(x => x.visible == false).Select(x => new SharedBewertung()
+            {
+                ArticleId = x.article_id,
+                ArtikelName = x.article.description,
+                PersonId = x.person_id,
+                KundenName = x.person.firstname + " " + x.person.lastname,
+                Sterne = x.stars,
+                Kommentar = x.comment,
+                Visible = x.visible
+            }).ToList();
+        }
+
+        public void UpdateRatingVisibility(SharedBewertung tempRating)
+        {
+            var rating = model.rating.SingleOrDefault(x => x.article_id == tempRating.ArticleId && x.person_id == tempRating.PersonId);
+            rating.visible = tempRating.Visible;
+            model.SaveChanges();
+        }
+
+        public void DeleteRating(SharedBewertung selectedRating)
+        {
+            model.rating.Remove(model.rating.SingleOrDefault(x => x.article_id == selectedRating.ArticleId && x.person_id == selectedRating.PersonId));
+            model.SaveChanges();
+        }
+
+        public List<SharedKategorie> GetIngredientCategories()
+        {
+            return model.category.Select(x => new SharedKategorie()
+            {
+                Description = x.description
+            }).ToList(); ;
+        }
+
+        public List<SharedZutat> GetZutat()
+        {
+            return model.ingredient.Select(x => new SharedZutat()
+            {
+                ZutatenId = x.ingredient_id,
+                Beschreibung = x.description,
+                Preis = x.price,
+                //Kategorie = x.category.description
+
+            }).ToList();
+        }
+
+        public void CreateZutat(SharedZutat tempZutat)
+        {
+            var zutat = new SharedZutat()
+            {
+                ZutatenId = Guid.NewGuid(),
+                Beschreibung = tempZutat.Beschreibung,
+                Preis = tempZutat.Preis,
+                //Kategorie = tempZutat.Kategorie,
+                //IsAvailable = tempZutat.IsAvailable
+            };
+
+            //model.ingredient.Add(zutat);
+            model.SaveChanges();
+        }
+
+        public void UpdateZutat(SharedZutat tempZutat)
+        {
+            var zutat = model.ingredient.SingleOrDefault(x => x.ingredient_id == tempZutat.ZutatenId);
+            zutat.description = tempZutat.Beschreibung;
+            //zutat.category = model.category.SingleOrDefault(x => x.description.Equals(tempZutat.Kategorie));
+            zutat.price = tempZutat.Preis;
+            //zutat.avaible
+            model.SaveChanges();
+        }
+
+        public void DeleteZutat(SharedZutat selectedZutat)
+        {
+            model.ingredient.Remove(model.ingredient.SingleOrDefault(x => x.ingredient_id == selectedZutat.ZutatenId));
+            model.SaveChanges();
+        }
+
+        public List<SharedRegelwerk> GetRegel()
+        {
+            return model.category.Select(x => new SharedRegelwerk()
+            {
+                RegelwerkId = x.category_id,
+                Beschreibung = x.description
+            }).ToList();
+        }
+
+        public void CreateRegel(SharedRegelwerk tempRegel)
+        {
+            var regel = new category()
+            {
+                category_id = tempRegel.RegelwerkId,
+                description = tempRegel.Beschreibung
+            };
+
+            model.category.Add(regel);
+            model.SaveChanges();
+        }
+
+        public void UpdateRegel(SharedRegelwerk tempRegel)
+        {
+            var regel = model.category.SingleOrDefault(x => x.category_id == tempRegel.RegelwerkId);
+
+            regel.description = tempRegel.Beschreibung;
+            //regel.available = tempRegel.available;
+            model.SaveChanges();
+        }
+
+        public void DeleteRegel(SharedRegelwerk tempRegel)
+        {
+
+            model.category.Remove(model.category.SingleOrDefault(x => x.category_id == tempRegel.RegelwerkId));
+            model.SaveChanges();
+        }
     }
 }

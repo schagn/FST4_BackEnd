@@ -19,9 +19,9 @@ namespace SharedClasses
             set { beschreibung = value; RaisePropertyChanged(); }
         }
 
-        private double preis;
+        private double? preis;
 
-        public double Preis
+        public double? Preis
         {
             get { return preis; }
             set { preis = value; RaisePropertyChanged(); }

@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using DataRepository;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using SharedClasses;
 using System;
@@ -46,13 +47,36 @@ namespace BackEndView.ViewModel
 
         bool IsEditingProcess;
 
+        private DataHandler dataHandler;
+
         public RegelwerkeingabeVm()
         {
-            Regelwerke = new ObservableCollection<SharedRegelwerk>();
+            dataHandler = new DataHandler();
 
+            //änderung datanbank - available
             EditRegelwerkBtnClick = new RelayCommand(EditRegelwerk);
 
-            SaveRegelwerkBtnClick = new RelayCommand(SaveRegelwerk);
+            SaveRegelwerkBtnClick = new RelayCommand(
+                () => 
+                {
+                    if (IsEditingProcess)
+                    {
+                        SelectedRegelwerk.Beschreibung = Beschreibung;
+                        dataHandler.UpdateRegel(selectedRegelwerk);
+                        Beschreibung = "";
+                        IsEditingProcess = false;
+                    }
+                    else
+                    {
+                        dataHandler.CreateRegel((new SharedRegelwerk()
+                        {
+                            RegelwerkId = Guid.NewGuid(),
+                            Beschreibung = Beschreibung
+                        }));
+                    }
+                    Beschreibung = "";
+                    RefreshList();
+                });
 
 
             DeleteRegelwerkBtnClick = new RelayCommand(
@@ -63,56 +87,27 @@ namespace BackEndView.ViewModel
 
 
             IsEditingProcess = false;
+
+            RefreshList();
+        }
+
+        private void RefreshList()
+        {
+            Regelwerke = new ObservableCollection<SharedRegelwerk>(dataHandler.GetRegel());
+            RaisePropertyChanged("Regelwerke");
         }
 
         private void EditRegelwerk()
         {
             Beschreibung = SelectedRegelwerk.Beschreibung;
-            Visibility = SelectedRegelwerk.IsAvailable;
 
             IsEditingProcess = true;
         }
 
         private void DeleteSelectedRegelwerk(SharedRegelwerk r)
         {
-            //client.deleteZutat
-            //client Zutaten neu abfragen
-            Regelwerke.Remove(r);
-            RaisePropertyChanged("Regelwerke");
-        }
-
-        private void SaveRegelwerk()
-        {
-            if (IsEditingProcess == true)
-            {
-                foreach (var item in Regelwerke)
-                {
-                    if (item.RegelwerkId == SelectedRegelwerk.RegelwerkId)
-                    {
-                        item.Beschreibung = Beschreibung;
-                        item.IsAvailable = Visibility;
-
-                    }
-                }
-            }
-            else
-            {
-                Regelwerke.Add(new SharedRegelwerk()
-                {
-                    Beschreibung = Beschreibung,
-                    RegelwerkId = Guid.NewGuid(),
-                    IsAvailable = Visibility
-                });
-            }
-
-            Beschreibung = "";
-            Visibility = false;
-            
-            RaisePropertyChanged("Regelwerke");
-
-            // client. SaveList 
-
-            IsEditingProcess = false;
+            dataHandler.DeleteRegel(r);
+            RefreshList();
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using DataRepository;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using SharedClasses;
 using System;
@@ -29,9 +30,9 @@ namespace BackEndView.ViewModel
             set { zutatenName = value; RaisePropertyChanged(); }
         }
 
-        private double zutatenPreis;
+        private double? zutatenPreis;
 
-        public double ZutatenPreis
+        public double? ZutatenPreis
         {
             get { return zutatenPreis; }
             set { zutatenPreis = value; RaisePropertyChanged(); }
@@ -66,16 +67,19 @@ namespace BackEndView.ViewModel
 
         bool IsEditingProcess;
 
+        private DataHandler dataHandler;
+
         public ZutatenverwaltungVm()
         {
-            Zutaten = new ObservableCollection<SharedZutat>();
-            Categories = new ObservableCollection<string>();
-            Categories.Add("hallo");
-            Categories.Add("thüss");
+            dataHandler = new DataHandler();
 
             EditZutatBtnClick = new RelayCommand(EditZutat);
 
-            SaveZutatBtnClick = new RelayCommand(SaveZutat);
+            SaveZutatBtnClick = new RelayCommand(
+                () =>
+                {
+                    SaveZutat(SelectedZutat);
+                });
 
 
             DeleteZutatBtnClick = new RelayCommand(
@@ -85,8 +89,18 @@ namespace BackEndView.ViewModel
                 });
 
 
+            RefreshList();
+
             IsEditingProcess = false;
         }
+
+        private void RefreshList()
+        {
+            Zutaten = new ObservableCollection<SharedZutat>(dataHandler.GetZutat());
+            Categories = new ObservableCollection<string>();
+            RaisePropertyChanged("Zutaten");
+        }
+
 
         private void EditZutat()
         {
@@ -100,49 +114,27 @@ namespace BackEndView.ViewModel
 
         private void DeleteSelectedProduct(SharedZutat p)
         {
-            //client.deleteZutat
-            //client Zutaten neu abfragen
-            Zutaten.Remove(p);
-            RaisePropertyChanged("Zutaten");
+            dataHandler.DeleteZutat(p);
+            RefreshList();
         }
 
-        private void SaveZutat()
+        private void SaveZutat(SharedZutat p)
         {
-            if(IsEditingProcess == true)
+            if(IsEditingProcess)
             {
-                foreach (var item in Zutaten)
-                {
-                    if(item.ZutatenId == SelectedZutat.ZutatenId)
-                    {
-                        item.Kategorie = SelectedCategorie;
-                        item.Preis = ZutatenPreis;
-                        item.Beschreibung = ZutatenName;
-                        item.IsAvailable = Visibility;
-
-                    }
-                }
+                dataHandler.UpdateZutat(p);
             } else
             {
-                Zutaten.Add(new SharedZutat()
-                {
-                    Beschreibung = ZutatenName,
-                    Preis = ZutatenPreis,
-                    Kategorie = SelectedCategorie,
-                    ZutatenId = Guid.NewGuid(),
-                    IsAvailable = Visibility
-                });
+                dataHandler.CreateZutat(p);
             }
 
             ZutatenName = "";
             ZutatenPreis = 0;
             SelectedCategorie = null;
 
-            RaisePropertyChanged("Zutaten");
-            
-            
-            // client. SaveList 
-
             IsEditingProcess = false;
+
+            RefreshList();
         }
     }
 }
