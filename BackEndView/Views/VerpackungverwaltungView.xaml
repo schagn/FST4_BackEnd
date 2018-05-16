@@ -30,24 +30,34 @@
             <Label Content="Elemente zur Verpackung hinzufügen:" FontStyle="Oblique"/>
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0" >
                 <Label Content="Art:"/>
-                <ComboBox Width="120" Height="20" Margin="55,0,15,0" Text="{Binding Beschreibung}"/>
+                <ComboBox Width="120" Height="20" Margin="55,0,15,0" ItemsSource="{Binding VerpackungsArten}" SelectedItem="{Binding SelectedVerpackungsArt}"/>
                 <Label Content="Beschreibung:"/>
-                <ComboBox Width="120" Height="20" Margin="0,0,115,0" Text="{Binding Beschreibung}"/>
+                <ComboBox Width="120" Height="20" Margin="0,0,115,0" ItemsSource="{Binding Verpackungsteile}" SelectedItem="{Binding SelectedVerpackungsteil}"/>
               <Button Content="Hinzufügen" Width="100" Command="{Binding SaveVerpackungsItemBtnClick}"/>
             </StackPanel>
         </StackPanel>
 
-        <DataGrid Margin="10" Grid.Row="2" ItemsSource="{Binding Regelwerke}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedRegelwerk}">
+        <DataGrid Margin="10" Grid.Row="2" ItemsSource="{Binding Verpackungen}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedVerpackung}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Beschreibung" Binding="{Binding Beschreibung}"/>
+                <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}"/>
+                <DataGridTextColumn Header="Preis" Binding="{Binding Price}"/>
 
                 <DataGridTemplateColumn Header="Availabilty">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox  HorizontalAlignment="Center" IsChecked="{Binding IsAvailable}"/>
+                            <CheckBox  HorizontalAlignment="Center" IsChecked="{Binding Visible}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Komponenten">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ItemsControl  HorizontalAlignment="Center" ItemsSource="{Binding Komponenten/Beschreibung}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
             </DataGrid.Columns>
         </DataGrid>
 

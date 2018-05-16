@@ -53,11 +53,50 @@ namespace BackEndView.ViewModel
             set { selectedVerpackung = value; RaisePropertyChanged(); }
         }
 
+        private ObservableCollection<string> verpackungsArten;
+
+        public ObservableCollection<string> VerpackungsArten
+        {
+            get { return verpackungsArten; }
+            set { verpackungsArten = value; RaisePropertyChanged();  }
+        }
+
+        private ObservableCollection<string> verpackungsteile;
+
+        public ObservableCollection<string> Verpackungsteile
+        {
+            get { return verpackungsteile; }
+            set { verpackungsteile = value; RaisePropertyChanged(); }
+        }
+
+        private string selectedVerpackungsArt;
+
+        public string SelectedVerpackungsArt
+        {
+            get { return selectedVerpackungsArt; }
+            set { selectedVerpackungsArt = value; RaisePropertyChanged(); ChangeVerpackungsteile(); }
+        }
+
+        private string selectedVerpackungsteil;
+
+        public string SelectedVerpackungsteil
+        {
+            get { return selectedVerpackungsteil; }
+            set { selectedVerpackungsteil = value; RaisePropertyChanged(); }
+        }
+
+
         bool IsEditingProcess;
 
         public VerpackungsverwaltungVm()
         {
             Verpackungen = new ObservableCollection<SharedVerpackung>();
+            Verpackungsteile = new ObservableCollection<string>();
+            Verpackungsteile.Add("Blumenmasche");
+            Verpackungsteile.Add("Sternekarton");
+            VerpackungsArten = new ObservableCollection<string>();
+            VerpackungsArten.Add("Karton");
+            VerpackungsArten.Add("Masche");
 
             EditVerpackungBtnClick = new RelayCommand(EditVerpackung);
 
@@ -139,10 +178,30 @@ namespace BackEndView.ViewModel
                 {
                     item.Komponenten.Add(new SharedZutat()
                     {
-                        
+                        Beschreibung = SelectedVerpackungsteil,
+                        IsAvailable = true,
+                        Preis = 5,
+                        ZutatenId = Guid.NewGuid()
+                
                     });
 
                 }
+            }
+
+            RaisePropertyChanged("Verpackungen");
+        }
+
+
+        private void ChangeVerpackungsteile()
+        {
+            Verpackungsteile.Clear();
+
+            if(SelectedVerpackungsArt.Contains("Karton"))
+            {
+                Verpackungsteile.Add("Blumenkarton");
+            } else
+            {
+                Verpackungsteile.Add("Sternemasche");
             }
         }
 
