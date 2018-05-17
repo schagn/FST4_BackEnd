@@ -16,19 +16,24 @@
             <RowDefinition Height="300*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Margin="20,10,10,10" Grid.Row="0" Grid.ColumnSpan="2">
+        <StackPanel Orientation="Vertical" Margin="20,5,10,5" Grid.Row="0" Grid.ColumnSpan="2">
             <Label Content="Bestellstatus ändern:" FontStyle="Oblique"/>
             <StackPanel Orientation="Horizontal" >
                 <Label Content="Bestellnummer:" FontWeight="Bold" />
                 <Label Content="{Binding BestellNummer}"/>
                 <Label Content="Bestelldatum:" FontWeight="Bold"/>
                 <Label Content="{Binding BestellDatum}"/>
+                </StackPanel>
+            <StackPanel Orientation="Horizontal">
                 <Label Content="Bestellstatus:" FontWeight="Bold"/>
                 <ComboBox Width="120" Height="20" Margin="0,0,15,0" ItemsSource="{Binding Bestellstatusse}" SelectedItem="{Binding SelectedStatus}"/>
+                <Label Content="Produkte:" FontWeight="Bold"/>
+                <ComboBox Width="120" Height="20" Margin="0,0,15,0" ItemsSource="{Binding SelectedBestellungProdukte}" SelectedItem="{Binding SelectedProdukt}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0" >
                 <Button Content="Speichern" Width="100" Command="{Binding SaveBestellungBtnClick}"/>
                 <Button Content="Kunde kontaktieren" Width="130" Margin="20,0,0,0" Command="{Binding SaveZutatBtnClick}"/>
+                <Button Content="Produkt löschen" Width="130" Margin="20,0,0,0" Command="{Binding ProduktLöschenBtnClick}"/>
             </StackPanel>
         </StackPanel>
 

@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,9 +60,9 @@ namespace SharedClasses
             set { bestellstatus = value; RaisePropertyChanged(); }
         }
 
-        private List<string> artikel;
+        private ObservableCollection<string> artikel;
 
-        public List<string> Artikel
+        public ObservableCollection<string> Artikel
         {
             get { return artikel; }
             set { artikel = value; RaisePropertyChanged(); }

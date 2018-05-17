@@ -53,7 +53,7 @@
                 <DataGridTemplateColumn Header="Komponenten">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ItemsControl  HorizontalAlignment="Center" ItemsSource="{Binding Komponenten/Beschreibung}"/>
+                            <ItemsControl ItemsSource="{Binding Komponenten/Beschreibung}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

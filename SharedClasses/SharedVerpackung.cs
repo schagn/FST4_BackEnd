@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,9 +40,9 @@ namespace SharedClasses
             set { visible = value; RaisePropertyChanged(); }
         }
 
-        private List<SharedZutat> komponenten;
+        private ObservableCollection<SharedZutat> komponenten;
 
-        public List<SharedZutat> Komponenten
+        public ObservableCollection<SharedZutat> Komponenten
         {
             get { return komponenten; }
             set { komponenten = value; RaisePropertyChanged(); }

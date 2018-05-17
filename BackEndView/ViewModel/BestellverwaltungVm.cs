@@ -21,6 +21,8 @@ namespace BackEndView.ViewModel
 
         public RelayCommand SaveBestellungBtnClick { get; set; }
 
+        public RelayCommand ProduktLöschenBtnClick { get; set; }
+
         public RelayCommand KundeKontaktierenBtnClick { get; set; }
 
         public ObservableCollection<SharedBestellung> Bestellungen { get; set; }
@@ -69,6 +71,23 @@ namespace BackEndView.ViewModel
             set { selectedFilterMethode = value; RaisePropertyChanged(); LoadNewData(); }
         }
 
+        private ObservableCollection<string> selectedBestellungProdukte;
+
+        public ObservableCollection<string> SelectedBestellungProdukte
+        {
+            get { return selectedBestellungProdukte; }
+            set { selectedBestellungProdukte = value; RaisePropertyChanged(); }
+        }
+
+        private string selectedProdukt;
+
+        public string SelectedProdukt
+        {
+            get { return selectedProdukt; }
+            set { selectedProdukt = value; RaisePropertyChanged(); }
+        }
+
+
         public BestellverwaltungVm()
         {
             Bestellungen = new ObservableCollection<SharedBestellung>();
@@ -89,6 +108,8 @@ namespace BackEndView.ViewModel
                     DeleteSelectedBestellung(SelectedBestellung);
                 });
 
+            ProduktLöschenBtnClick = new RelayCommand(ProduktLöschen);
+
             //KundeKontaktierenBtnClick = new RelayCommand();
 
             //Create Demo Data
@@ -96,7 +117,7 @@ namespace BackEndView.ViewModel
             {
                 BestellId = Guid.NewGuid(),
                 Bestellstatus = "erledigt",
-                Artikel = new List<string>() { "Regenbogentorte", "Sachertorte", "Linzerschnitte" },
+                Artikel = new ObservableCollection<string>() { "Regenbogentorte", "Sachertorte", "Linzerschnitte" },
                 BestellDatum = DateTime.Now.ToLocalTime(),
                 GesamtSumme = 130,
                 GutscheinUsed = false,
@@ -109,7 +130,7 @@ namespace BackEndView.ViewModel
             {
                 BestellId = Guid.NewGuid(),
                 Bestellstatus = "in Bearbeitung",
-                Artikel = new List<string>() { "Kardinalschnitte", "Tiramisu", "Roulade" },
+                Artikel = new ObservableCollection<string>() { "Kardinalschnitte", "Tiramisu", "Roulade" },
                 BestellDatum = DateTime.Now.ToLocalTime(),
                 GesamtSumme = 90,
                 GutscheinUsed = true,
@@ -123,11 +144,41 @@ namespace BackEndView.ViewModel
 
         }
 
+        private void ProduktLöschen()
+        {
+
+            foreach (var item in Bestellungen)
+            {
+                if(item.BestellId == SelectedBestellung.BestellId)
+                {
+                    //foreach (var Produkt in item.Artikel)
+                    //{
+                      //  if(Produkt.Equals(SelectedProdukt))
+                       // {
+                            //SelectedBestellung.Artikel.Remove(Produkt);
+
+                            item.Artikel.Remove(SelectedProdukt);
+                        //}
+                    //}
+                }
+            }
+
+            //SelectedBestellung.Artikel.Remove(SelectedProdukt);
+            RaisePropertyChanged("Bestellungen");
+            SelectedStatus = null;
+            BestellDatum = "";
+            BestellNummer = "";
+            SelectedProdukt = null;
+
+        }
+
         private void EditBestellung()
         {
             SelectedStatus = SelectedBestellung.Bestellstatus;
             BestellDatum = SelectedBestellung.BestellDatum.ToString();
             BestellNummer = SelectedBestellung.BestellId.ToString();
+            SelectedBestellungProdukte = SelectedBestellung.Artikel;
+
 
         }
 

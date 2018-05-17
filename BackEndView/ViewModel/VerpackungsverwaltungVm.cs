@@ -155,7 +155,7 @@ namespace BackEndView.ViewModel
                     Visible = Visibility,
                     Price = Preis,
                     Creation = false,
-                    Komponenten = new List<SharedZutat>()
+                    Komponenten = new ObservableCollection<SharedZutat>()
                 });
             }
 
@@ -176,19 +176,25 @@ namespace BackEndView.ViewModel
             {
                 if (item.VerpackungsId == SelectedVerpackung.VerpackungsId)
                 {
-                    item.Komponenten.Add(new SharedZutat()
+                    SelectedVerpackung.Komponenten.Add(new SharedZutat()
                     {
                         Beschreibung = SelectedVerpackungsteil,
                         IsAvailable = true,
                         Preis = 5,
                         ZutatenId = Guid.NewGuid()
-                
+                        
                     });
-
+                    RaisePropertyChanged("item");
+                    break;
                 }
             }
-
+            RaisePropertyChanged("SelectedVerpackung");
+            RaisePropertyChanged("SelectedVerpackung.Komponenten");
             RaisePropertyChanged("Verpackungen");
+
+            
+            SelectedVerpackungsteil = "";
+            SelectedVerpackungsArt = "";
         }
 
 
