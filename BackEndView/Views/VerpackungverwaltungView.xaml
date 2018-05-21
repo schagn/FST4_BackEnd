@@ -12,13 +12,13 @@
             <ColumnDefinition Width="109*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="100*"/>
+            <RowDefinition Height="130*"/>
             <RowDefinition Height="200*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Margin="20,10,10,10" Grid.Row="0" Grid.ColumnSpan="2">
+        <StackPanel Orientation="Vertical" Margin="20,5,10,5" Grid.Row="0" Grid.ColumnSpan="2">
             <Label Content="Neue Verpackung hinzufügen oder Verpackung ändern:" FontStyle="Oblique"/>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,5" >
+            <StackPanel Orientation="Horizontal" Margin="0,2,0,2" >
                 <Label Content="Beschreibung:"/>
                 <TextBox Width="120" Height="20" Margin="0,0,15,0" Text="{Binding Beschreibung}"/>
                 <Label Content="Preis:"/>
@@ -27,8 +27,14 @@
                 <CheckBox Margin="0,0,15,0" VerticalAlignment="Center" IsChecked="{Binding Visibility}"/>
                 <Button Content="Speichern" Width="100" Command="{Binding SaveVerpackungBtnClick}"/>
             </StackPanel>
-            <Label Content="Elemente zur Verpackung hinzufügen:" FontStyle="Oblique"/>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0" >
+            <Label Content="Komponente löschen:" FontStyle="Oblique"/>
+            <StackPanel Orientation="Horizontal" Margin="0,2,0,2" >
+                <Label Content="Komponenten:"/>
+                <ComboBox Width="120" Height="20" Margin="0,0,15,0" ItemsSource="{Binding VerpackungsKomponenten}" SelectedItem="{Binding SelectedLöschenVerpackungsteil}"/>
+                <Button Content="Komponente löschen" Width="130" Command="{Binding KomponenteLöschenBtnClick}"/>
+            </StackPanel>
+            <Label Content="Komponente zur Verpackung hinzufügen:" FontStyle="Oblique"/>
+            <StackPanel Orientation="Horizontal" Margin="0,2,0,0" >
                 <Label Content="Art:"/>
                 <ComboBox Width="120" Height="20" Margin="55,0,15,0" ItemsSource="{Binding VerpackungsArten}" SelectedItem="{Binding SelectedVerpackungsArt}"/>
                 <Label Content="Beschreibung:"/>
@@ -37,7 +43,8 @@
             </StackPanel>
         </StackPanel>
 
-        <DataGrid Margin="10" Grid.Row="2" ItemsSource="{Binding Verpackungen}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedVerpackung}">
+      
+        <DataGrid Margin="10,0,10,10" Grid.Row="2" ItemsSource="{Binding Verpackungen}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedVerpackung}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}"/>
                 <DataGridTextColumn Header="Preis" Binding="{Binding Price}"/>
@@ -53,7 +60,20 @@
                 <DataGridTemplateColumn Header="Komponenten">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ItemsControl ItemsSource="{Binding Komponenten/Beschreibung}"/>
+                            <ItemsControl ItemsSource="{Binding Komponenten}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="BlueViolet" BorderThickness="1">
+                                        <Label Content="{Binding Beschreibung}"  />
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -61,7 +81,11 @@
             </DataGrid.Columns>
         </DataGrid>
 
+
         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
+            <Label Content="Nach Paramtertn filtern:" FontStyle="Oblique" Margin="5,5,0,0" />
+            <ComboBox Width="150" Height="25" Margin="0,5,0,20" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
+
             <Button Content="Bearbeiten" Width="150" Command="{Binding EditVerpackungBtnClick}" Margin="10" Height="30"/>
             <Button Content="Löschen" Width="150" Command="{Binding DeleteVerpackungBtnClick}" Margin="10" Height="30"/>
         </StackPanel>

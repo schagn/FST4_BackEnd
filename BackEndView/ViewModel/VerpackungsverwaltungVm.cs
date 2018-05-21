@@ -13,7 +13,6 @@ namespace BackEndView.ViewModel
     public class VerpackungsverwaltungVm : ViewModelBase
     {
 
-
         public RelayCommand EditVerpackungBtnClick { get; set; }
 
         public RelayCommand DeleteVerpackungBtnClick { get; set; }
@@ -21,6 +20,8 @@ namespace BackEndView.ViewModel
         public RelayCommand SaveVerpackungBtnClick { get; set; }
 
         public RelayCommand SaveVerpackungsItemBtnClick { get; set; }
+
+        public RelayCommand KomponenteLöschenBtnClick { get; set; }
 
         public ObservableCollection<SharedVerpackung> Verpackungen { get; set; }
 
@@ -85,6 +86,22 @@ namespace BackEndView.ViewModel
             set { selectedVerpackungsteil = value; RaisePropertyChanged(); }
         }
 
+        private ObservableCollection<string> verpackungsKomponenten;
+
+        public ObservableCollection<string> VerpackungsKomponenten
+        {
+            get { return verpackungsKomponenten; }
+            set { verpackungsKomponenten = value; RaisePropertyChanged(); }
+        }
+
+        private string selectedLöschenVerpackungsteil;
+
+        public string SelectedLöschenVerpackungsteil
+        {
+            get { return selectedLöschenVerpackungsteil; }
+            set { selectedLöschenVerpackungsteil = value; RaisePropertyChanged(); }
+        }
+
 
         bool IsEditingProcess;
 
@@ -97,6 +114,7 @@ namespace BackEndView.ViewModel
             VerpackungsArten = new ObservableCollection<string>();
             VerpackungsArten.Add("Karton");
             VerpackungsArten.Add("Masche");
+            VerpackungsKomponenten = new ObservableCollection<string>();
 
             EditVerpackungBtnClick = new RelayCommand(EditVerpackung);
 
@@ -111,6 +129,8 @@ namespace BackEndView.ViewModel
 
             SaveVerpackungsItemBtnClick = new RelayCommand(SaveVerpackungsItem);
 
+            KomponenteLöschenBtnClick = new RelayCommand(KomponenteLöschen);
+
             IsEditingProcess = false;
         }
 
@@ -119,6 +139,10 @@ namespace BackEndView.ViewModel
             Beschreibung = SelectedVerpackung.Description;
             Visibility = SelectedVerpackung.Visible;
             Preis = SelectedVerpackung.Price;
+            foreach (var item in SelectedVerpackung.Komponenten)
+            {
+                VerpackungsKomponenten.Add(item.Beschreibung);   
+            }
 
             IsEditingProcess = true;
         }
@@ -192,7 +216,13 @@ namespace BackEndView.ViewModel
             RaisePropertyChanged("SelectedVerpackung.Komponenten");
             RaisePropertyChanged("Verpackungen");
 
-            
+            VerpackungsKomponenten.Clear();
+            foreach (var item in SelectedVerpackung.Komponenten)
+            {
+                VerpackungsKomponenten.Add(item.Beschreibung);
+            }
+
+
             SelectedVerpackungsteil = "";
             SelectedVerpackungsArt = "";
         }
@@ -211,6 +241,33 @@ namespace BackEndView.ViewModel
             }
         }
 
+        private void KomponenteLöschen()
+        {
+
+            foreach (var item in Verpackungen)
+            {
+                if (item.VerpackungsId == SelectedVerpackung.VerpackungsId)
+                {
+                    foreach (var teil in item.Komponenten)
+                    {
+                        if(teil.Beschreibung.Contains(SelectedLöschenVerpackungsteil))
+                        {
+                            item.Komponenten.Remove(teil);
+                            break;
+                        }
+                    }
+
+                }
+            }
+
+            //SelectedBestellung.Artikel.Remove(SelectedProdukt);
+            RaisePropertyChanged("Verpackungen");
+            SelectedLöschenVerpackungsteil = null;
+            SelectedVerpackung = null;
+            Beschreibung = "";
+            Visibility = false;
+            Preis = 0;
+        }
 
     }
 }

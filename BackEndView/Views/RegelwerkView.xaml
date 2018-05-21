@@ -41,6 +41,12 @@
             </DataGrid.Columns>
         </DataGrid>
 
+        <StackPanel Orientation="Vertical" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="34,10">
+            <Label Content="Nach Availability filtern:" FontStyle="Oblique" Margin="0,5,0,0" />
+            <ComboBox Width="150" Height="25" Margin="0,5,0,0" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
+
+        </StackPanel>
+
         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
             <Button Content="Bearbeiten" Width="150" Command="{Binding EditRegelwerkBtnClick}" Margin="10" Height="30"/>
             <Button Content="Löschen" Width="150" Command="{Binding DeleteRegelwerkBtnClick}" Margin="10" Height="30"/>
