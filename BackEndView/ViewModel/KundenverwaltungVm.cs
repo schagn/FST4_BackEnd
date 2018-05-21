@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using DataRepository;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using SharedClasses;
 using System;
@@ -87,6 +88,15 @@ namespace BackEndView.ViewModel
             set { land = value; RaisePropertyChanged(); }
         }
 
+        private bool isBusinessCustomer;
+
+        public bool IsBusinessCustomer
+        {
+            get { return isBusinessCustomer; }
+            set { isBusinessCustomer = value;RaisePropertyChanged(); }
+        }
+
+
 
         private SharedKunde selectedKunde;
 
@@ -98,11 +108,18 @@ namespace BackEndView.ViewModel
 
         bool IsEditingProcess;
 
-        DependencyObject depobj = new DependencyObject(); 
+
+        DependencyObject depobj = new DependencyObject();
+
+        private DataHandler dh = new DataHandler();
 
         public KundenverwaltungVm()
         {
-            Kunden = new ObservableCollection<SharedKunde>();
+
+            //temporary workaround
+            dh.CreateCustomerTypeIfNotExisting();
+
+            Kunden = GetAllCustomers();
 
             EditKundeBtnClick = new RelayCommand(EditKunde);
 
@@ -135,9 +152,9 @@ namespace BackEndView.ViewModel
 
         private void DeleteSelectedKunde(SharedKunde k)
         {
-            //client.deleteZutat
-            //client Zutaten neu abfragen
-            Kunden.Remove(k);
+
+            dh.DeleteCustomer(k);
+            RefreshCustomers();
             RaisePropertyChanged("Kunden");
         }
 
@@ -145,24 +162,12 @@ namespace BackEndView.ViewModel
         {
             if (IsEditingProcess == true)
             {
-                foreach (var item in Kunden)
-                {
-                    if (item.KundenId == SelectedKunde.KundenId)
-                    {
-                        item.VorName = VorName;
-                        item.NachName = NachName;
-                        item.Geburtsdatum = Geburtsdatum;
-                        item.EMail = EMail;
-                        item.Strasse = Strasse;
-                        item.PLZ = PLZ;
-                        item.Ort = Ort;
-                        item.Land = Land;
-                    }
-                }
+                
             }
             else
             {
-                Kunden.Add(new SharedKunde()
+                SharedCity customerCity = new SharedCity(PLZ, Ort);
+                SharedKunde newCustomer = new SharedKunde()
                 {
                     KundenId = Guid.NewGuid(),
                     VorName = VorName,
@@ -174,7 +179,9 @@ namespace BackEndView.ViewModel
                     Ort = Ort,
                     Land = Land,
                     Passwort = PasswordHelper.GetPassword(depobj)
-                });
+                };
+                dh.AddCusomter(newCustomer);
+                RefreshCustomers();
             }
 
             VorName = "";
@@ -193,6 +200,27 @@ namespace BackEndView.ViewModel
             // client. SaveList 
 
             IsEditingProcess = false;
+        }
+
+        public ObservableCollection<SharedKunde> GetAllCustomers()
+        {
+
+            return new ObservableCollection<SharedKunde>(dh.GetAllCustomers());
+
+        }
+
+        public void RefreshCustomers()
+        {
+
+            Kunden.Clear();
+            
+
+            foreach (var item in dh.GetAllCustomers())
+            {
+
+                Kunden.Add(item);
+
+            }
         }
 
     }

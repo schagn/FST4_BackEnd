@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace BackEndView.ViewModel
 {
     public class BestellverwaltungVm : ViewModelBase
@@ -117,7 +118,7 @@ namespace BackEndView.ViewModel
             {
                 BestellId = Guid.NewGuid(),
                 Bestellstatus = "erledigt",
-                Artikel = new ObservableCollection<string>() { "Regenbogentorte", "Sachertorte", "Linzerschnitte" },
+                Artikel = new List<string>() { "Regenbogentorte", "Sachertorte", "Linzerschnitte" },
                 BestellDatum = DateTime.Now.ToLocalTime(),
                 GesamtSumme = 130,
                 GutscheinUsed = false,
@@ -130,7 +131,7 @@ namespace BackEndView.ViewModel
             {
                 BestellId = Guid.NewGuid(),
                 Bestellstatus = "in Bearbeitung",
-                Artikel = new ObservableCollection<string>() { "Kardinalschnitte", "Tiramisu", "Roulade" },
+                Artikel = new List<string>() { "Kardinalschnitte", "Tiramisu", "Roulade" },
                 BestellDatum = DateTime.Now.ToLocalTime(),
                 GesamtSumme = 90,
                 GutscheinUsed = true,
@@ -177,7 +178,7 @@ namespace BackEndView.ViewModel
             SelectedStatus = SelectedBestellung.Bestellstatus;
             BestellDatum = SelectedBestellung.BestellDatum.ToString();
             BestellNummer = SelectedBestellung.BestellId.ToString();
-            SelectedBestellungProdukte = SelectedBestellung.Artikel;
+            //SelectedBestellungProdukte = ObservableListConverter.ConvertToObservableCollection(SelectedBestellung.Artikel);
 
 
         }

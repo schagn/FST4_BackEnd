@@ -253,5 +253,135 @@ namespace DataRepository
             model.category.Remove(model.category.SingleOrDefault(x => x.category_id == tempRegel.RegelwerkId));
             model.SaveChanges();
         }
+
+
+        //Bestellungsverwaltung
+
+        public List<SharedBestellung> GetAllOrders()
+        {
+
+            return model.order.Select(x => new SharedBestellung()
+            {
+                Artikel = x.order_has_articles.Select(y => y.article.description).ToList(),
+                KundenName = x.person.firstname + x.person.lastname,
+                BestellDatum = x.date,
+                Bestellstatus = "Open",
+                GesamtSumme = x.total_amount
+
+            }).ToList();
+            
+        }
+
+        // TODO 
+        public List<SharedBestellung> GetOrdersByStatus()
+        {
+
+            throw new NotImplementedException();
+
+
+        }
+
+
+        #region Kundenverwaltung
+
+
+        public List<SharedKunde> GetAllCustomers()
+        {
+
+            var customers = model.person.Where(x=> x.type.description.Equals("Customer")).Select(x => new SharedKunde()
+            {
+                KundenId = x.person_id,
+                EMail = x.e_mail,
+                Geburtsdatum = x.firstname,
+                VorName = x.firstname,
+                NachName = x.lastname,
+                Land = x.country,
+                PLZ = x.city.zip_code,
+                Ort = x.city.name,
+                Passwort = x.password,
+                Strasse = x.street
+
+
+
+            }).ToList();
+
+            return customers;
+
+        }
+
+        public void AddCusomter(SharedKunde k)
+        {
+
+            CreateCityIfNotExisting(new SharedCity(k.PLZ,k.Ort));
+            var customer = new person()
+            {
+                person_id = Guid.NewGuid(),
+                firstname = k.VorName,
+                lastname = k.NachName,
+                e_mail = k.EMail,
+                password = k.Passwort,
+                birthdate = k.Geburtsdatum,
+                street = k.Strasse,
+                city = model.city.SingleOrDefault(x => x.zip_code.Equals(k.PLZ)),
+                country = k.Land,
+                type = model.type.SingleOrDefault(y => y.description.Equals("Customer"))
+                
+
+            };
+            model.person.Add(customer);
+            model.SaveChanges();
+
+        }
+        
+
+        public void CreateCityIfNotExisting(SharedCity city)
+        {
+
+            if(!model.city.Any(x=> x.zip_code.Equals(city.ZipCode)))
+            {
+                var newCity = new city()
+                {
+                    name = city.Name,
+                    zip_code = city.ZipCode
+
+                };
+
+                model.city.Add(newCity);
+                model.SaveChanges();
+
+            }
+
+        }
+        //PFUSCH
+        public void CreateCustomerTypeIfNotExisting()
+        {
+
+            if (!model.type.Any(x => x.description.Equals("Customer")))
+            {
+
+                var type = new type()
+                {
+                    type_id = Guid.NewGuid(),
+                    description = "Customer"
+                };
+
+                model.type.Add(type);
+                model.SaveChanges();
+
+            }
+        }
+
+        public void DeleteCustomer(SharedKunde k)
+        {
+
+            model.person.Remove(model.person.SingleOrDefault(x => x.person_id.Equals(k.KundenId)));
+            model.SaveChanges();
+
+        }
+
+
+
+
+        #endregion
     }
 }

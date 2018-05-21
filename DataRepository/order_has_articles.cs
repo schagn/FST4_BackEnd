@@ -17,9 +17,9 @@ namespace DataRepository
         public System.Guid order_id { get; set; }
         public System.Guid article_id { get; set; }
         public Nullable<int> amount { get; set; }
-        public Nullable<double> price { get; set; }
     
         public virtual article article { get; set; }
         public virtual order order { get; set; }
+        public virtual article article1 { get; set; }
     }
 }

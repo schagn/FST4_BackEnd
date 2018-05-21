@@ -21,6 +21,7 @@ namespace DataRepository
             this.order_has_articles = new HashSet<order_has_articles>();
             this.rating = new HashSet<rating>();
             this.package = new HashSet<package>();
+            this.order_has_articles1 = new HashSet<order_has_articles>();
         }
     
         public System.Guid article_id { get; set; }
@@ -41,5 +42,7 @@ namespace DataRepository
         public virtual ICollection<rating> rating { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<package> package { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<order_has_articles> order_has_articles1 { get; set; }
     }
 }

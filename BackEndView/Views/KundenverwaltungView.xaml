@@ -28,6 +28,8 @@
                 <TextBox Width="120" Height="20" Margin="10,0,10,0" Text="{Binding NachName}"/>
                 <Label Content="Geburtsdatum:"/>
                 <TextBox Width="120" Height="20" Margin="10,0,10,0" Text="{Binding Geburtsdatum}"/>
+                <Label Content="Geschäftskunde" Margin="10,0,0,0"></Label>
+                <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsBusinessCustomer}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,2,0,0" >
                 <Label Content="Strasse:"/>
@@ -36,6 +38,7 @@
                 <TextBox Width="120" Height="20" Margin="50,0,10,0" Text="{Binding Ort}"/>
                 <Label Content="PLZ:"/>
                 <TextBox Width="100" Height="20" Margin="66,0,10,0" Text="{Binding PLZ}"/>
+                
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                 <Label Content="E-Mail:"/>

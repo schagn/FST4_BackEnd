@@ -32,6 +32,7 @@ namespace DataRepository
         public string country { get; set; }
         public int zip_code { get; set; }
         public System.Guid type_id { get; set; }
+        public string phone_number { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<business_customer> business_customer { get; set; }

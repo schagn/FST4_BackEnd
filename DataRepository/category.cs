@@ -22,6 +22,7 @@ namespace DataRepository
     
         public System.Guid category_id { get; set; }
         public string description { get; set; }
+        public Nullable<bool> cat_active { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ingredient> ingredient { get; set; }

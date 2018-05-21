@@ -36,6 +36,7 @@
         <AssociationConnector Association="FST4Model.rating_fk_rating_person1" ManuallyRouted="false" />
         <AssociationConnector Association="FST4Model.ingredient_has_category" ManuallyRouted="false" />
         <AssociationConnector Association="FST4Model.package_has_articles" ManuallyRouted="false" />
+        <AssociationConnector Association="FST4Model.order_has_articles_fk_order_has_articles_article11" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

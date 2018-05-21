@@ -20,9 +20,9 @@ namespace SharedClasses
             set { bestellDatum = value; RaisePropertyChanged(); }
         }
 
-        private int? gesamtSumme;
+        private double? gesamtSumme;
 
-        public int? GesamtSumme
+        public double? GesamtSumme
         {
             get { return gesamtSumme; }
             set { gesamtSumme = value; RaisePropertyChanged(); }
@@ -60,9 +60,9 @@ namespace SharedClasses
             set { bestellstatus = value; RaisePropertyChanged(); }
         }
 
-        private ObservableCollection<string> artikel;
+        private List<string> artikel;
 
-        public ObservableCollection<string> Artikel
+        public List<string> Artikel
         {
             get { return artikel; }
             set { artikel = value; RaisePropertyChanged(); }

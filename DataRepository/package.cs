@@ -23,6 +23,7 @@ namespace DataRepository
         public System.Guid package_id { get; set; }
         public string description { get; set; }
         public Nullable<double> price { get; set; }
+        public Nullable<bool> pack_active { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<article> article { get; set; }
