@@ -162,7 +162,21 @@ namespace BackEndView.ViewModel
         {
             if (IsEditingProcess == true)
             {
+
+                SelectedKunde.VorName = VorName;
+                SelectedKunde.NachName = NachName;
+                SelectedKunde.Geburtsdatum = Geburtsdatum;
+                SelectedKunde.EMail = EMail;
+                SelectedKunde.Strasse = Strasse;
+                SelectedKunde.PLZ = PLZ;
+                SelectedKunde.Ort = Ort;
+                SelectedKunde.Land = Land;
+
+                dh.UpdateCustomer(SelectedKunde);
+                SelectedKunde = null;
+                IsEditingProcess = false;
                 
+
             }
             else
             {
@@ -181,8 +195,10 @@ namespace BackEndView.ViewModel
                     Passwort = PasswordHelper.GetPassword(depobj)
                 };
                 dh.AddCusomter(newCustomer);
-                RefreshCustomers();
+                
             }
+
+            RefreshCustomers();
 
             VorName = "";
             NachName = "";
@@ -193,13 +209,6 @@ namespace BackEndView.ViewModel
             Ort = "";
             Land = "";
             Passwort = "";  
-
-            RaisePropertyChanged("Kunden");
-
-
-            // client. SaveList 
-
-            IsEditingProcess = false;
         }
 
         public ObservableCollection<SharedKunde> GetAllCustomers()

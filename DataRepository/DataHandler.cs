@@ -329,7 +329,7 @@ namespace DataRepository
             {
                 KundenId = x.person_id,
                 EMail = x.e_mail,
-                Geburtsdatum = x.firstname,
+                Geburtsdatum = x.birthdate,
                 VorName = x.firstname,
                 NachName = x.lastname,
                 Land = x.country,
@@ -370,7 +370,7 @@ namespace DataRepository
 
         }
         
-
+        
         public void CreateCityIfNotExisting(SharedCity city)
         {
 
@@ -389,7 +389,7 @@ namespace DataRepository
             }
 
         }
-        //PFUSCH
+        //TODO: PFUSCH
         public void CreateCustomerTypeIfNotExisting()
         {
 
@@ -416,9 +416,31 @@ namespace DataRepository
 
         }
 
+        public void UpdateCustomer(SharedKunde k)
+        {
 
+            var customer = model.person.SingleOrDefault(x => x.person_id.Equals(k.KundenId));
 
+            customer.firstname = k.VorName;
+            customer.lastname = k.NachName;
+            customer.e_mail = k.EMail;
+            customer.password = k.Passwort;
+            customer.street = k.Strasse;
+            customer.birthdate = k.Geburtsdatum;
 
+            if (!(k.PLZ.Equals(customer.city.zip_code) && k.Ort.Equals(customer.city.name)))
+            {
+                if (!k.Land.Equals(customer.country))
+                {
+                    customer.country = k.Land;
+                }
+
+                CreateCityIfNotExisting(new SharedCity(k.PLZ, k.Ort));
+                customer.city = model.city.SingleOrDefault(x => x.zip_code.Equals(k.PLZ));
+
+            }
+            model.SaveChanges();
+        }
         #endregion
     }
 }
