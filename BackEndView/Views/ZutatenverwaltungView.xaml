@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BackEndView.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" DataContext="{Binding Zutaten, Mode=OneWay, Source={StaticResource Locator}}">
+             d:DesignHeight="500" d:DesignWidth="900" DataContext="{Binding Zutaten, Mode=OneWay, Source={StaticResource Locator}}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="291*"/>
@@ -20,13 +20,15 @@
             <Label Content="Neue Zutat hinzufügen oder Zutat ändern:" FontStyle="Oblique"/>
             <StackPanel Orientation="Horizontal" >
                 <Label Content="Name:"/>
-                <TextBox Width="120" Height="20" Margin="0,0,15,0" Text="{Binding ZutatenName}"/>
+                <TextBox Width="120" Height="20" Margin="20,0,15,0" Text="{Binding ZutatenName}"/>
                 <Label Content="Preis:"/>
-                <TextBox Width="120" Height="20" Margin="0,0,15,0" Text="{Binding ZutatenPreis}"/>
+                <TextBox Width="90" Height="20" Margin="0,0,15,0" Text="{Binding ZutatenPreis}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" >
                 <Label Content="Kategorie:"/>
                 <ComboBox Width="120" Height="20" Margin="0,0,15,0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategorie}"/>
                 <Label Content="Availability:"/>
-                <CheckBox Margin="0,0,15,0" VerticalAlignment="Center" IsChecked="{Binding Visibility}"/>
+                <CheckBox Margin="0,0,50,0" VerticalAlignment="Center" IsChecked="{Binding Visibility}"/>
                 <Button Content="Speichern" Width="100" Command="{Binding SaveZutatBtnClick}"/>
             </StackPanel>
         </StackPanel>
@@ -46,6 +48,12 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+
+
+        <StackPanel Orientation="Vertical" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="34,10">
+            <Label Content="Nach Availability filtern:" FontStyle="Oblique" Margin="0,5,0,0" />
+            <ComboBox Width="150" Height="25" Margin="0,5,0,0" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
 
         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
             <Button Content="Bearbeiten" Width="150" Command="{Binding EditZutatBtnClick}" Margin="10" Height="30"/>

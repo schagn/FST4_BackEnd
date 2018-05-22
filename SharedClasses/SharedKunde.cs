@@ -84,6 +84,11 @@ namespace SharedClasses
             set { land = value; RaisePropertyChanged(); }
         }
 
-
+        private bool isBusinessCustomer;
+        public bool IsBusinessCustomer
+        {
+            get { return isBusinessCustomer; }
+            set { isBusinessCustomer = value; RaisePropertyChanged(); }
+        }
     }
 }

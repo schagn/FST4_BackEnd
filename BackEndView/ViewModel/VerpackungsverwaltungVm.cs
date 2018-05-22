@@ -102,6 +102,15 @@ namespace BackEndView.ViewModel
             set { selectedLöschenVerpackungsteil = value; RaisePropertyChanged(); }
         }
 
+        public ObservableCollection<string> FilterMethoden { get; set; }
+
+        private string selectedFilterMethode;
+
+        public string SelectedFilterMethode
+        {
+            get { return selectedFilterMethode; }
+            set { selectedFilterMethode = value; RaisePropertyChanged(); RefreshList(SelectedFilterMethode); }
+        }
 
         bool IsEditingProcess;
 
@@ -130,6 +139,13 @@ namespace BackEndView.ViewModel
             SaveVerpackungsItemBtnClick = new RelayCommand(SaveVerpackungsItem);
 
             KomponenteLöschenBtnClick = new RelayCommand(KomponenteLöschen);
+
+            FilterMethoden = new ObservableCollection<string>();
+            FilterMethoden.Add("Visible");
+            FilterMethoden.Add("Non-Visible");
+            FilterMethoden.Add("Kundenverpackungskreationen");
+            FilterMethoden.Add("Alle");
+
 
             IsEditingProcess = false;
         }
@@ -267,6 +283,11 @@ namespace BackEndView.ViewModel
             Beschreibung = "";
             Visibility = false;
             Preis = 0;
+        }
+
+        private void RefreshList(string selectedFilterMethode)
+        {
+            // je nachdem welche Filtermethode ausgewählt ist --> neu von DB laden  
         }
 
     }

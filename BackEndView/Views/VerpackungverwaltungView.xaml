@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BackEndView.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" DataContext="{Binding Verpackung, Mode=OneWay, Source={StaticResource Locator}}">
+             d:DesignHeight="500" d:DesignWidth="900" DataContext="{Binding Verpackung, Mode=OneWay, Source={StaticResource Locator}}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="291*"/>
@@ -41,6 +41,12 @@
                 <ComboBox Width="120" Height="20" Margin="0,0,115,0" ItemsSource="{Binding Verpackungsteile}" SelectedItem="{Binding SelectedVerpackungsteil}"/>
               <Button Content="Hinzufügen" Width="100" Command="{Binding SaveVerpackungsItemBtnClick}"/>
             </StackPanel>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Column="1" Margin="10,10,0,0" HorizontalAlignment="Center">
+            <Label Content="Nach Parametern filtern:" FontStyle="Oblique" Margin="5,5,0,0" />
+            <ComboBox Width="180" Height="25" Margin="0,5,0,20" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode}"/>
+
         </StackPanel>
 
       
@@ -84,7 +90,7 @@
 
         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
             <Label Content="Nach Paramtertn filtern:" FontStyle="Oblique" Margin="5,5,0,0" />
-            <ComboBox Width="150" Height="25" Margin="0,5,0,20" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox Width="180" Height="25" Margin="0,5,0,20" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode}"/>
 
             <Button Content="Bearbeiten" Width="150" Command="{Binding EditVerpackungBtnClick}" Margin="10" Height="30"/>
             <Button Content="Löschen" Width="150" Command="{Binding DeleteVerpackungBtnClick}" Margin="10" Height="30"/>

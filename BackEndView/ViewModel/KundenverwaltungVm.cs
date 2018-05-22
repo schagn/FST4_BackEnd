@@ -109,7 +109,17 @@ namespace BackEndView.ViewModel
         bool IsEditingProcess;
 
 
-        DependencyObject depobj = new DependencyObject();
+        public ObservableCollection<string> FilterMethoden { get; set; }
+
+        private string selectedFilterMethode;
+
+        public string SelectedFilterMethode
+        {
+            get { return selectedFilterMethode; }
+            set { selectedFilterMethode = value; RaisePropertyChanged(); RefreshList(SelectedFilterMethode); }
+        }
+
+        //DependencyObject depobj = new DependencyObject();
 
         private DataHandler dh = new DataHandler();
 
@@ -132,6 +142,11 @@ namespace BackEndView.ViewModel
                 });
 
 
+            FilterMethoden = new ObservableCollection<string>();
+            FilterMethoden.Add("Geschäftskunden");
+            FilterMethoden.Add("Privatkunden");
+            FilterMethoden.Add("Alle");
+
             IsEditingProcess = false;
         }
 
@@ -146,6 +161,7 @@ namespace BackEndView.ViewModel
             Ort = SelectedKunde.Ort;
             Land = SelectedKunde.Land;
             Passwort = Passwort;
+            IsBusinessCustomer = SelectedKunde.IsBusinessCustomer;
 
             IsEditingProcess = true;
         }
@@ -171,6 +187,7 @@ namespace BackEndView.ViewModel
                 SelectedKunde.PLZ = PLZ;
                 SelectedKunde.Ort = Ort;
                 SelectedKunde.Land = Land;
+                SelectedKunde.IsBusinessCustomer = IsBusinessCustomer;
 
                 dh.UpdateCustomer(SelectedKunde);
                 SelectedKunde = null;
@@ -192,7 +209,8 @@ namespace BackEndView.ViewModel
                     PLZ = PLZ,
                     Ort = Ort,
                     Land = Land,
-                    Passwort = PasswordHelper.GetPassword(depobj)
+                    IsBusinessCustomer = IsBusinessCustomer
+                    //Passwort = PasswordHelper.GetPassword(depobj)
                 };
                 dh.AddCusomter(newCustomer);
                 
@@ -209,6 +227,11 @@ namespace BackEndView.ViewModel
             Ort = "";
             Land = "";
             Passwort = "";  
+        }
+
+        private void RefreshList(string selectedFilterMethode)
+        {
+            // je nachdem welche Filtermethode ausgewählt ist --> neu von DB laden  
         }
 
         public ObservableCollection<SharedKunde> GetAllCustomers()

@@ -69,7 +69,7 @@ namespace BackEndView.ViewModel
         public string SelectedFilterMethode
         {
             get { return selectedFilterMethode; }
-            set { selectedFilterMethode = value; RaisePropertyChanged(); LoadNewData(); }
+            set { selectedFilterMethode = value; RaisePropertyChanged(); RefreshList(SelectedFilterMethode); }
         }
 
         private ObservableCollection<string> selectedBestellungProdukte;
@@ -211,9 +211,9 @@ namespace BackEndView.ViewModel
         }
 
 
-        private void LoadNewData()
+        private void RefreshList(string selectedFilterMethode)
         {
-            // db lade neue Daten, abfrage direkt über query
+            // je nachdem welche Filtermethode ausgewählt ist --> neu von DB laden  
         }
 
     }
