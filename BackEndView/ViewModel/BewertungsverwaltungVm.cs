@@ -50,7 +50,7 @@ namespace BackEndView.ViewModel
         public string SelectedFilterMethode
         {
             get { return selectedFilterMethode; }
-            set { selectedFilterMethode = value; RaisePropertyChanged(); }
+            set { selectedFilterMethode = value; RaisePropertyChanged(); RefreshList(SelectedFilterMethode); }
         }
 
         private DataHandler dataHandler;
@@ -72,7 +72,8 @@ namespace BackEndView.ViewModel
             FilterMethoden.Add("Non-Visible");
             FilterMethoden.Add("Alle");
 
-            RefreshList(selectedFilterMethode);
+            RefreshList(null);
+
         }
 
         private void RefreshList(string selected)

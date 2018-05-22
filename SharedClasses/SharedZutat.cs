@@ -27,11 +27,9 @@ namespace SharedClasses
             set { preis = value; RaisePropertyChanged(); }
         }
 
-        private bool isAvailable;
+        private bool? isAvailable;
 
-
-
-        public bool IsAvailable
+        public bool? IsAvailable
         {
             get { return isAvailable; }
             set { isAvailable = value; RaisePropertyChanged(); }

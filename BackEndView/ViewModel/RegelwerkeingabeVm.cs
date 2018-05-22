@@ -29,8 +29,8 @@ namespace BackEndView.ViewModel
             set { beschreibung = value; RaisePropertyChanged(); }
         }
 
-        private bool visibility;
-        public bool Visibility
+        private bool? visibility;
+        public bool? Visibility
         {
             get { return visibility; }
             set { visibility = value; RaisePropertyChanged(); }
@@ -45,6 +45,16 @@ namespace BackEndView.ViewModel
             set { selectedRegelwerk = value; RaisePropertyChanged(); }
         }
 
+        public ObservableCollection<string> FilterMethoden { get; set; }
+
+        private string selectedFilterMethode;
+
+        public string SelectedFilterMethode
+        {
+            get { return selectedFilterMethode; }
+            set { selectedFilterMethode = value; RaisePropertyChanged(); RefreshList(SelectedFilterMethode); }
+        }
+
         bool IsEditingProcess;
 
         private DataHandler dataHandler;
@@ -53,7 +63,11 @@ namespace BackEndView.ViewModel
         {
             dataHandler = new DataHandler();
 
-            //änderung datanbank - available
+            FilterMethoden = new ObservableCollection<string>();
+            FilterMethoden.Add("Available");
+            FilterMethoden.Add("Non-Available");
+            FilterMethoden.Add("Alle");
+
             EditRegelwerkBtnClick = new RelayCommand(EditRegelwerk);
 
             SaveRegelwerkBtnClick = new RelayCommand(
@@ -62,8 +76,10 @@ namespace BackEndView.ViewModel
                     if (IsEditingProcess)
                     {
                         SelectedRegelwerk.Beschreibung = Beschreibung;
+                        SelectedRegelwerk.IsAvailable = Visibility;
                         dataHandler.UpdateRegel(selectedRegelwerk);
                         Beschreibung = "";
+                        Visibility = false;
                         IsEditingProcess = false;
                     }
                     else
@@ -71,11 +87,12 @@ namespace BackEndView.ViewModel
                         dataHandler.CreateRegel((new SharedRegelwerk()
                         {
                             RegelwerkId = Guid.NewGuid(),
-                            Beschreibung = Beschreibung
+                            Beschreibung = Beschreibung,
+                            IsAvailable = Visibility
                         }));
                     }
                     Beschreibung = "";
-                    RefreshList();
+                    RefreshList(SelectedFilterMethode);
                 });
 
 
@@ -85,21 +102,36 @@ namespace BackEndView.ViewModel
                     DeleteSelectedRegelwerk(SelectedRegelwerk);
                 });
 
-
             IsEditingProcess = false;
 
-            RefreshList();
+            RefreshList(null);
         }
 
-        private void RefreshList()
+        private void RefreshList(string selected)
         {
-            Regelwerke = new ObservableCollection<SharedRegelwerk>(dataHandler.GetRegel());
+            if (selected == null)
+            {
+                Regelwerke = new ObservableCollection<SharedRegelwerk>(dataHandler.GetRegel());
+            }
+            else if (selected.Equals("Available"))
+            {
+                Regelwerke = new ObservableCollection<SharedRegelwerk>(dataHandler.GetRegelAvailable());
+            }
+            else if (selected.Equals("Non-Available"))
+            {
+                Regelwerke = new ObservableCollection<SharedRegelwerk>(dataHandler.GetRegelNonAvailable());
+            }
+            else
+            {
+                Regelwerke = new ObservableCollection<SharedRegelwerk>(dataHandler.GetRegel());
+            }
             RaisePropertyChanged("Regelwerke");
         }
 
         private void EditRegelwerk()
         {
             Beschreibung = SelectedRegelwerk.Beschreibung;
+            Visibility = SelectedRegelwerk.IsAvailable;
 
             IsEditingProcess = true;
         }
@@ -107,7 +139,7 @@ namespace BackEndView.ViewModel
         private void DeleteSelectedRegelwerk(SharedRegelwerk r)
         {
             dataHandler.DeleteRegel(r);
-            RefreshList();
+            RefreshList(SelectedFilterMethode);
         }
 
     }

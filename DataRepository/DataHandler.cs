@@ -11,6 +11,9 @@ namespace DataRepository
     public class DataHandler
     {
         FST4Entities model = new FST4Entities();
+
+        #region Kuchenverwaltung+Zutaten
+
         public List<string> GetCakeTypes()
         {
             return model.article_type.Select(x => x.description).ToList();
@@ -111,6 +114,10 @@ namespace DataRepository
             model.SaveChanges();
         }
 
+        #endregion
+
+        #region Bewertung
+
         public List<SharedBewertung> GetRatingAll()
         {
             return model.rating.Select(x => new SharedBewertung()
@@ -166,12 +173,13 @@ namespace DataRepository
             model.SaveChanges();
         }
 
-        public List<SharedKategorie> GetIngredientCategories()
+        #endregion
+
+        #region Zutatenverwaltung
+
+        public List<string> GetIngredientCategories()
         {
-            return model.category.Select(x => new SharedKategorie()
-            {
-                Description = x.description
-            }).ToList(); ;
+            return model.category.Select(x => x.description).ToList();
         }
 
         public List<SharedZutat> GetZutat()
@@ -181,23 +189,23 @@ namespace DataRepository
                 ZutatenId = x.ingredient_id,
                 Beschreibung = x.description,
                 Preis = x.price,
-                //Kategorie = x.category.description
-
+                IsAvailable = x.ing_available,
+                //Kategorie = model.category.description
             }).ToList();
         }
 
         public void CreateZutat(SharedZutat tempZutat)
         {
-            var zutat = new SharedZutat()
+            var zutat = new ingredient()
             {
-                ZutatenId = Guid.NewGuid(),
-                Beschreibung = tempZutat.Beschreibung,
-                Preis = tempZutat.Preis,
-                //Kategorie = tempZutat.Kategorie,
-                //IsAvailable = tempZutat.IsAvailable
+                ingredient_id = Guid.NewGuid(),
+                description = tempZutat.Beschreibung,
+                price = tempZutat.Preis,
+                //category.d = tempZutat.Kategorie,
+                ing_available = tempZutat.IsAvailable
             };
 
-            //model.ingredient.Add(zutat);
+            model.ingredient.Add(zutat);
             model.SaveChanges();
         }
 
@@ -207,7 +215,8 @@ namespace DataRepository
             zutat.description = tempZutat.Beschreibung;
             //zutat.category = model.category.SingleOrDefault(x => x.description.Equals(tempZutat.Kategorie));
             zutat.price = tempZutat.Preis;
-            //zutat.avaible
+            zutat.ing_available = tempZutat.IsAvailable;
+
             model.SaveChanges();
         }
 
@@ -217,12 +226,37 @@ namespace DataRepository
             model.SaveChanges();
         }
 
+        #endregion
+
+        #region Regelwerk
+
         public List<SharedRegelwerk> GetRegel()
         {
             return model.category.Select(x => new SharedRegelwerk()
             {
                 RegelwerkId = x.category_id,
-                Beschreibung = x.description
+                Beschreibung = x.description,
+                IsAvailable = x.cat_active
+            }).ToList();
+        }
+
+        public List<SharedRegelwerk> GetRegelAvailable()
+        {
+            return model.category.Where(x => x.cat_active == true).Select(x => new SharedRegelwerk()
+            {
+                RegelwerkId = x.category_id,
+                Beschreibung = x.description,
+                IsAvailable = x.cat_active
+            }).ToList();
+        }
+
+        public List<SharedRegelwerk> GetRegelNonAvailable()
+        {
+            return model.category.Where(x => x.cat_active == false).Select(x => new SharedRegelwerk()
+            {
+                RegelwerkId = x.category_id,
+                Beschreibung = x.description,
+                IsAvailable = x.cat_active
             }).ToList();
         }
 
@@ -231,7 +265,8 @@ namespace DataRepository
             var regel = new category()
             {
                 category_id = tempRegel.RegelwerkId,
-                description = tempRegel.Beschreibung
+                description = tempRegel.Beschreibung,
+                cat_active = tempRegel.IsAvailable
             };
 
             model.category.Add(regel);
@@ -243,7 +278,7 @@ namespace DataRepository
             var regel = model.category.SingleOrDefault(x => x.category_id == tempRegel.RegelwerkId);
 
             regel.description = tempRegel.Beschreibung;
-            //regel.available = tempRegel.available;
+            regel.cat_active = tempRegel.IsAvailable;
             model.SaveChanges();
         }
 
@@ -254,8 +289,9 @@ namespace DataRepository
             model.SaveChanges();
         }
 
+        #endregion
 
-        //Bestellungsverwaltung
+        #region  Bestellungsverwaltung
 
         public List<SharedBestellung> GetAllOrders()
         {
@@ -281,6 +317,7 @@ namespace DataRepository
 
         }
 
+        #endregion
 
         #region Kundenverwaltung
 

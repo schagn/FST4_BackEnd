@@ -38,9 +38,9 @@ namespace BackEndView.ViewModel
             set { zutatenPreis = value; RaisePropertyChanged(); }
         }
 
-        private bool visibility;
+        private bool? visibility;
 
-        public bool Visibility
+        public bool? Visibility
         {
             get { return visibility; }
             set { visibility = value; RaisePropertyChanged(); }
@@ -78,7 +78,31 @@ namespace BackEndView.ViewModel
             SaveZutatBtnClick = new RelayCommand(
                 () =>
                 {
-                    SaveZutat(SelectedZutat);
+                    if (IsEditingProcess)
+                    {
+                        SelectedZutat.Beschreibung = ZutatenName;
+                        SelectedZutat.Preis = ZutatenPreis;
+                        SelectedZutat.IsAvailable = Visibility;
+                        //SelectedZutat.Kategorie = SelectedCategorie;
+                        dataHandler.UpdateZutat(selectedZutat);
+                    }
+                    else
+                    {
+                        dataHandler.CreateZutat(new SharedZutat()
+                        { 
+                            ZutatenId = Guid.NewGuid(),
+                            Beschreibung = ZutatenName,
+                            Preis = ZutatenPreis,
+                            IsAvailable = Visibility,
+                            //Kategorie = SelectedCategorie
+                        });
+                    }
+                    ZutatenName = "";
+                    ZutatenPreis = 0;
+                    SelectedCategorie = null;
+
+                    IsEditingProcess = false;
+                    RefreshList();
                 });
 
 
@@ -97,7 +121,7 @@ namespace BackEndView.ViewModel
         private void RefreshList()
         {
             Zutaten = new ObservableCollection<SharedZutat>(dataHandler.GetZutat());
-            Categories = new ObservableCollection<string>();
+            Categories = new ObservableCollection<string>(dataHandler.GetIngredientCategories());
             RaisePropertyChanged("Zutaten");
         }
 
@@ -115,25 +139,6 @@ namespace BackEndView.ViewModel
         private void DeleteSelectedProduct(SharedZutat p)
         {
             dataHandler.DeleteZutat(p);
-            RefreshList();
-        }
-
-        private void SaveZutat(SharedZutat p)
-        {
-            if(IsEditingProcess)
-            {
-                dataHandler.UpdateZutat(p);
-            } else
-            {
-                dataHandler.CreateZutat(p);
-            }
-
-            ZutatenName = "";
-            ZutatenPreis = 0;
-            SelectedCategorie = null;
-
-            IsEditingProcess = false;
-
             RefreshList();
         }
     }

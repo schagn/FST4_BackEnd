@@ -19,13 +19,13 @@ namespace SharedClasses
             set { beschreibung = value; RaisePropertyChanged(); }
         }
 
-        //private bool isAvailable;
+        private bool? isAvailable;
 
-        //public bool IsAvailable
-        //{
-        //    get { return isAvailable; }
-        //    set { isAvailable = value; RaisePropertyChanged(); }
-        //}
+        public bool? IsAvailable
+        {
+            get { return isAvailable; }
+            set { isAvailable = value; RaisePropertyChanged(); }
+        }
 
     }
 }
