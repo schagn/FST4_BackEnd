@@ -8,6 +8,7 @@
              xmlns:pw="clr-namespace:BackEndView"
              xmlns:local="clr-namespace:BackEndView.Views"
              mc:Ignorable="d" 
+             xmlns:pwb="clr-namespace:BackEndView"
              d:DesignHeight="500" d:DesignWidth="950" DataContext="{Binding Kunde, Mode=OneWay, Source={StaticResource Locator}}">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -44,8 +45,8 @@
                 <Label Content="E-Mail:"/>
                 <TextBox Width="120" Height="20" Margin="23,0,10,0" Text="{Binding EMail}"/>
                 <Label Content="Passwort:"/>
-                <PasswordBox MaxLength="10" PasswordChar="*" Width="120" Height="20" Margin="20,0,10,0" 
-                             pw:PasswordHelper.Attach="True" pw:PasswordHelper.Password="{Binding Path=Password}"/>
+                <PasswordBox MaxLength="10" PasswordChar="*" Width="120" Height="20" Margin="20,0,10,0" pwb:PasswordHelper.BoundPassword="{Binding Passwort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                             pw:PasswordHelper.BindPassword="True"  />
                 <Label Content="Land:"/>
                 <TextBox Width="100" Height="20" Margin="60,0,10,0" Text="{Binding Land}" CharacterCasing="Upper"/>
                 <Button Content="Speichern" Width="100"  Margin="28,0,0,0" Command="{Binding SaveKundeBtnClick}"/>
@@ -67,6 +68,7 @@
         </DataGrid>
 
         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
+            <Label Content="{Binding Passwort, UpdateSourceTrigger=PropertyChanged}" FontStyle="Oblique" Margin="5,5,0,0" />
             <Label Content="Nach Paramtertn filtern:" FontStyle="Oblique" Margin="5,5,0,0" />
             <ComboBox Width="150" Height="25" Margin="0,5,0,20" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
 

@@ -21,7 +21,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="15*"/>
             <RowDefinition Height="50*"/>
-            <RowDefinition Height="10*"/>
+            <RowDefinition Height="7*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Vertical" Margin="20,10,10,10" Grid.Row="0" Grid.ColumnSpan="2" >
@@ -37,7 +37,7 @@
             </StackPanel>
         </StackPanel>
 
-        <DataGrid Margin="10" Grid.Row="1" MinHeight="100"  MinWidth="150" ItemsSource="{Binding Bewertungen}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedBewertung}" Grid.RowSpan="2" >
+        <DataGrid Margin="10" Grid.Row="1" MinHeight="100"  MinWidth="150" ItemsSource="{Binding Bewertungen}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedBewertung}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Artikelname" Binding="{Binding ArtikelName}"/>
                 <DataGridTextColumn Header="Kundenname" Binding="{Binding KundenName}"/>
@@ -68,10 +68,9 @@
 
         </StackPanel>
 
-        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
-            <Button Content="Bearbeiten" Width="150" Command="{Binding EditBewertungBtnClick}" Margin="10" Height="30"/>
-            <Button Content="Löschen" Width="150" Command="{Binding DeleteBewertungBtnClick}" Margin="10" Height="30"/>
-        </StackPanel>
+     
+        <Button Content="Bearbeiten" Command="{Binding EditBewertungBtnClick}" Margin="332,8.667,172.667,10" Grid.Row="2"/>
+        <Button Content="Löschen" Command="{Binding DeleteBewertungBtnClick}" Margin="494,8.667,10.667,10" Grid.Row="2"/>
 
     </Grid>
 </UserControl>
