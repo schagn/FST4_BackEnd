@@ -325,7 +325,7 @@ namespace DataRepository
         public List<SharedKunde> GetAllCustomers()
         {
 
-            var customers = model.person.Where(x=> x.type.description.Equals("Customer")).Select(x => new SharedKunde()
+            var customers = model.person.Where(x=> x.type.description.Equals("Kunde") || x.type.description.Equals("Firmenkunde")).Select(x => new SharedKunde()
             {
                 KundenId = x.person_id,
                 EMail = x.e_mail,
@@ -337,8 +337,6 @@ namespace DataRepository
                 Ort = x.city.name,
                 Passwort = x.password,
                 Strasse = x.street
-
-
 
             }).ToList();
 
@@ -361,7 +359,7 @@ namespace DataRepository
                 street = k.Strasse,
                 city = model.city.SingleOrDefault(x => x.zip_code.Equals(k.PLZ)),
                 country = k.Land,
-                type = model.type.SingleOrDefault(y => y.description.Equals("Customer"))
+                type = model.type.SingleOrDefault(y => y.description.Equals("Kunde"))
                 
 
             };
@@ -369,7 +367,6 @@ namespace DataRepository
             model.SaveChanges();
 
         }
-        
         
         public void CreateCityIfNotExisting(SharedCity city)
         {
@@ -380,45 +377,23 @@ namespace DataRepository
                 {
                     name = city.Name,
                     zip_code = city.ZipCode
-
                 };
 
                 model.city.Add(newCity);
                 model.SaveChanges();
 
             }
-
         }
-        //TODO: PFUSCH
-        public void CreateCustomerTypeIfNotExisting()
-        {
-
-            if (!model.type.Any(x => x.description.Equals("Customer")))
-            {
-
-                var type = new type()
-                {
-                    type_id = Guid.NewGuid(),
-                    description = "Customer"
-                };
-
-                model.type.Add(type);
-                model.SaveChanges();
-
-            }
-        }
+      
 
         public void DeleteCustomer(SharedKunde k)
         {
-
             model.person.Remove(model.person.SingleOrDefault(x => x.person_id.Equals(k.KundenId)));
             model.SaveChanges();
-
         }
 
         public void UpdateCustomer(SharedKunde k)
         {
-
             var customer = model.person.SingleOrDefault(x => x.person_id.Equals(k.KundenId));
 
             customer.firstname = k.VorName;
@@ -441,6 +416,28 @@ namespace DataRepository
             }
             model.SaveChanges();
         }
+
+        public List<SharedKunde> FilterCustomersByType(String typeName)
+        {
+            return model.person.Where(x => x.type.description.Equals(typeName)).Select(x => new SharedKunde()
+            {
+                KundenId = x.person_id,
+                EMail = x.e_mail,
+                Geburtsdatum = x.birthdate,
+                VorName = x.firstname,
+                NachName = x.lastname,
+                Land = x.country,
+                PLZ = x.city.zip_code,
+                Ort = x.city.name,
+                Passwort = x.password,
+                Strasse = x.street
+
+            }).ToList();
+
+
+
+        }
+
         #endregion
     }
 }

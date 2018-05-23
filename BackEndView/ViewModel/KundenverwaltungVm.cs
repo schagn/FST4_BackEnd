@@ -116,7 +116,7 @@ namespace BackEndView.ViewModel
         public string SelectedFilterMethode
         {
             get { return selectedFilterMethode; }
-            set { selectedFilterMethode = value; RaisePropertyChanged(); RefreshList(SelectedFilterMethode); }
+            set { selectedFilterMethode = value; RaisePropertyChanged(); FilterList(SelectedFilterMethode); }
         }
 
         //DependencyObject depobj = new DependencyObject();
@@ -125,10 +125,6 @@ namespace BackEndView.ViewModel
 
         public KundenverwaltungVm()
         {
-
-            //temporary workaround
-            dh.CreateCustomerTypeIfNotExisting();
-
             Kunden = GetAllCustomers();
 
             EditKundeBtnClick = new RelayCommand(EditKunde);
@@ -141,9 +137,8 @@ namespace BackEndView.ViewModel
                     DeleteSelectedKunde(SelectedKunde);
                 });
 
-
             FilterMethoden = new ObservableCollection<string>();
-            FilterMethoden.Add("Geschäftskunden");
+            FilterMethoden.Add("Firmenkunden");
             FilterMethoden.Add("Privatkunden");
             FilterMethoden.Add("Alle");
 
@@ -229,9 +224,27 @@ namespace BackEndView.ViewModel
             Passwort = "";  
         }
 
-        private void RefreshList(string selectedFilterMethode)
+        private void FilterList(string selectedFilterMethode)
         {
-            // je nachdem welche Filtermethode ausgewählt ist --> neu von DB laden  
+            if (selectedFilterMethode.Equals("Alle"))
+            {
+                RefreshCustomers();
+
+            }
+            else
+            {
+
+
+                if (selectedFilterMethode.Equals("Firmenkunden")) selectedFilterMethode = "Firmenkunde";
+                if (selectedFilterMethode.Equals("Privatkunden")) selectedFilterMethode = "Kunde";
+
+                Kunden.Clear();
+
+                foreach (var item in dh.FilterCustomersByType(selectedFilterMethode))
+                {
+                    Kunden.Add(item);
+                }
+            }
         }
 
         public ObservableCollection<SharedKunde> GetAllCustomers()
