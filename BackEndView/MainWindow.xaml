@@ -10,9 +10,9 @@
         Title="MainWindow" Height="650" Width="983" DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="45*"/>
-            <RowDefinition Height="500*"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="550"/>
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" Content=" FST 4 GetYourCake BackEnd" FontSize="15" HorizontalAlignment="Center"/>

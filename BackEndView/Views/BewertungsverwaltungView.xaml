@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BackEndView.Views"
              xmlns:Converter="clr-namespace:BackEndView.Converter" x:Class="BackEndView.Views.BewertungsverwaltungView"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="900">
+             d:DesignHeight="550" d:DesignWidth="950">
     <UserControl.Resources>
         <Converter:IntToImageConverter x:Key="IntToImageConverter"/>
     </UserControl.Resources>
@@ -14,17 +14,9 @@
         <Binding Mode="OneWay" Path="Bewertung" Source="{StaticResource Locator}"/>
     </UserControl.DataContext>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="291*"/>
-            <ColumnDefinition Width="109*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="15*"/>
-            <RowDefinition Height="50*"/>
-            <RowDefinition Height="7*"/>
-        </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Margin="20,10,10,10" Grid.Row="0" Grid.ColumnSpan="2" >
+        <Border BorderBrush="Black" BorderThickness="1"  Width="910"  Height="160" Margin="20,0,20,350">
+            <StackPanel Orientation="Vertical" Margin="20,10,10,10" >
             <Label Content="Bewertung unsichtbar setzen:" FontStyle="Oblique"/>
             <StackPanel Orientation="Horizontal" >
                 <Label Content="Artikel:" FontWeight="Bold"/>
@@ -33,11 +25,17 @@
                 <Label Content="{Binding KundenName}" />
                 <Label Content="Visibility:" FontWeight="Bold"/>
                 <CheckBox Margin="0,0,15,0" VerticalAlignment="Center" IsChecked="{Binding Visibility}"/>
-                <Button Content="Speichern" Width="100" Command="{Binding SaveBewertungBtnClick}"/>
+               
             </StackPanel>
         </StackPanel>
 
-        <DataGrid Margin="10" Grid.Row="1" MinHeight="100"  MinWidth="150" ItemsSource="{Binding Bewertungen}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedBewertung}">
+        </Border>
+        <Button Content="Speichern" Width="150" Height="30" Command="{Binding SaveBewertungBtnClick}" Margin="778,148,22,372"/>
+
+        <Label Content="Filter:" Width="50" Margin="0,190,860,335"/>
+        <ComboBox Height="20" Width="150" Margin="40,191,700,339" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <DataGrid Margin="20,216,19.667,50" Width="910" ItemsSource="{Binding Bewertungen}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedBewertung}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Artikelname" Binding="{Binding ArtikelName}"/>
                 <DataGridTextColumn Header="Kundenname" Binding="{Binding KundenName}"/>
@@ -62,15 +60,9 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Orientation="Vertical" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="34,10">
-            <Label Content="Nach Visibility filtern:" FontStyle="Oblique" Margin="0,5,0,0" />
-            <ComboBox Width="150" Height="25" Margin="0,5,0,0" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
-
-        </StackPanel>
-
-     
-        <Button Content="Bearbeiten" Command="{Binding EditBewertungBtnClick}" Margin="332,8.667,172.667,10" Grid.Row="2"/>
-        <Button Content="Löschen" Command="{Binding DeleteBewertungBtnClick}" Margin="494,8.667,10.667,10" Grid.Row="2"/>
+        <Button Content="Bearbeiten" Height="30" Width="150" Command="{Binding EditBewertungBtnClick}" Margin="605,505,195,15" />
+        <Button Content="Löschen" Height="30" Width="150" Command="{Binding DeleteBewertungBtnClick}" Margin="780,505,20,15" />
+        
 
     </Grid>
 </UserControl>
