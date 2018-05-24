@@ -36,7 +36,8 @@
         </Border>
 
         <Label Content="Filter:" Width="50" Margin="0,190,860,335"/>
-        <ComboBox Height="20" Width="150" Margin="40,191,700,339" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
+        <ComboBox Height="20" Width="150" Margin="40,191,700,339" ItemsSource="{Binding VisibilityFilter}" SelectedItem="{Binding SelectedVisibilityFilter, UpdateSourceTrigger=PropertyChanged}"/>
+        <ComboBox Height="20" Width="150" Margin="246,191,554,339" ItemsSource="{Binding CreationFilter}" SelectedItem="{Binding SelectedCreationFilter, UpdateSourceTrigger=PropertyChanged}"/>
 
         <DataGrid Margin="20,216,19.667,50" Width="910" IsReadOnly="True" SelectedItem="{Binding SelectedArticle}" ItemsSource="{Binding Articles}" AutoGenerateColumns="False">
             <DataGrid.Columns>

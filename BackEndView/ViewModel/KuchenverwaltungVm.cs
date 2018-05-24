@@ -64,12 +64,34 @@ namespace BackEndView.ViewModel
         public RelayCommand BtnDeleteClicked { get; set; }
         public RelayCommand BtnEditClicked { get; set; }
         public RelayCommand BtnSaveClicked { get; set; }
+        public List<string> VisibilityFilter { get; set; }
+        public List<string> CreationFilter { get; set; }
+        private string selectedVisibilityFilter;
+
+        public string SelectedVisibilityFilter
+        {
+            get { return selectedVisibilityFilter; }
+            set { selectedVisibilityFilter = value; RaisePropertyChanged(); RefreshList(); }
+        }
+        private string selectedCreationFilter;
+
+        public string SelectedCreationFilter
+        {
+            get { return selectedCreationFilter; }
+            set { selectedCreationFilter = value; RaisePropertyChanged(); RefreshList(); }
+        }
+
         private DataHandler dataHandler;
         private bool IsEditing;
         private SharedArticle EditedArticle;
 
         public KuchenverwaltungVm()
         {
+            VisibilityFilter = new List<string>() { "Visible & Non-Visible", "Visible", "Non-Visible" };
+            CreationFilter = new List<string>() { "Creation & Non-Creation", "Creation", "Non-Creation" };
+            selectedVisibilityFilter = "Visible & Non-Visible";
+            selectedCreationFilter = "Creation & Non-Creation";
+
             IsEditing = false;
             BtnCancelClicked = new RelayCommand(Cancel);
             BtnDeleteClicked = new RelayCommand(Delete);
@@ -110,7 +132,7 @@ namespace BackEndView.ViewModel
 
         private void Save()
         {
-            if(IsEditing)
+            if (IsEditing)
             {
                 var tempArticle = EditedArticle;
                 tempArticle.Creation = Creation;
@@ -140,6 +162,28 @@ namespace BackEndView.ViewModel
         {
             Shapes = dataHandler.GetShapes();
             Articles = new ObservableCollection<SharedArticle>(dataHandler.GetArticles().Where(x => x.ArticleTypeDescription.Equals("Kuchen")));
+            switch (SelectedVisibilityFilter)
+            {
+                case "Visible":
+                    Articles = new ObservableCollection<SharedArticle>(Articles.Where(x => x.Visible));
+                    break;
+                case "Non-Visible":
+                    Articles = new ObservableCollection<SharedArticle>(Articles.Where(x => !x.Visible));
+                    break;
+                default:
+                    break;
+            }
+            switch (SelectedCreationFilter)
+            {
+                case "Creation":
+                    Articles = new ObservableCollection<SharedArticle>(Articles.Where(x => x.Creation));
+                    break;
+                case "Non-Creation":
+                    Articles = new ObservableCollection<SharedArticle>(Articles.Where(x => !x.Creation));
+                    break;
+                default:
+                    break;
+            }
             RaisePropertyChanged("Articles");
         }
     }
