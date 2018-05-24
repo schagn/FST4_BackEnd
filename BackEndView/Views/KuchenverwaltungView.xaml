@@ -7,21 +7,34 @@
              mc:Ignorable="d" 
              d:DesignHeight="550" d:DesignWidth="950" DataContext="{Binding Kuchen, Mode=OneWay, Source={StaticResource Locator}}">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="280*"/>
-        </Grid.RowDefinitions>
-        <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Grid.ColumnSpan="4" Stroke="Black" Margin="3" Fill="Transparent" />
+        <Border BorderBrush="Black" BorderThickness="1"  Width="910"  Height="160" Margin="20,0,20,350">
+            <StackPanel Orientation="Vertical" Margin="20,10,10,10" >
 
+            </StackPanel>
+        </Border>
+
+        <Label Content="Filter:" Width="50" Margin="0,190,860,335"/>
+        <ComboBox Height="20" Width="150" Margin="40,191,700,339" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <DataGrid Margin="20,216,19.667,50" Width="910" IsReadOnly="True" SelectedItem="{Binding SelectedArticle}" ItemsSource="{Binding Articles}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}" />
+                <DataGridTextColumn Header="Preis" Binding="{Binding Price}" />
+                <DataGridTextColumn Header="Form" Binding="{Binding ShapeDescription}" />
+                <DataGridCheckBoxColumn Header="Kreation" Binding="{Binding Creation}" />
+                <DataGridCheckBoxColumn Header="Sichtbar" Binding="{Binding Visible}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border BorderBrush="Black" BorderThickness="0,1,0,0" Width="910" Height="42" Margin="20,138,20,370">
+        </Border>
+        <Button Content="Speichern" Width="150" Height="30" Command="{Binding BtnSaveClicked}" Margin="778,144,22,376"/>
+        <Button Content="Abbrechen" Width="150" Height="30" Command="{Binding BtnCancelClicked}" Margin="605,144,195,376"/>
+
+        <Button Content="Bearbeiten" Height="30" Width="150" Command="{Binding BtnEditClicked}" Margin="605,505,195,15" />
+        <Button Content="Löschen" Height="30" Width="150" Command="{Binding BtnDeleteClicked}" Margin="780,505,20,15" />
+        
+        <!--
         <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Beschreibung:" />
         <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Preis:" />
         <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Kreation:" />
@@ -33,18 +46,6 @@
         <CheckBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Creation}" />
         <CheckBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Visible}" />
         <ComboBox Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" ItemsSource="{Binding Shapes}" SelectedItem="{Binding SelectedShape}" />
-
-        <Button Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Command="{Binding BtnEditClicked}" Content="Bearbeiten" />
-        <Button Grid.Row="3" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Command="{Binding BtnNewClicked}" Content="Neu" />
-
-        <DataGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Margin="3" IsReadOnly="True" SelectedItem="{Binding SelectedArticle}" ItemsSource="{Binding Articles}" AutoGenerateColumns="False" >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}" />
-                <DataGridTextColumn Header="Preis" Binding="{Binding Price}" />
-                <DataGridTextColumn Header="Form" Binding="{Binding ShapeDescription}" />
-                <DataGridCheckBoxColumn Header="Kreation" Binding="{Binding Creation}" />
-                <DataGridCheckBoxColumn Header="Sichtbar" Binding="{Binding Visible}" />
-            </DataGrid.Columns>
-        </DataGrid>
+        -->
     </Grid>
 </UserControl>
