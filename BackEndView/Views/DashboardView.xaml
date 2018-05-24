@@ -17,17 +17,17 @@
         <Label Content="Filter:" Width="50" Margin="0,190,860,335"/>
         <ComboBox Height="20" Width="150" Margin="40,191,700,339" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <DataGrid Margin="20,216,19.667,50" Width="910" ItemsSource="{Binding Bewertungen}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedBewertung}">
+        <DataGrid Margin="20,216,19.667,50" Width="910" ItemsSource="{Binding }" AutoGenerateColumns="false" SelectedItem="{Binding SelectedBewertung}">
             <DataGrid.Columns>
                 
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button Content="Speichern" Width="150" Height="30" Command="{Binding SaveBewertungBtnClick}" Margin="778,144,22,376"/>
-        <Button Content="Abbrechen" Width="150" Height="30" Command="{Binding SaveBewertungBtnClick}" Margin="605,144,195,376"/>
+        <Button Content="Speichern" Width="150" Height="30" Command="{Binding }" Margin="778,144,22,376"/>
+        <Button Content="Abbrechen" Width="150" Height="30" Command="{Binding }" Margin="605,144,195,376"/>
 
-        <Button Content="Bearbeiten" Height="30" Width="150" Command="{Binding EditBewertungBtnClick}" Margin="605,505,195,15" />
-        <Button Content="Löschen" Height="30" Width="150" Command="{Binding DeleteBewertungBtnClick}" Margin="780,505,20,15" />
+        <Button Content="Bearbeiten" Height="30" Width="150" Command="{Binding }" Margin="605,505,195,15" />
+        <Button Content="Löschen" Height="30" Width="150" Command="{Binding }" Margin="780,505,20,15" />
 
 
     </Grid>

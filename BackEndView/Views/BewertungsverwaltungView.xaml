@@ -16,7 +16,9 @@
     <Grid>
 
         <Border BorderBrush="Black" BorderThickness="1"  Width="910"  Height="160" Margin="20,0,20,350">
-            <StackPanel Orientation="Vertical" Margin="20,10,10,10" >
+            
+            
+            <!--<StackPanel Orientation="Vertical" Margin="20,10,10,10" >
                 <Label Content="Bewertung unsichtbar setzen:" FontStyle="Oblique"/>
                 <StackPanel Orientation="Horizontal" >
                     <Label Content="Artikel:" FontWeight="Bold"/>
@@ -26,7 +28,7 @@
                     <Label Content="Visibility:" FontWeight="Bold"/>
                     <CheckBox Margin="0,0,15,0" VerticalAlignment="Center" IsChecked="{Binding Visibility}"/>
                 </StackPanel>
-            </StackPanel>
+            </StackPanel>-->
         </Border>
         
         <Label Content="Filter:" Width="50" Margin="0,190,860,335"/>
