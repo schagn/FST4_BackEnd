@@ -22,31 +22,28 @@
         </Grid.RowDefinitions>
         <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Grid.ColumnSpan="4" Stroke="Black" Margin="3" Fill="Transparent" />
 
-        <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Description:" />
-        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Price:" />
-        <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Creation:" />
-        <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Visible:" />
-        <Label Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="ArticleType:" />
-        <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Shape:" />
+        <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Beschreibung:" />
+        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Preis:" />
+        <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Kreation:" />
+        <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Sichtbar:" />
+        <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Form:" />
 
         <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Text="{Binding Description}" />
         <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Text="{Binding Price}" />
         <CheckBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Creation}" />
         <CheckBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Visible}" />
-        <ComboBox Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" ItemsSource="{Binding ArticleTypes}" SelectedItem="{Binding SelectedArticleType}" />
         <ComboBox Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" ItemsSource="{Binding Shapes}" SelectedItem="{Binding SelectedShape}" />
 
-        <Button Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Command="{Binding BtnEditClicked}" Content="Edit" />
-        <Button Grid.Row="3" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Command="{Binding BtnNewClicked}" Content="New" />
+        <Button Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Command="{Binding BtnEditClicked}" Content="Bearbeiten" />
+        <Button Grid.Row="3" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Command="{Binding BtnNewClicked}" Content="Neu" />
 
         <DataGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Margin="3" IsReadOnly="True" SelectedItem="{Binding SelectedArticle}" ItemsSource="{Binding Articles}" AutoGenerateColumns="False" >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Description" Binding="{Binding Description}" />
-                <DataGridTextColumn Header="Price" Binding="{Binding Price}" />
-                <DataGridTextColumn Header="CakeType" Binding="{Binding ArticleTypeDescription}" />
-                <DataGridTextColumn Header="Shape" Binding="{Binding ShapeDescription}" />
-                <DataGridCheckBoxColumn Header="Creation" Binding="{Binding Creation}" />
-                <DataGridCheckBoxColumn Header="Visible" Binding="{Binding Visible}" />
+                <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}" />
+                <DataGridTextColumn Header="Preis" Binding="{Binding Price}" />
+                <DataGridTextColumn Header="Form" Binding="{Binding ShapeDescription}" />
+                <DataGridCheckBoxColumn Header="Kreation" Binding="{Binding Creation}" />
+                <DataGridCheckBoxColumn Header="Sichtbar" Binding="{Binding Visible}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

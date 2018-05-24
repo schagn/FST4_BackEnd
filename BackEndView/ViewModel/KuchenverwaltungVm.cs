@@ -45,13 +45,6 @@ namespace BackEndView.ViewModel
             set { visible = value; RaisePropertyChanged(); }
         }
 
-        public List<string> ArticleTypes { get; set; }
-        private string selectedArticleType;
-        public string SelectedArticleType
-        {
-            get { return selectedArticleType; }
-            set { selectedArticleType = value; RaisePropertyChanged(); }
-        }
         public List<string> Shapes { get; set; }
         private string selectedShape;
         public string SelectedShape
@@ -82,7 +75,6 @@ namespace BackEndView.ViewModel
 
         private void RefreshList()
         {
-            ArticleTypes = dataHandler.GetCakeTypes();
             Shapes = dataHandler.GetShapes();
             Articles = new ObservableCollection<SharedArticle>(dataHandler.GetArticles());
             RaisePropertyChanged("Articles");
@@ -94,7 +86,6 @@ namespace BackEndView.ViewModel
             Price = SelectedArticle != null ? SelectedArticle.Price : 0;
             Creation = SelectedArticle != null ? SelectedArticle.Creation : false;
             Visible = SelectedArticle != null ? SelectedArticle.Visible : false;
-            SelectedArticleType = SelectedArticle != null ? SelectedArticle.ArticleTypeDescription : null;
             SelectedShape = SelectedArticle != null ? SelectedArticle.ShapeDescription : null;
         }
 
@@ -102,7 +93,7 @@ namespace BackEndView.ViewModel
         {
             dataHandler.CreateArticle(new SharedArticle()
             {
-                ArticleTypeDescription = SelectedArticleType,
+                ArticleTypeDescription = "Kuchen",
                 Creation = Creation,
                 Description = Description,
                 Price = Price,
@@ -115,7 +106,6 @@ namespace BackEndView.ViewModel
         private void Edit()
         {
             var tempArticle = SelectedArticle;
-            tempArticle.ArticleTypeDescription = SelectedArticleType;
             tempArticle.Creation = Creation;
             tempArticle.Description = Description;
             tempArticle.Price = Price;
