@@ -19,7 +19,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" >
                     <Label Content="Kategorie:"/>
-                    <ComboBox Width="120" Height="20" Margin="0,0,15,0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategorie}"/>
+                    <ListBox Width="150" Height="75" Margin="0,0,15,0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategorie}" SelectionMode="Multiple" />
                     <Label Content="Availability:"/>
                     <CheckBox Margin="0,0,50,0" VerticalAlignment="Center" IsChecked="{Binding Visibility}"/>
                 </StackPanel>

@@ -246,15 +246,25 @@ namespace BackEndView.ViewModel
 
         private void ChangeVerpackungsteile()
         {
+            //wenn vorher Karton ausgewählt und gespeichert, dann jetzt nicht mehr anzeigen
+            // jede Kategorie, die bereits in DB ist soll nicht mehr angezeigt werden 
+
             Verpackungsteile.Clear();
 
             if(SelectedVerpackungsArt.Contains("Karton"))
             {
                 Verpackungsteile.Add("Blumenkarton");
+                Verpackungsteile.Add("Sternekarton");
+                Verpackungsteile.Add("weißer Karton");
             } else
             {
                 Verpackungsteile.Add("Sternemasche");
+                Verpackungsteile.Add("Goldmasche");
+                Verpackungsteile.Add("Schleifchen");
             }
+
+            
+
         }
 
         private void KomponenteLöschen()
