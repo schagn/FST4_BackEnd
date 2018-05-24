@@ -139,7 +139,7 @@ namespace BackEndView.ViewModel
         private void RefreshList()
         {
             Shapes = dataHandler.GetShapes();
-            Articles = new ObservableCollection<SharedArticle>(dataHandler.GetArticles());
+            Articles = new ObservableCollection<SharedArticle>(dataHandler.GetArticles().Where(x => x.ArticleTypeDescription.Equals("Kuchen")));
             RaisePropertyChanged("Articles");
         }
     }
