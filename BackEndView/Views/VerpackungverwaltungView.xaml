@@ -23,7 +23,7 @@
                 <TextBox Width="120" Height="20" Margin="0,0,15,0" Text="{Binding Beschreibung}"/>
                 <Label Content="Preis:"/>
                 <TextBox Width="120" Height="20" Margin="46,0,15,0" Text="{Binding Preis}"/>
-                <Label Content="Availability:"/>
+                <Label Content="Verfügbarkeit:"/>
                 <CheckBox Margin="0,0,15,0" VerticalAlignment="Center" IsChecked="{Binding Visibility}"/>
                 <Button Content="Speichern" Width="100" Command="{Binding SaveVerpackungBtnClick}"/>
             </StackPanel>
@@ -55,7 +55,7 @@
                 <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}"/>
                 <DataGridTextColumn Header="Preis" Binding="{Binding Price}"/>
 
-                <DataGridTemplateColumn Header="Availabilty">
+                <DataGridTemplateColumn Header="Verfügbarkeit">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox  HorizontalAlignment="Center" IsChecked="{Binding Visible}"/>

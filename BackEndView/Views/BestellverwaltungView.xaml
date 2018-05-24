@@ -42,7 +42,7 @@
                 <DataGridTextColumn Header="Kundenname" Binding="{Binding KundenName}"/>
                 <DataGridTextColumn Header="Bestelldatum" Binding="{Binding BestellDatum}"/>
                 <DataGridTextColumn Header="Summe €" Binding="{Binding GesamtSumme}"/>
-                <DataGridTextColumn Header="GutscheinUsed" Binding="{Binding GutscheinUsed}"/>
+                <DataGridTextColumn Header="Gutschein Verwendet" Binding="{Binding GutscheinUsed}"/>
                 <DataGridTextColumn Header="Gutschweinwert" Binding="{Binding GutscheinWert}"/>
                 <DataGridTextColumn Header="Bestellstatus" Binding="{Binding Bestellstatus}"/>
                 

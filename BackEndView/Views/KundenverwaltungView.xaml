@@ -63,7 +63,14 @@
                 <DataGridTextColumn Header="PLZ" Binding="{Binding PLZ}" />
                 <DataGridTextColumn Header="Land" Binding="{Binding Land}" />
                 <DataGridTextColumn Header="E-Mail" Binding="{Binding EMail}"/>
-                <DataGridTextColumn Header="Geschäftskunde" Binding="{Binding IsBusinessCustomer}"/>
+                <!--<DataGridTextColumn Header="Passwort" Binding="{Binding Passwort}"/>-->
+                <DataGridTemplateColumn Header="Geschäftskunde">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox  HorizontalAlignment="Center" IsChecked="{Binding IsBusinessCustomer}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 
