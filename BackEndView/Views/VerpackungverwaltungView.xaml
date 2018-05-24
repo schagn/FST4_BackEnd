@@ -5,52 +5,42 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BackEndView.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="900" DataContext="{Binding Verpackung, Mode=OneWay, Source={StaticResource Locator}}">
+             d:DesignHeight="550" d:DesignWidth="950" DataContext="{Binding Verpackung, Mode=OneWay, Source={StaticResource Locator}}">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="291*"/>
-            <ColumnDefinition Width="109*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="130*"/>
-            <RowDefinition Height="200*"/>
-        </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Margin="20,5,10,5" Grid.Row="0" Grid.ColumnSpan="2">
-            <Label Content="Neue Verpackung hinzufügen oder Verpackung ändern:" FontStyle="Oblique"/>
-            <StackPanel Orientation="Horizontal" Margin="0,2,0,2" >
-                <Label Content="Beschreibung:"/>
-                <TextBox Width="120" Height="20" Margin="0,0,15,0" Text="{Binding Beschreibung}"/>
-                <Label Content="Preis:"/>
-                <TextBox Width="120" Height="20" Margin="46,0,15,0" Text="{Binding Preis}"/>
-                <Label Content="Verfügbarkeit:"/>
-                <CheckBox Margin="0,0,15,0" VerticalAlignment="Center" IsChecked="{Binding Visibility}"/>
-                <Button Content="Speichern" Width="100" Command="{Binding SaveVerpackungBtnClick}"/>
+        <Border BorderBrush="Black" BorderThickness="1"  Width="910"  Height="160" Margin="20,0,20,350">
+            <StackPanel Orientation="Vertical" Margin="20,5,10,5">
+                <Label Content="Neue Verpackung hinzufügen oder Verpackung ändern:" FontStyle="Oblique"/>
+                <StackPanel Orientation="Horizontal" Margin="0,2,0,2" >
+                    <Label Content="Beschreibung:"/>
+                    <TextBox Width="120" Height="20" Margin="0,0,15,0" Text="{Binding Beschreibung}"/>
+                    <Label Content="Preis:"/>
+                    <TextBox Width="120" Height="20" Margin="46,0,15,0" Text="{Binding Preis}"/>
+                    <Label Content="Verfügbarkeit:"/>
+                    <CheckBox Margin="0,0,15,0" VerticalAlignment="Center" IsChecked="{Binding Visibility}"/>
+                    <Button Content="Speichern" Width="100" Command="{Binding SaveVerpackungBtnClick}"/>
+                </StackPanel>
+                <Label Content="Komponente löschen:" FontStyle="Oblique"/>
+                <StackPanel Orientation="Horizontal" Margin="0,2,0,2" >
+                    <Label Content="Komponenten:"/>
+                    <ComboBox Width="120" Height="20" Margin="0,0,15,0" ItemsSource="{Binding VerpackungsKomponenten}" SelectedItem="{Binding SelectedLöschenVerpackungsteil}"/>
+                    <Button Content="Komponente löschen" Width="130" Command="{Binding KomponenteLöschenBtnClick}"/>
+                </StackPanel>
+                <Label Content="Komponente zur Verpackung hinzufügen:" FontStyle="Oblique"/>
+                <StackPanel Orientation="Horizontal" Margin="0,2,0,0" >
+                    <Label Content="Art:"/>
+                    <ComboBox Width="120" Height="20" Margin="55,0,15,0" ItemsSource="{Binding VerpackungsArten}" SelectedItem="{Binding SelectedVerpackungsArt}"/>
+                    <Label Content="Beschreibung:"/>
+                    <ComboBox Width="120" Height="20" Margin="0,0,115,0" ItemsSource="{Binding Verpackungsteile}" SelectedItem="{Binding SelectedVerpackungsteil}"/>
+                    <Button Content="Hinzufügen" Width="100" Command="{Binding SaveVerpackungsItemBtnClick}"/>
+                </StackPanel>
             </StackPanel>
-            <Label Content="Komponente löschen:" FontStyle="Oblique"/>
-            <StackPanel Orientation="Horizontal" Margin="0,2,0,2" >
-                <Label Content="Komponenten:"/>
-                <ComboBox Width="120" Height="20" Margin="0,0,15,0" ItemsSource="{Binding VerpackungsKomponenten}" SelectedItem="{Binding SelectedLöschenVerpackungsteil}"/>
-                <Button Content="Komponente löschen" Width="130" Command="{Binding KomponenteLöschenBtnClick}"/>
-            </StackPanel>
-            <Label Content="Komponente zur Verpackung hinzufügen:" FontStyle="Oblique"/>
-            <StackPanel Orientation="Horizontal" Margin="0,2,0,0" >
-                <Label Content="Art:"/>
-                <ComboBox Width="120" Height="20" Margin="55,0,15,0" ItemsSource="{Binding VerpackungsArten}" SelectedItem="{Binding SelectedVerpackungsArt}"/>
-                <Label Content="Beschreibung:"/>
-                <ComboBox Width="120" Height="20" Margin="0,0,115,0" ItemsSource="{Binding Verpackungsteile}" SelectedItem="{Binding SelectedVerpackungsteil}"/>
-              <Button Content="Hinzufügen" Width="100" Command="{Binding SaveVerpackungsItemBtnClick}"/>
-            </StackPanel>
-        </StackPanel>
+        </Border>
 
-        <StackPanel Orientation="Vertical" Grid.Column="1" Margin="10,10,0,0" HorizontalAlignment="Center">
-            <Label Content="Nach Parametern filtern:" FontStyle="Oblique" Margin="5,5,0,0" />
-            <ComboBox Width="180" Height="25" Margin="0,5,0,20" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode}"/>
+        <Label Content="Filter:" Width="50" Margin="0,190,860,335"/>
+        <ComboBox Height="20" Width="150" Margin="40,191,700,339" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
 
-        </StackPanel>
-
-      
-        <DataGrid Margin="10,0,10,10" Grid.Row="2" ItemsSource="{Binding Verpackungen}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedVerpackung}">
+        <DataGrid Margin="20,216,19.667,50" Width="910"  ItemsSource="{Binding Verpackungen}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedVerpackung}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Beschreibung" Binding="{Binding Description}"/>
                 <DataGridTextColumn Header="Preis" Binding="{Binding Price}"/>
@@ -87,14 +77,11 @@
             </DataGrid.Columns>
         </DataGrid>
 
+        <Button Content="Speichern" Width="150" Height="30" Command="{Binding SaveBewertungBtnClick}" Margin="778,144,22,376"/>
+        <Button Content="Abbrechen" Width="150" Height="30" Command="{Binding SaveBewertungBtnClick}" Margin="605,144,195,376"/>
 
-        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
-            <Label Content="Nach Paramtertn filtern:" FontStyle="Oblique" Margin="5,5,0,0" />
-            <ComboBox Width="180" Height="25" Margin="0,5,0,20" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode}"/>
-
-            <Button Content="Bearbeiten" Width="150" Command="{Binding EditVerpackungBtnClick}" Margin="10" Height="30"/>
-            <Button Content="Löschen" Width="150" Command="{Binding DeleteVerpackungBtnClick}" Margin="10" Height="30"/>
-        </StackPanel>
+        <Button Content="Bearbeiten" Height="30" Width="150" Command="{Binding EditBewertungBtnClick}" Margin="605,505,195,15" />
+        <Button Content="Löschen" Height="30" Width="150" Command="{Binding DeleteBewertungBtnClick}" Margin="780,505,20,15" />
 
     </Grid>
 </UserControl>

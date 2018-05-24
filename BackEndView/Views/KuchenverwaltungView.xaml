@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BackEndView.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" DataContext="{Binding Kuchen, Mode=OneWay, Source={StaticResource Locator}}">
+             d:DesignHeight="550" d:DesignWidth="950" DataContext="{Binding Kuchen, Mode=OneWay, Source={StaticResource Locator}}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>

@@ -9,51 +9,48 @@
              xmlns:local="clr-namespace:BackEndView.Views"
              mc:Ignorable="d" 
              xmlns:pwb="clr-namespace:BackEndView"
-             d:DesignHeight="500" d:DesignWidth="950" DataContext="{Binding Kunde, Mode=OneWay, Source={StaticResource Locator}}">
+             d:DesignHeight="550" d:DesignWidth="950" DataContext="{Binding Kunde, Mode=OneWay, Source={StaticResource Locator}}">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="291*"/>
-            <ColumnDefinition Width="109*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="100*"/>
-            <RowDefinition Height="260*"/>
-        </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Margin="20,10,10,5" Grid.Row="0" Grid.ColumnSpan="2">
-            <Label Content="Neuen Kunden hinzufügen oder Kunden bearbeiten:" FontStyle="Oblique"/>
-            <StackPanel Orientation="Horizontal"  >
-                <Label Content="Vorname:"/>
-                <TextBox Width="120" Height="20" Margin="10,0,10,0" Text="{Binding VorName}"/>
-                <Label Content="Nachname:"/>
-                <TextBox Width="120" Height="20" Margin="10,0,10,0" Text="{Binding NachName}"/>
-                <Label Content="Geburtsdatum:"/>
-                <TextBox Width="120" Height="20" Margin="10,0,10,0" Text="{Binding Geburtsdatum}"/>
-                <Label Content="Geschäftskunde:" Margin="10,0,0,0"></Label>
-                <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsBusinessCustomer}"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,2,0,0" >
-                <Label Content="Strasse:"/>
-                <TextBox Width="120" Height="20" Margin="20,0,10,0" Text="{Binding Strasse}"/>
-                <Label Content="Ort:"/>
-                <TextBox Width="120" Height="20" Margin="50,0,10,0" Text="{Binding Ort}"/>
-                <Label Content="PLZ:"/>
-                <TextBox Width="100" Height="20" Margin="66,0,10,0" Text="{Binding PLZ}"/>
-                
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
-                <Label Content="E-Mail:"/>
-                <TextBox Width="120" Height="20" Margin="23,0,10,0" Text="{Binding EMail}"/>
-                <Label Content="Passwort:"/>
-                <PasswordBox MaxLength="10" PasswordChar="*" Width="120" Height="20" Margin="20,0,10,0" pwb:PasswordHelper.BoundPassword="{Binding Passwort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+        <Border BorderBrush="Black" BorderThickness="1"  Width="910"  Height="160" Margin="20,0,20,350">
+            <StackPanel Orientation="Vertical" Margin="20,10,10,5">
+                <Label Content="Neuen Kunden hinzufügen oder Kunden bearbeiten:" FontStyle="Oblique"/>
+                <StackPanel Orientation="Horizontal"  >
+                    <Label Content="Vorname:"/>
+                    <TextBox Width="120" Height="20" Margin="10,0,10,0" Text="{Binding VorName}"/>
+                    <Label Content="Nachname:"/>
+                    <TextBox Width="120" Height="20" Margin="10,0,10,0" Text="{Binding NachName}"/>
+                    <Label Content="Geburtsdatum:"/>
+                    <DatePicker Width="130" Height="25" Margin="10,0,10,0" SelectedDate="{Binding Geburtsdatum}" DisplayDate="2000-01-01" />
+                    <Label Content="Geschäftskunde:" Margin="10,0,0,0"></Label>
+                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsBusinessCustomer}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,2,0,0" >
+                    <Label Content="Strasse:"/>
+                    <TextBox Width="120" Height="20" Margin="20,0,10,0" Text="{Binding Strasse}"/>
+                    <Label Content="Ort:"/>
+                    <TextBox Width="120" Height="20" Margin="50,0,10,0" Text="{Binding Ort}"/>
+                    <Label Content="PLZ:"/>
+                    <TextBox Width="100" Height="20" Margin="66,0,10,0" Text="{Binding PLZ}"/>
+
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                    <Label Content="E-Mail:"/>
+                    <TextBox Width="120" Height="20" Margin="23,0,10,0" Text="{Binding EMail}"/>
+                    <Label Content="Passwort:"/>
+                    <PasswordBox MaxLength="10" PasswordChar="*" Width="120" Height="20" Margin="20,0,10,0" pwb:PasswordHelper.BoundPassword="{Binding Passwort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                              pw:PasswordHelper.BindPassword="True"  />
-                <Label Content="Land:"/>
-                <TextBox Width="100" Height="20" Margin="60,0,10,0" Text="{Binding Land}" CharacterCasing="Upper"/>
-                <Button Content="Speichern" Width="100"  Margin="28,0,0,0" Command="{Binding SaveKundeBtnClick}"/>
+                    <Label Content="Land:"/>
+                    <TextBox Width="100" Height="20" Margin="60,0,10,0" Text="{Binding Land}" CharacterCasing="Upper"/>
+                    <Button Content="Speichern" Width="100"  Margin="28,0,0,0" Command="{Binding SaveKundeBtnClick}"/>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
+        </Border>
 
-        <DataGrid Margin="10" Grid.Row="2" ItemsSource="{Binding Kunden}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedKunde}">
+        <Label Content="Filter:" Width="50" Margin="0,190,860,335"/>
+        <ComboBox Height="20" Width="150" Margin="40,191,700,339" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <DataGrid Margin="20,216,19.667,50" Width="910" ItemsSource="{Binding Kunden}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedKunde}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Vorname" Binding="{Binding VorName}"/>
                 <DataGridTextColumn Header="Nachname" Binding="{Binding NachName}"/>
@@ -74,15 +71,12 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">
-            <Label Content="{Binding Passwort, UpdateSourceTrigger=PropertyChanged}" FontStyle="Oblique" Margin="5,5,0,0" />
-            <Label Content="Nach Paramtertn filtern:" FontStyle="Oblique" Margin="5,5,0,0" />
-            <ComboBox Width="150" Height="25" Margin="0,5,0,20" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
 
+        <Button Content="Speichern" Width="150" Height="30" Command="{Binding SaveBewertungBtnClick}" Margin="778,144,22,376"/>
+        <Button Content="Abbrechen" Width="150" Height="30" Command="{Binding SaveBewertungBtnClick}" Margin="605,144,195,376"/>
 
-            <Button Content="Bearbeiten" Width="150" Command="{Binding EditKundeBtnClick}" Margin="10" Height="30"/>
-            <Button Content="Löschen" Width="150" Command="{Binding DeleteKundeBtnClick}" Margin="10" Height="30"/>
-        </StackPanel>
+        <Button Content="Bearbeiten" Height="30" Width="150" Command="{Binding EditBewertungBtnClick}" Margin="605,505,195,15" />
+        <Button Content="Löschen" Height="30" Width="150" Command="{Binding DeleteBewertungBtnClick}" Margin="780,505,20,15" />
 
     </Grid>
 </UserControl>
