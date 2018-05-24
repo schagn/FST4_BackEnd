@@ -8,9 +8,31 @@
              d:DesignHeight="550" d:DesignWidth="950" DataContext="{Binding Kuchen, Mode=OneWay, Source={StaticResource Locator}}">
     <Grid>
         <Border BorderBrush="Black" BorderThickness="1"  Width="910"  Height="160" Margin="20,0,20,350">
-            <StackPanel Orientation="Vertical" Margin="20,10,10,10" >
+            <Grid Margin="20,10,10,10" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Beschreibung:" />
+                <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Preis:" />
+                <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Kreation:" />
+                <Label Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Sichtbar:" />
+                <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Form:" />
 
-            </StackPanel>
+                <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Text="{Binding Description}" />
+                <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Text="{Binding Price}" />
+                <CheckBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Creation}" />
+                <CheckBox Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Visible}" />
+                <ComboBox Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" ItemsSource="{Binding Shapes}" SelectedItem="{Binding SelectedShape}" />
+            </Grid>
         </Border>
 
         <Label Content="Filter:" Width="50" Margin="0,190,860,335"/>
@@ -33,19 +55,5 @@
 
         <Button Content="Bearbeiten" Height="30" Width="150" Command="{Binding BtnEditClicked}" Margin="605,505,195,15" />
         <Button Content="Löschen" Height="30" Width="150" Command="{Binding BtnDeleteClicked}" Margin="780,505,20,15" />
-        
-        <!--
-        <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Beschreibung:" />
-        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Preis:" />
-        <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Kreation:" />
-        <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Sichtbar:" />
-        <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" Content="Form:" />
-
-        <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Text="{Binding Description}" />
-        <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Text="{Binding Price}" />
-        <CheckBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Creation}" />
-        <CheckBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Visible}" />
-        <ComboBox Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" ItemsSource="{Binding Shapes}" SelectedItem="{Binding SelectedShape}" />
-        -->
     </Grid>
 </UserControl>

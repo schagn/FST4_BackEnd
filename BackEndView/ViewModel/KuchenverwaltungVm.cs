@@ -58,30 +58,49 @@ namespace BackEndView.ViewModel
         public SharedArticle SelectedArticle
         {
             get { return selectedArticle; }
-            set { selectedArticle = value; RaisePropertyChanged(); RefreshForm(); }
+            set { selectedArticle = value; RaisePropertyChanged(); }
         }
+        public RelayCommand BtnCancelClicked { get; set; }
+        public RelayCommand BtnDeleteClicked { get; set; }
         public RelayCommand BtnEditClicked { get; set; }
-        public RelayCommand BtnNewClicked { get; set; }
+        public RelayCommand BtnSaveClicked { get; set; }
         private DataHandler dataHandler;
+        private bool IsEditing;
+        private SharedArticle EditedArticle;
 
         public KuchenverwaltungVm()
         {
+            IsEditing = false;
+            BtnCancelClicked = new RelayCommand(Cancel);
+            BtnDeleteClicked = new RelayCommand(Delete);
             BtnEditClicked = new RelayCommand(Edit);
-            BtnNewClicked = new RelayCommand(New);
+            BtnSaveClicked = new RelayCommand(Save);
             dataHandler = new DataHandler();
 
             RefreshList();
         }
 
-        private void RefreshList()
+        private void Cancel()
         {
-            Shapes = dataHandler.GetShapes();
-            Articles = new ObservableCollection<SharedArticle>(dataHandler.GetArticles());
-            RaisePropertyChanged("Articles");
+            IsEditing = false;
+            EditedArticle = null;
+            Description = null;
+            Price = 0;
+            Creation = false;
+            Visible = false;
+            SelectedShape = null;
         }
 
-        private void RefreshForm()
+        private void Delete()
         {
+            dataHandler.DeleteArticle(SelectedArticle.ArticleId);
+            RefreshList();
+        }
+
+        private void Edit()
+        {
+            IsEditing = true;
+            EditedArticle = SelectedArticle;
             Description = SelectedArticle != null ? SelectedArticle.Description : null;
             Price = SelectedArticle != null ? SelectedArticle.Price : 0;
             Creation = SelectedArticle != null ? SelectedArticle.Creation : false;
@@ -89,30 +108,39 @@ namespace BackEndView.ViewModel
             SelectedShape = SelectedArticle != null ? SelectedArticle.ShapeDescription : null;
         }
 
-        private void New()
+        private void Save()
         {
-            dataHandler.CreateArticle(new SharedArticle()
+            if(IsEditing)
             {
-                ArticleTypeDescription = "Kuchen",
-                Creation = Creation,
-                Description = Description,
-                Price = Price,
-                ShapeDescription = SelectedShape,
-                Visible = Visible
-            });
+                var tempArticle = EditedArticle;
+                tempArticle.Creation = Creation;
+                tempArticle.Description = Description;
+                tempArticle.Price = Price;
+                tempArticle.ShapeDescription = SelectedShape;
+                tempArticle.Visible = Visible;
+                dataHandler.UpdateArticle(tempArticle);
+            }
+            else
+            {
+                dataHandler.CreateArticle(new SharedArticle()
+                {
+                    ArticleTypeDescription = "Kuchen",
+                    Creation = Creation,
+                    Description = Description,
+                    Price = Price,
+                    ShapeDescription = SelectedShape,
+                    Visible = Visible
+                });
+            }
             RefreshList();
+            Cancel();
         }
 
-        private void Edit()
+        private void RefreshList()
         {
-            var tempArticle = SelectedArticle;
-            tempArticle.Creation = Creation;
-            tempArticle.Description = Description;
-            tempArticle.Price = Price;
-            tempArticle.ShapeDescription = SelectedShape;
-            tempArticle.Visible = Visible;
-            dataHandler.UpdateArticle(tempArticle);
-            RefreshList();
+            Shapes = dataHandler.GetShapes();
+            Articles = new ObservableCollection<SharedArticle>(dataHandler.GetArticles());
+            RaisePropertyChanged("Articles");
         }
     }
 }

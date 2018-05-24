@@ -78,6 +78,12 @@ namespace DataRepository
             }).ToList();
         }
 
+        public void DeleteArticle(Guid articleId)
+        {
+            model.article.Remove(model.article.SingleOrDefault(x => x.article_id == articleId));
+            model.SaveChanges();
+        }
+
         public void DeleteArticleIngredient(string selectedArticle, string selectedIngredient)
         {
             model.article_has_ingredient.Remove(model.article_has_ingredient.SingleOrDefault(x => x.article.description.Equals(selectedArticle) && x.ingredient.description.Equals(selectedIngredient)));
