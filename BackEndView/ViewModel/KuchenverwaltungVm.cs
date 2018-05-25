@@ -87,10 +87,10 @@ namespace BackEndView.ViewModel
 
         public KuchenverwaltungVm()
         {
-            VisibilityFilter = new List<string>() { "Visible & Non-Visible", "Visible", "Non-Visible" };
-            CreationFilter = new List<string>() { "Creation & Non-Creation", "Creation", "Non-Creation" };
-            selectedVisibilityFilter = "Visible & Non-Visible";
-            selectedCreationFilter = "Creation & Non-Creation";
+            VisibilityFilter = new List<string>() { "Sichtbar & Nicht Sichtbar", "Sichtbar", "Nicht Sichtbar" };
+            CreationFilter = new List<string>() { "Kreation & Nicht Kreation", "Kreation", "Nicht Kreation" };
+            selectedVisibilityFilter = "Sichtbar & Nicht Sichtbar";
+            selectedCreationFilter = "Kreation & Nicht Kreation";
 
             IsEditing = false;
             BtnCancelClicked = new RelayCommand(Cancel);
@@ -164,10 +164,10 @@ namespace BackEndView.ViewModel
             Articles = new ObservableCollection<SharedArticle>(dataHandler.GetArticles().Where(x => x.ArticleTypeDescription.Equals("Kuchen")));
             switch (SelectedVisibilityFilter)
             {
-                case "Visible":
+                case "Sichtbar":
                     Articles = new ObservableCollection<SharedArticle>(Articles.Where(x => x.Visible));
                     break;
-                case "Non-Visible":
+                case "Nicht Sichtbar":
                     Articles = new ObservableCollection<SharedArticle>(Articles.Where(x => !x.Visible));
                     break;
                 default:
@@ -175,10 +175,10 @@ namespace BackEndView.ViewModel
             }
             switch (SelectedCreationFilter)
             {
-                case "Creation":
+                case "Kreation":
                     Articles = new ObservableCollection<SharedArticle>(Articles.Where(x => x.Creation));
                     break;
-                case "Non-Creation":
+                case "Nicht Kreation":
                     Articles = new ObservableCollection<SharedArticle>(Articles.Where(x => !x.Creation));
                     break;
                 default:
