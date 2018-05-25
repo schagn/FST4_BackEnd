@@ -26,7 +26,7 @@ namespace DataRepository
 
         public List<SharedArticle> GetArticles()
         {
-            return model.article.Select(x => new SharedArticle()
+            var list = model.article.Select(x => new SharedArticle()
             {
                 ArticleId = x.article_id,
                 ArticleTypeDescription = x.article_type.description,
@@ -34,8 +34,14 @@ namespace DataRepository
                 Description = x.description,
                 Price = x.price.Value,
                 ShapeDescription = x.shape.description,
-                Visible = x.visible.Value
+                Visible = x.visible.Value,
+                Ingredients = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
             }).ToList();
+            foreach(var item in list)
+            {
+                item.IngredientString = string.Join(", ", item.Ingredients);
+            }
+            return list;
         }
 
         public void CreateArticle(SharedArticle sharedArticle)

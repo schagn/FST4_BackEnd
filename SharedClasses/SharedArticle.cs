@@ -17,6 +17,7 @@ namespace SharedClasses
         public string ArticleTypeDescription { get; set; }
         //public Guid ShapeId { get; set; }
         public string ShapeDescription { get; set; }
-        public Dictionary<int, int> Ingredients { get; set; }
+        public List<string> Ingredients { get; set; }
+        public string IngredientString { get; set; }
     }
 }

@@ -46,6 +46,7 @@
                 <DataGridTextColumn Header="Form" Binding="{Binding ShapeDescription}" />
                 <DataGridCheckBoxColumn Header="Kreation" Binding="{Binding Creation}" />
                 <DataGridCheckBoxColumn Header="Sichtbar" Binding="{Binding Visible}" />
+                <DataGridTextColumn Header="Zutaten" Binding="{Binding IngredientString}" />
             </DataGrid.Columns>
         </DataGrid>
 
