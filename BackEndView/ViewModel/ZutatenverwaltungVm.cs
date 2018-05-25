@@ -173,6 +173,8 @@ namespace BackEndView.ViewModel
             SelectedCategorie = null;
             SelectedZutat = null;
 
+            IsEditingProcess = false;
+
         }
     }
 }

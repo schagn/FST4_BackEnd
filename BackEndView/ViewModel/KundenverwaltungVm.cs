@@ -285,6 +285,8 @@ namespace BackEndView.ViewModel
             IsBusinessCustomer = false;
             SelectedKunde = null;
 
+            IsEditingProcess = false;
+
         }
 
     }

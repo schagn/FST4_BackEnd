@@ -8,8 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BackEndView.ViewModel
-{
+namespace BackEndView.ViewModel { 
     public class AngebotsverwaltungVm : ViewModelBase
     {
 
@@ -173,6 +172,8 @@ namespace BackEndView.ViewModel
             StartDatum = DateTime.Today;
             EndDatum = DateTime.Today;
             SelectedAngebot = null;
+
+            IsEditingProcess = false;
 
         }
 

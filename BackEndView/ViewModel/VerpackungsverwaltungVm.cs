@@ -144,8 +144,8 @@ namespace BackEndView.ViewModel
             CancelDataBtnClick = new RelayCommand(CancelData);
 
             FilterMethoden = new ObservableCollection<string>();
-            FilterMethoden.Add("Visible");
-            FilterMethoden.Add("Non-Visible");
+            FilterMethoden.Add("verfügbar");
+            FilterMethoden.Add("Nicht verfügbar");
             FilterMethoden.Add("Kundenverpackungskreationen");
             FilterMethoden.Add("Alle");
 
@@ -312,6 +312,8 @@ namespace BackEndView.ViewModel
             Preis = 0;
             SelectedVerpackungsteil = "";
             SelectedVerpackungsArt = "";
+
+            IsEditingProcess = false;
 
         }
 

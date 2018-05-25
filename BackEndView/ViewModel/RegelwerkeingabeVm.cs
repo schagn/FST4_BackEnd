@@ -65,8 +65,8 @@ namespace BackEndView.ViewModel
             dataHandler = new DataHandler();
 
             FilterMethoden = new ObservableCollection<string>();
-            FilterMethoden.Add("Available");
-            FilterMethoden.Add("Non-Available");
+            FilterMethoden.Add("verfügbar");
+            FilterMethoden.Add("nicht verfügbar");
             FilterMethoden.Add("Alle");
 
             EditRegelwerkBtnClick = new RelayCommand(EditRegelwerk);
@@ -150,6 +150,8 @@ namespace BackEndView.ViewModel
             Beschreibung = "";
             Visibility = false;
             SelectedRegelwerk = null;
+
+            IsEditingProcess = false;
 
         }
 

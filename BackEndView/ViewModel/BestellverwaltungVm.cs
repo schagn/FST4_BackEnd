@@ -228,6 +228,7 @@ namespace BackEndView.ViewModel
             SelectedBestellung = null;
             SelectedProdukt = null;
 
+           
         }
 
     }

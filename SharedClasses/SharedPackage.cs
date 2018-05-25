@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,13 +29,22 @@ namespace SharedClasses
             set { preis = value; RaisePropertyChanged(); }
         }
 
-        private List<SharedArticle> kuchen;
+        private ObservableCollection<SharedArticle> kuchen;
 
-        public List<SharedArticle> Kuchen
+        public ObservableCollection<SharedArticle> Kuchen
         {
             get { return kuchen; }
             set { kuchen = value; RaisePropertyChanged(); }
         }
+
+        private bool visible;
+
+        public bool Visible
+        {
+            get { return visible; }
+            set { visible = value; RaisePropertyChanged(); }
+        }
+
 
     }
 }

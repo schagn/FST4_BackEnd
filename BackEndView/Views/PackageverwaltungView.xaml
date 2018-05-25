@@ -5,31 +5,92 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BackEndView.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="550" d:DesignWidth="950">
+             d:DesignHeight="550" d:DesignWidth="950" DataContext="{Binding Package, Mode=OneWay, Source={StaticResource Locator}}">
     <Grid>
 
         <Border BorderBrush="Black" BorderThickness="1"  Width="910"  Height="160" Margin="20,0,20,350">
-            <StackPanel Orientation="Vertical" Margin="20,10,10,10" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="210*"/>
+                    <ColumnDefinition Width="100*"/>
+                    <ColumnDefinition Width="140*"/>
+                    <ColumnDefinition Width="100*"/>
+                    <ColumnDefinition Width="140*"/>
+                    <ColumnDefinition Width="100*"/>
+                    <ColumnDefinition Width="140*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="6*"/>
+                    <RowDefinition Height="23*"/>
+                    <RowDefinition Height="23*"/>
+                    <RowDefinition Height="23*"/>
+                    <RowDefinition Height="30*"/>
+                </Grid.RowDefinitions>
 
-            </StackPanel>
+                <Label Content="Package hinzufügen oder ändern:" FontStyle="Oblique" Grid.Row="1" Margin="0,0.333,89.667,0.333" Grid.ColumnSpan="2"/>
+                <Label Content="Kuchen hinzufügen:" FontStyle="Oblique" Grid.Row="1" Margin="0,34.333,33.333,27.667" Grid.RowSpan="3"/>
+                <Label Content="Kuchen löschen:" FontStyle="Oblique" Grid.Row="3" Margin="0,0,33.333,28" Grid.RowSpan="2"/>
+                <Label Content="Beschreibung:" Grid.Row="1" Grid.Column="1" Width="84" VerticalAlignment="Center" HorizontalAlignment="Right" Height="26" Margin="0,4.333,0.333,4.333"/>
+                <TextBox Text="{Binding Beschreibung}" Width="120" Grid.Row="1" Grid.Column="2" Margin="7.667,6.333,8.667,6.333" />
+                <Label Content="Preis:" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right" Height="26" Margin="0,4.333" Width="38"/>
+                <TextBox Text="{Binding Preis}" Width="120" Grid.Row="1" Grid.Column="4" Margin="8,6.333,8.333,6.333"/>
+                <Label Content="Verfügbarkeit:" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" Height="26" Margin="0.667,4.333,0,4.333"/>
+                <CheckBox Grid.Row="1" Grid.Column="6" IsChecked="{Binding Visibility}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+                <Label Content="Art:" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"/>
+                <ComboBox Width="120" Height="20" Grid.Row="2" Grid.Column="2" ItemsSource="{Binding KuchenArten}" SelectedItem="{Binding SelectedKuchenArt}"/>
+                <Label Content="Beschreibung:" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Right"/>
+                <ComboBox Width="120" Height="20" Grid.Row="2" Grid.Column="4" ItemsSource="{Binding KuchenAuswahl}" SelectedItem="{Binding SelectedKuchen}" />
+
+                <Label Content="Packageinhalt:" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right"/>
+                <ComboBox Width="120" Height="20" Grid.Row="3" Grid.Column="2" ItemsSource="{Binding PackageKomponenten}" SelectedItem="{Binding SelectedLöschenKuchen}"/>
+
+            </Grid>
         </Border>
 
         <Label Content="Filter:" Width="50" Margin="0,190,860,335"/>
         <ComboBox Height="20" Width="150" Margin="40,191,700,339" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <DataGrid Margin="20,216,19.667,50" Width="910" ItemsSource="{Binding Bewertungen}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedBewertung}">
+        <DataGrid Margin="20,216,19.667,50" Width="910" ItemsSource="{Binding Packages}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedPackage}">
             <DataGrid.Columns>
+                <DataGridTextColumn Header="Beschreibung" Binding="{Binding Beschreibung}" />
+                <DataGridTextColumn Header="Preis" Binding="{Binding Preis}" />
+                <DataGridCheckBoxColumn Header="Verfügbarkeit" Binding="{Binding Visible}"/>
+
+                <DataGridTemplateColumn Header="Artikeln">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ItemsControl ItemsSource="{Binding Kuchen}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="BlanchedAlmond" BorderThickness="0.5">
+                                            <Label Content="{Binding Description}"  />
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
             </DataGrid.Columns>
         </DataGrid>
 
         <Border BorderBrush="Black" BorderThickness="0,1,0,0" Width="910" Height="42" Margin="20,138,20,370">
         </Border>
-        <Button Content="Speichern" Width="150" Height="30" Command="{Binding SaveBewertungBtnClick}" Margin="778,144,22,376"/>
+        <Button Content="Speichern" Width="150" Height="30" Command="{Binding SavePackageBtnClick}" Margin="778,144,22,376"/>
         <Button Content="Abbrechen" Width="150" Height="30" Command="{Binding CancelDataBtnClick}" Margin="605,144,195,376"/>
+        <Button Content="Kuchen löschen" Width="140" Height="30" Command="{Binding KomponenteLöschenBtnClick}" Margin="253,144,527,376"/>
+        <Button Content="Kuchen hinzufügen" Width="140" Height="30" Command="{Binding SavePackageItemBtnClick}" Margin="428,144,368,376"/>
 
-        <Button Content="Bearbeiten" Height="30" Width="150" Command="{Binding EditBewertungBtnClick}" Margin="605,505,195,15" />
-        <Button Content="Löschen" Height="30" Width="150" Command="{Binding DeleteBewertungBtnClick}" Margin="780,505,20,15" />
+
+        <Button Content="Bearbeiten" Height="30" Width="150" Command="{Binding EditPackageBtnClick}" Margin="605,505,195,15" />
+        <Button Content="Löschen" Height="30" Width="150" Command="{Binding DeletePackageBtnClick}" Margin="780,505,20,15" />
 
 
     </Grid>

@@ -9,7 +9,38 @@
     <Grid>
 
         <Border BorderBrush="Black" BorderThickness="1"  Width="910"  Height="160" Margin="20,0,20,350">
-            <StackPanel Orientation="Vertical" Margin="20,30,10,10" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="210*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="140*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="140*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="140*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                    <RowDefinition Height="15*"/>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="25*"/>
+                </Grid.RowDefinitions>
+                    <Label Content="Neue Zutat hinzufügen oder Zutat ändern:" FontStyle="Oblique" Grid.Row="0" Grid.ColumnSpan="2"/>
+                <Label Content="Name:" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right"/>
+                <TextBox Width="120" Height="20" Grid.Row="1" Grid.Column="2" Text="{Binding ZutatenName}"/>
+                <Label Content="Preis:" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"/>
+                <TextBox Width="120" Height="20" Grid.Row="2" Grid.Column="2" Text="{Binding ZutatenPreis}"/>
+
+                <Label Content="Kategorie:" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Right"/>
+                <ListBox Width="120" Height="85" Grid.Row="1" Grid.RowSpan="3"  Grid.Column="4" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategorie}" SelectionMode="Multiple" />
+                <Label Content="Verfügbarkeit:" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right"/>
+                <CheckBox  Grid.Row="3" Grid.Column="2"  VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Visibility}"/>
+
+            </Grid>
+
+
+            <!--<StackPanel Orientation="Vertical" Margin="20,30,10,10" >
                 <Label Content="Neue Zutat hinzufügen oder Zutat ändern:" FontStyle="Oblique"/>
                 <StackPanel Orientation="Horizontal" >
                     <Label Content="Name:"/>
@@ -23,7 +54,7 @@
                     <Label Content="Availability:"/>
                     <CheckBox Margin="0,0,50,0" VerticalAlignment="Center" IsChecked="{Binding Visibility}"/>
                 </StackPanel>
-            </StackPanel>
+            </StackPanel>-->
         </Border>
 
         <Label Content="Filter:" Width="50" Margin="0,190,860,335"/>
@@ -45,6 +76,8 @@
             </DataGrid.Columns>
         </DataGrid>
 
+        <Border BorderBrush="Black" BorderThickness="0,1,0,0" Width="910" Height="42" Margin="20,138,20,370">
+        </Border>
         <Button Content="Speichern" Width="150" Height="30" Command="{Binding SaveZutatBtnClick}" Margin="778,144,22,376"/>
         <Button Content="Abbrechen" Width="150" Height="30" Command="{Binding CancelDataBtnClick}" Margin="605,144,195,376"/>
 
