@@ -21,7 +21,7 @@ namespace BackEndView.ViewModel
         public string SelectedArticle
         {
             get { return selectedArticle; }
-            set { selectedArticle = value; RaisePropertyChanged(); RefreshList(); RefreshForm(); }
+            set { selectedArticle = value; RaisePropertyChanged(); RefreshList(); }
         }
         public List<string> Ingredients { get; set; }
         private string selectedIngredient;
@@ -52,13 +52,14 @@ namespace BackEndView.ViewModel
         public SharedArticleIngredient SelectedArticleIngredient
         {
             get { return selectedArticleIngredient; }
-            set { selectedArticleIngredient = value; RaisePropertyChanged(); RefreshForm(); }
+            set { selectedArticleIngredient = value; RaisePropertyChanged(); }
         }
 
 
+        public RelayCommand BtnCancelClicked { get; set; }
         public RelayCommand BtnDeleteClicked { get; set; }
         public RelayCommand BtnEditClicked { get; set; }
-        public RelayCommand BtnNewClicked { get; set; }
+        public RelayCommand BtnSaveClicked { get; set; }
 
         private DataHandler dataHandler;
         private Visibility visibleError;
@@ -75,14 +76,17 @@ namespace BackEndView.ViewModel
             get { return errorText; }
             set { errorText = value; RaisePropertyChanged(); }
         }
+        private bool IsEditing;
+        private SharedArticleIngredient EditedArticleIngredient;
 
 
         public KuchenZutatenVm()
         {
             dataHandler = new DataHandler();
-            BtnDeleteClicked = new RelayCommand(Delete, () => { return SelectedArticleIngredient != null; });
-            BtnEditClicked = new RelayCommand(Edit, () => { return SelectedArticleIngredient != null; });
-            BtnNewClicked = new RelayCommand(New, () => { return SelectedIngredient != null && SelectedArticleIngredient == null; });
+            BtnCancelClicked = new RelayCommand(Cancel);
+            BtnDeleteClicked = new RelayCommand(Delete);
+            BtnEditClicked = new RelayCommand(Edit);
+            BtnSaveClicked = new RelayCommand(Save);
 
             EnabledIngredient = true;
             VisibleError = Visibility.Hidden;
@@ -90,24 +94,20 @@ namespace BackEndView.ViewModel
             Ingredients = dataHandler.GetIngredients().Select(x => x.Description).ToList();
         }
 
-        private void RefreshList()
+        private void Cancel()
         {
-            ArticleIngredients = new ObservableCollection<SharedArticleIngredient>(dataHandler.GetArticleIngredients(SelectedArticle));
-            RaisePropertyChanged("ArticleIngredients");
-        }
-
-        private void RefreshForm()
-        {
-            Amount = SelectedArticleIngredient != null ? SelectedArticleIngredient.Amount : 0;
-            SelectedIngredient = SelectedArticleIngredient != null ? SelectedArticleIngredient.Ingredient.Description : null;
-            EnabledIngredient = SelectedArticleIngredient == null;
+            IsEditing = false;
+            EditedArticleIngredient = null;
+            Amount = 0;
+            SelectedIngredient = null;
+            EnabledIngredient = false;
         }
 
         private void Delete()
         {
             try
             {
-                dataHandler.DeleteArticleIngredient(SelectedArticle, SelectedIngredient);
+                dataHandler.DeleteArticleIngredient(SelectedArticle, SelectedArticleIngredient.Ingredient.Description);
             }
             catch (Exception e)
             {
@@ -122,36 +122,31 @@ namespace BackEndView.ViewModel
 
         private void Edit()
         {
-            try
+            IsEditing = true;
+            EditedArticleIngredient = SelectedArticleIngredient;
+            Amount = SelectedArticleIngredient != null ? SelectedArticleIngredient.Amount : 0;
+            SelectedIngredient = SelectedArticleIngredient != null ? SelectedArticleIngredient.Ingredient.Description : null;
+            EnabledIngredient = SelectedArticleIngredient == null;
+        }
+
+        private void Save()
+        {
+            if (IsEditing)
             {
                 dataHandler.UpdateArticleIngredient(SelectedArticle, SelectedIngredient, Amount);
             }
-            catch (Exception e)
-            {
-                ErrorText = e.Message;
-                VisibleError = Visibility.Visible;
-                Thread thread = new Thread(new ThreadStart(DisappearErrorMessage));
-                thread.IsBackground = true;
-                thread.Start();
-            }
-            RefreshList();
-        }
-
-        private void New()
-        {
-            try
+            else
             {
                 dataHandler.CreateArticleIngredient(SelectedArticle, SelectedIngredient, Amount);
             }
-            catch (Exception e)
-            {
-                ErrorText = e.Message;
-                VisibleError = Visibility.Visible;
-                Thread thread = new Thread(new ThreadStart(DisappearErrorMessage));
-                thread.IsBackground = true;
-                thread.Start();
-            }
             RefreshList();
+            Cancel();
+        }
+
+        private void RefreshList()
+        {
+            ArticleIngredients = new ObservableCollection<SharedArticleIngredient>(dataHandler.GetArticleIngredients(SelectedArticle));
+            RaisePropertyChanged("ArticleIngredients");
         }
 
         private void DisappearErrorMessage()
