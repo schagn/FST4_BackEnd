@@ -16,8 +16,34 @@
     <Grid>
 
         <Border BorderBrush="Black" BorderThickness="1"  Width="910"  Height="160" Margin="20,0,20,350">
-            
-            
+            <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="140*"/>
+
+                <ColumnDefinition Width="140*"/>
+                <ColumnDefinition Width="100*"/>
+                <ColumnDefinition Width="140*"/>
+                <ColumnDefinition Width="100*"/>
+                <ColumnDefinition Width="140*"/>
+                <ColumnDefinition Width="100*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="30*"/>
+            </Grid.RowDefinitions>
+                <Label Content="Bewertung unsichtbar setzen:" Grid.Row="1" Grid.ColumnSpan="2" FontStyle="Oblique"/>
+
+                <Label Content="Artikel:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" FontWeight="Bold"/>
+                <Label Content="{Binding ArtikelName}" Grid.Row="2" Grid.Column="1"/>
+                <Label Content="Kundenname:" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" FontWeight="Bold"/>
+                <Label Content="{Binding KundenName}" Grid.Row="2" Grid.Column="3" />
+                <Label Content="Visibility:" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right" FontWeight="Bold"/>
+                <CheckBox Grid.Row="2" Grid.Column="5" IsChecked="{Binding Visibility}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+
             <!--<StackPanel Orientation="Vertical" Margin="20,10,10,10" >
                 <Label Content="Bewertung unsichtbar setzen:" FontStyle="Oblique"/>
                 <StackPanel Orientation="Horizontal" >

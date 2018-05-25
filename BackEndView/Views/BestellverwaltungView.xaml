@@ -9,7 +9,39 @@
     <Grid>
 
         <Border BorderBrush="Black" BorderThickness="1"  Width="910"  Height="160" Margin="20,0,20,350">
-            <StackPanel Orientation="Vertical" Margin="20,5,10,5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140*"/>
+
+                    <ColumnDefinition Width="140*"/>
+                    <ColumnDefinition Width="100*"/>
+                    <ColumnDefinition Width="140*"/>
+                    <ColumnDefinition Width="100*"/>
+                    <ColumnDefinition Width="140*"/>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="30*"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="Bestellstatus ändern:" Grid.Row="1" Grid.Column="0" FontStyle="Oblique"/>
+                <Label Content="Bestellnummer:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" FontWeight="Bold" />
+                <Label Content="{Binding BestellNummer}" Grid.Row="2" Grid.Column="1"/>
+                <Label Content="Bestelldatum:" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" FontWeight="Bold"/>
+                <Label Content="{Binding BestellDatum}" Grid.Row="2" Grid.Column="3"/>
+
+                <Label Content="Bestellstatus:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" FontWeight="Bold"/>
+                <ComboBox Width="130" Height="20" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Bestellstatusse}" SelectedItem="{Binding SelectedStatus}"/>
+                <Label Content="Produkte:" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right" FontWeight="Bold"/>
+                <ComboBox Width="130" Height="20" Grid.Row="3" Grid.Column="3" ItemsSource="{Binding SelectedBestellungProdukte}" SelectedItem="{Binding SelectedProdukt}"/>
+
+
+            </Grid>
+            <!--<StackPanel Orientation="Vertical" Margin="20,5,10,5">
                 <Label Content="Bestellstatus ändern:" FontStyle="Oblique"/>
                 <StackPanel Orientation="Horizontal" >
                     <Label Content="Bestellnummer:" FontWeight="Bold" />
@@ -27,7 +59,7 @@
                     <Button Content="Kunde kontaktieren" Width="130" Margin="20,0,0,0" Command="{Binding SaveZutatBtnClick}"/>
                     <Button Content="Produkt löschen" Width="130" Margin="20,0,0,0" Command="{Binding ProduktLöschenBtnClick}"/>
                 </StackPanel>
-            </StackPanel>
+            </StackPanel>-->
         </Border>
 
         <Label Content="Filter:" Width="50" Margin="0,190,860,335"/>
@@ -56,6 +88,8 @@
         </Border>
         <Button Content="Speichern" Width="150" Height="30" Command="{Binding SaveBestellungBtnClick}" Margin="778,144,22,376"/>
         <Button Content="Abbrechen" Width="150" Height="30" Command="{Binding }" Margin="605,144,195,376"/>
+        <Button Content="Kunde kontaktieren" Width="140" Height="30" Command="{Binding}" Margin="253,144,527,376"/>
+        <Button Content="Produkt löschen" Width="140" Height="30" Command="{Binding ProduktLöschenBtnClick }" Margin="428,144,368,376"/>
 
         <Button Content="Bearbeiten" Height="30" Width="150" Command="{Binding EditBestellungBtnClick}" Margin="605,505,195,15" />
         <Button Content="Löschen" Height="30" Width="150" Command="{Binding DeleteBestellungBtnClick}" Margin="780,505,20,15" />

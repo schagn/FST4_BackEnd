@@ -10,7 +10,39 @@
     <Grid>
 
         <Border BorderBrush="Black" BorderThickness="1"  Width="910"  Height="160" Margin="20,0,20,350">
-            <StackPanel Orientation="Vertical" Margin="20,30,10,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140*"/>
+                    
+                    <ColumnDefinition Width="140*"/>
+                    <ColumnDefinition Width="100*"/>
+                    <ColumnDefinition Width="140*"/>
+                    <ColumnDefinition Width="100*"/>
+                    <ColumnDefinition Width="140*"/>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="30*"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="Neues Sonderangebot hinzufügen oder Sonderangebot ändern:" FontStyle="Oblique" Grid.Row="1" Grid.ColumnSpan="3"/>
+                <Label Content="Code:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBox Width="140" Height="20" Grid.Column="1" Grid.Row="2" Text="{Binding Code}"/>
+                <Label Content="Prozent:" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBox Width="140" Height="20" Grid.Column="3" Grid.Row="2" Text="{Binding Prozent}"/>
+
+                <Label Content="Zeitraum Start:" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <DatePicker Width="140" Height="25" Grid.Column="1" Grid.Row="3" SelectedDate="{Binding StartDatum}"/>
+                <Label Content="Zeitraum Ende:" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <DatePicker Width="140" Height="25" Grid.Column="3" Grid.Row="3" SelectedDate="{Binding EndDatum}"/>
+
+            </Grid>
+        </Border>
+        <!--<StackPanel Orientation="Vertical" Margin="20,30,10,10">
                 <Label Content="Neues Sonderangebot hinzufügen oder Sonderangebot ändern:" FontStyle="Oblique"/>
                 <StackPanel Orientation="Horizontal"  >
                     <Label Content="Code:"/>
@@ -24,8 +56,8 @@
                     <Label Content="Zeitraum Ende:"/>
                     <DatePicker Width="150" Height="25" Margin="0,0,10,0" SelectedDate="{Binding EndDatum}"/>
                 </StackPanel>
-            </StackPanel>
-        </Border>
+            </StackPanel>-->
+        
 
         <Label Content="Filter:" Width="50" Margin="0,190,860,335"/>
         <ComboBox Height="20" Width="150" Margin="40,191,700,339" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
