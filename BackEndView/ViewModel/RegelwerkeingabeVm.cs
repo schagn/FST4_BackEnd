@@ -14,6 +14,7 @@ namespace BackEndView.ViewModel
     public class RegelwerkeingabeVm : ViewModelBase
     {
 
+        public RelayCommand CancelDataBtnClick { get; set; }
         public RelayCommand EditRegelwerkBtnClick { get; set; }
 
         public RelayCommand DeleteRegelwerkBtnClick { get; set; }
@@ -102,6 +103,8 @@ namespace BackEndView.ViewModel
                     DeleteSelectedRegelwerk(SelectedRegelwerk);
                 });
 
+            CancelDataBtnClick = new RelayCommand(CancelData);
+
             IsEditingProcess = false;
 
             RefreshList(null);
@@ -140,6 +143,14 @@ namespace BackEndView.ViewModel
         {
             dataHandler.DeleteRegel(r);
             RefreshList(SelectedFilterMethode);
+        }
+
+        private void CancelData()
+        {
+            Beschreibung = "";
+            Visibility = false;
+            SelectedRegelwerk = null;
+
         }
 
     }

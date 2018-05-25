@@ -10,6 +10,7 @@ namespace BackEndView.ViewModel
     public class BewertungsverwaltungVm : ViewModelBase
     {
 
+        public RelayCommand CancelDataBtnClick { get; set; }
         public RelayCommand EditBewertungBtnClick { get; set; }
         public RelayCommand DeleteBewertungBtnClick { get; set; }
         public RelayCommand SaveBewertungBtnClick { get; set; }
@@ -67,6 +68,8 @@ namespace BackEndView.ViewModel
                     Delete(SelectedBewertung);
                 });
 
+            CancelDataBtnClick = new RelayCommand(CancelData);
+
             FilterMethoden = new ObservableCollection<string>();
             FilterMethoden.Add("Visible");
             FilterMethoden.Add("Non-Visible");
@@ -122,6 +125,16 @@ namespace BackEndView.ViewModel
             Visibility = false;
 
             RefreshList(selectedFilterMethode);
+        }
+
+        private void CancelData()
+        {
+            SelectedBewertung = null;
+
+            KundenName = "";
+            ArtikelName = "";
+            Visibility = false;
+
         }
     }
 }

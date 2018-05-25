@@ -16,6 +16,7 @@ namespace BackEndView.ViewModel
     {
         //TODO PASSWORT !!!!! 
 
+        public RelayCommand CancelDataBtnClick { get; set; }
         public RelayCommand EditKundeBtnClick { get; set; }
 
         public RelayCommand DeleteKundeBtnClick { get; set; }
@@ -136,6 +137,8 @@ namespace BackEndView.ViewModel
                 {
                     DeleteSelectedKunde(SelectedKunde);
                 });
+
+            CancelDataBtnClick = new RelayCommand(CancelData);
 
             FilterMethoden = new ObservableCollection<string>();
             FilterMethoden.Add("Firmenkunden");
@@ -266,6 +269,22 @@ namespace BackEndView.ViewModel
                 Kunden.Add(item);
 
             }
+        }
+
+        private void CancelData()
+        {
+            VorName = "";
+            NachName = "";
+            Geburtsdatum = "";
+            EMail = "";
+            Strasse = "";
+            PLZ = 0;
+            Ort = "";
+            Land = "";
+            Passwort = "";
+            IsBusinessCustomer = false;
+            SelectedKunde = null;
+
         }
 
     }

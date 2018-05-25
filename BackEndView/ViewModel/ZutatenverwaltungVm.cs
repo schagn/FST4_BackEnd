@@ -13,7 +13,8 @@ namespace BackEndView.ViewModel
 {
     public class ZutatenverwaltungVm : ViewModelBase
     {
-        
+
+        public RelayCommand CancelDataBtnClick { get; set; }
         public RelayCommand EditZutatBtnClick { get; set; }
 
         public RelayCommand DeleteZutatBtnClick { get; set; }
@@ -123,6 +124,7 @@ namespace BackEndView.ViewModel
                     DeleteSelectedProduct(SelectedZutat);
                 });
 
+            CancelDataBtnClick = new RelayCommand(CancelData);
 
             RefreshList();
 
@@ -161,6 +163,16 @@ namespace BackEndView.ViewModel
         {
             dataHandler.DeleteZutat(p);
             RefreshList();
+        }
+
+        private void CancelData()
+        {
+            ZutatenName = "";
+            ZutatenPreis = 0;
+            Visibility = false;
+            SelectedCategorie = null;
+            SelectedZutat = null;
+
         }
     }
 }

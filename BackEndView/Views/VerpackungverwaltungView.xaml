@@ -117,7 +117,7 @@
         <Border BorderBrush="Black" BorderThickness="0,1,0,0" Width="910" Height="42" Margin="20,138,20,370">
         </Border>
         <Button Content="Speichern" Width="150" Height="30" Command="{Binding SaveVerpackungBtnClick}" Margin="778,144,22,376"/>
-        <Button Content="Abbrechen" Width="150" Height="30" Command="{Binding }" Margin="603,144,195,376"/>
+        <Button Content="Abbrechen" Width="150" Height="30" Command="{Binding CancelDataBtnClick}" Margin="603,144,195,376"/>
         <Button Content="Komponente löschen" Width="140" Height="30" Command="{Binding KomponenteLöschenBtnClick}" Margin="253,144,527,376"/>
         <Button Content="Komponente hinzufügen" Width="140" Height="30" Command="{Binding SaveVerpackungsItemBtnClick }" Margin="428,144,368,376"/>
 

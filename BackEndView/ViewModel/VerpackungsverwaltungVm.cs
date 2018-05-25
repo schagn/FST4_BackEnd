@@ -13,6 +13,7 @@ namespace BackEndView.ViewModel
     public class VerpackungsverwaltungVm : ViewModelBase
     {
 
+        public RelayCommand CancelDataBtnClick { get; set; }
         public RelayCommand EditVerpackungBtnClick { get; set; }
 
         public RelayCommand DeleteVerpackungBtnClick { get; set; }
@@ -139,6 +140,8 @@ namespace BackEndView.ViewModel
             SaveVerpackungsItemBtnClick = new RelayCommand(SaveVerpackungsItem);
 
             KomponenteLöschenBtnClick = new RelayCommand(KomponenteLöschen);
+
+            CancelDataBtnClick = new RelayCommand(CancelData);
 
             FilterMethoden = new ObservableCollection<string>();
             FilterMethoden.Add("Visible");
@@ -298,6 +301,18 @@ namespace BackEndView.ViewModel
         private void RefreshList(string selectedFilterMethode)
         {
             // je nachdem welche Filtermethode ausgewählt ist --> neu von DB laden  
+        }
+
+        private void CancelData()
+        {
+            SelectedLöschenVerpackungsteil = null;
+            SelectedVerpackung = null;
+            Beschreibung = "";
+            Visibility = false;
+            Preis = 0;
+            SelectedVerpackungsteil = "";
+            SelectedVerpackungsArt = "";
+
         }
 
     }

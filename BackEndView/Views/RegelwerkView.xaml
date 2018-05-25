@@ -9,7 +9,32 @@
     <Grid>
 
         <Border BorderBrush="Black" BorderThickness="1"  Width="910"  Height="160" Margin="20,0,20,350">
-            <StackPanel Orientation="Vertical" Margin="20,30,10,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140*"/>
+
+                    <ColumnDefinition Width="140*"/>
+                    <ColumnDefinition Width="100*"/>
+                    <ColumnDefinition Width="140*"/>
+                    <ColumnDefinition Width="100*"/>
+                    <ColumnDefinition Width="140*"/>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="30*"/>
+                </Grid.RowDefinitions>
+                <Label Content="Neue Regelwerkkategorie hinzufügen oder Regelwerkkategorie ändern:" Grid.Row="1" Grid.ColumnSpan="3" FontStyle="Oblique"/>
+                <Label Content="Beschreibung:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBox Width="130" Height="20" Grid.Row="2" Grid.Column="1" Text="{Binding Beschreibung}"/>
+                <Label Content="Verfügbarkeit:" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <CheckBox Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="{Binding Visibility}"/>
+            </Grid>
+
+            <!--<StackPanel Orientation="Vertical" Margin="20,30,10,10">
                 <Label Content="Neue Regelwerkkategorie hinzufügen oder Regelwerkkategorie ändern:" FontStyle="Oblique"/>
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0" >
                     <Label Content="Beschreibung:"/>
@@ -18,7 +43,7 @@
                     <CheckBox Margin="0,0,15,0" VerticalAlignment="Center" IsChecked="{Binding Visibility}"/>
                     <Button Content="Speichern" Width="100" Command="{Binding SaveRegelwerkBtnClick}"/>
                 </StackPanel>
-            </StackPanel>
+            </StackPanel>-->
         </Border>
 
         <Label Content="Filter:" Width="50" Margin="0,190,860,335"/>
@@ -41,7 +66,7 @@
         <Border BorderBrush="Black" BorderThickness="0,1,0,0" Width="910" Height="42" Margin="20,138,20,370">
         </Border>
         <Button Content="Speichern" Width="150" Height="30" Command="{Binding SaveRegelwerkBtnClick}" Margin="778,144,22,376"/>
-        <Button Content="Abbrechen" Width="150" Height="30" Command="{Binding }" Margin="605,144,195,376"/>
+        <Button Content="Abbrechen" Width="150" Height="30" Command="{Binding CancelDataBtnClick}" Margin="605,144,195,376"/>
 
         <Button Content="Bearbeiten" Height="30" Width="150" Command="{Binding EditRegelwerkBtnClick}" Margin="605,505,195,15" />
         <Button Content="Löschen" Height="30" Width="150" Command="{Binding DeleteRegelwerkBtnClick}" Margin="780,505,20,15" />

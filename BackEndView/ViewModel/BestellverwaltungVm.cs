@@ -16,6 +16,8 @@ namespace BackEndView.ViewModel
 
         //TODO Kunde kontaktieren per Mail
 
+        public RelayCommand CancelDataBtnClick { get; set; }
+
         public RelayCommand EditBestellungBtnClick { get; set; }
 
         public RelayCommand DeleteBestellungBtnClick { get; set; }
@@ -110,6 +112,8 @@ namespace BackEndView.ViewModel
                 });
 
             ProduktLöschenBtnClick = new RelayCommand(ProduktLöschen);
+
+            CancelDataBtnClick = new RelayCommand(CancelData);
 
             //KundeKontaktierenBtnClick = new RelayCommand();
 
@@ -214,6 +218,16 @@ namespace BackEndView.ViewModel
         private void RefreshList(string selectedFilterMethode)
         {
             // je nachdem welche Filtermethode ausgewählt ist --> neu von DB laden  
+        }
+
+        private void CancelData()
+        {
+            SelectedStatus = null;
+            BestellNummer = "";
+            BestellDatum = "";
+            SelectedBestellung = null;
+            SelectedProdukt = null;
+
         }
 
     }

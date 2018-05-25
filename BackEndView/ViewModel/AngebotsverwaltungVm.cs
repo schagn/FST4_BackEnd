@@ -13,6 +13,8 @@ namespace BackEndView.ViewModel
     public class AngebotsverwaltungVm : ViewModelBase
     {
 
+        public RelayCommand CancelDataBtnClick { get; set; }
+
         public RelayCommand EditAngebotBtnClick { get; set; }
 
         public RelayCommand DeleteAngebotBtnClick { get; set; }
@@ -87,6 +89,8 @@ namespace BackEndView.ViewModel
                     DeleteSelectedAngebot(SelectedAngebot);
                 });
 
+            CancelDataBtnClick = new RelayCommand(CancelData);  
+
             StartDatum = DateTime.Today;
             EndDatum = DateTime.Today;
 
@@ -98,6 +102,7 @@ namespace BackEndView.ViewModel
             FilterMethoden.Add("Zukunft");
         }
 
+        
         private void EditAngebot()
         {
             Code = SelectedAngebot.Code;
@@ -160,5 +165,16 @@ namespace BackEndView.ViewModel
         {
             // je nachdem welche Filtermethode ausgewählt ist --> neu von DB laden  
         }
+
+        private void CancelData()
+        {
+            Code = "";
+            Prozent = 0;
+            StartDatum = DateTime.Today;
+            EndDatum = DateTime.Today;
+            SelectedAngebot = null;
+
+        }
+
     }
 }
