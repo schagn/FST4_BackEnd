@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -35,9 +36,9 @@ namespace SharedClasses
             set { isAvailable = value; RaisePropertyChanged(); }
         }
 
-        private string kategorie;
+        private ObservableCollection<string> kategorie;
 
-        public string Kategorie
+        public ObservableCollection<string> Kategorie
         {
             get { return kategorie; }
             set { kategorie = value; }

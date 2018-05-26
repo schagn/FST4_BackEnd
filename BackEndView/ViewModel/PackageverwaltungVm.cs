@@ -103,14 +103,21 @@ namespace BackEndView.ViewModel
             set { selectedLöschenKuchen = value; RaisePropertyChanged(); }
         }
 
-        public ObservableCollection<string> FilterMethoden { get; set; }
+        public List<string> VisibilityFilter { get; set; }
+        public List<string> CreationFilter { get; set; }
+        private string selectedVisibilityFilter;
 
-        private string selectedFilterMethode;
-
-        public string SelectedFilterMethode
+        public string SelectedVisibilityFilter
         {
-            get { return selectedFilterMethode; }
-            set { selectedFilterMethode = value; RaisePropertyChanged(); RefreshList(SelectedFilterMethode); }
+            get { return selectedVisibilityFilter; }
+            set { selectedVisibilityFilter = value; RaisePropertyChanged(); RefreshList(); }
+        }
+        private string selectedCreationFilter;
+
+        public string SelectedCreationFilter
+        {
+            get { return selectedCreationFilter; }
+            set { selectedCreationFilter = value; RaisePropertyChanged(); RefreshList(); }
         }
 
         bool IsEditingProcess;
@@ -145,11 +152,10 @@ namespace BackEndView.ViewModel
 
             CancelDataBtnClick = new RelayCommand(CancelData);
 
-            FilterMethoden = new ObservableCollection<string>();
-            FilterMethoden.Add("verfügbar");
-            FilterMethoden.Add("Nicht verfügbar");
-            FilterMethoden.Add("Kundenpackagekreationen");
-            FilterMethoden.Add("Alle");
+            VisibilityFilter = new List<string>() { "Sichtbar & Nicht Sichtbar", "Sichtbar", "Nicht Sichtbar" };
+            CreationFilter = new List<string>() { "Kreation & Nicht Kreation", "Kreation", "Nicht Kreation" };
+            selectedVisibilityFilter = "Sichtbar & Nicht Sichtbar";
+            selectedCreationFilter = "Kreation & Nicht Kreation";
 
 
             IsEditingProcess = false;
@@ -297,7 +303,7 @@ namespace BackEndView.ViewModel
             Preis = 0;
         }
 
-        private void RefreshList(string selectedFilterMethode)
+        private void RefreshList()
         {
             // je nachdem welche Filtermethode ausgewählt ist --> neu von DB laden  
         }

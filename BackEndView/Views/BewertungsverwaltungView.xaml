@@ -40,7 +40,7 @@
                 <Label Content="{Binding ArtikelName}" Grid.Row="2" Grid.Column="1"/>
                 <Label Content="Kundenname:" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" FontWeight="Bold"/>
                 <Label Content="{Binding KundenName}" Grid.Row="2" Grid.Column="3" />
-                <Label Content="Visibility:" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right" FontWeight="Bold"/>
+                <Label Content="Sichtbar:" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right" FontWeight="Bold"/>
                 <CheckBox Grid.Row="2" Grid.Column="5" IsChecked="{Binding Visibility}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Grid>
 
@@ -75,13 +75,8 @@
 
                 <DataGridTextColumn Header="Kommentar" Binding="{Binding Kommentar}" />
 
-                <DataGridTemplateColumn Header="Visibility">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <CheckBox  HorizontalAlignment="Center" IsChecked="{Binding Visible}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                <DataGridCheckBoxColumn Header="Sichtbar" Binding="{Binding Visible}" >
+                </DataGridCheckBoxColumn>
             </DataGrid.Columns>
         </DataGrid>
 

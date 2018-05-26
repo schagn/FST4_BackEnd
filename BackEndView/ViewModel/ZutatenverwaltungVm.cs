@@ -58,9 +58,9 @@ namespace BackEndView.ViewModel
 
         public ObservableCollection<string> Categories { get; set; }
 
-        private string selectedCategorie;
+        private ObservableCollection<string> selectedCategorie;
 
-        public string SelectedCategorie
+        public ObservableCollection<string> SelectedCategorie
         {
             get { return selectedCategorie; }
             set { selectedCategorie = value; RaisePropertyChanged(); }

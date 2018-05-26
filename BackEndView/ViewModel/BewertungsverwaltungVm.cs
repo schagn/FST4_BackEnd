@@ -71,8 +71,8 @@ namespace BackEndView.ViewModel
             CancelDataBtnClick = new RelayCommand(CancelData);
 
             FilterMethoden = new ObservableCollection<string>();
-            FilterMethoden.Add("verfügbar");
-            FilterMethoden.Add("Nicht verfügbar");
+            FilterMethoden.Add("Sichtbar");
+            FilterMethoden.Add("Nicht sichtbar");
             FilterMethoden.Add("Alle");
 
             RefreshList(null);
@@ -86,11 +86,11 @@ namespace BackEndView.ViewModel
             {
                 Bewertungen = new ObservableCollection<SharedBewertung>(dataHandler.GetRatingAll());
             }
-            else if (selected.Equals("Visible")) 
+            else if (selected.Equals("Sichtbar")) 
             {
                 Bewertungen = new ObservableCollection<SharedBewertung>(dataHandler.GetRatingVisible());
             }
-            else if (selected.Equals("Non-Visible"))
+            else if (selected.Equals("Nicht Sichtbar"))
             {
                 Bewertungen = new ObservableCollection<SharedBewertung>(dataHandler.GetRatingNonVisible());
             }

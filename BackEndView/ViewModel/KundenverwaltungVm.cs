@@ -97,6 +97,14 @@ namespace BackEndView.ViewModel
             set { isBusinessCustomer = value;RaisePropertyChanged(); }
         }
 
+        private float uid;
+
+        public float UID
+        {
+            get { return uid; }
+            set { uid = value; RaisePropertyChanged(); }
+        }
+
 
 
         private SharedKunde selectedKunde;
