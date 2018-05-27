@@ -95,7 +95,9 @@ namespace BackEndView.ViewModel
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<KuchenverwaltungVm>();
+                var temp = ServiceLocator.Current.GetInstance<KuchenverwaltungVm>();
+                temp.RefreshList();
+                return temp;
             }
         }
 
@@ -103,7 +105,9 @@ namespace BackEndView.ViewModel
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<KuchenZutatenVm>();
+                var temp = ServiceLocator.Current.GetInstance<KuchenZutatenVm>();
+                temp.RefreshForm();
+                return temp;
             }
         }
 

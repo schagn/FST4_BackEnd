@@ -90,8 +90,8 @@ namespace BackEndView.ViewModel
 
             EnabledIngredient = true;
             VisibleError = Visibility.Hidden;
-            Articles = dataHandler.GetArticles().Select(x => x.Description).ToList();
-            Ingredients = dataHandler.GetIngredients().Select(x => x.Description).ToList();
+
+            RefreshForm();
         }
 
         private void Cancel()
@@ -143,7 +143,13 @@ namespace BackEndView.ViewModel
             Cancel();
         }
 
-        private void RefreshList()
+        public void RefreshForm()
+        {
+            Articles = dataHandler.GetArticles().Where(x => x.ArticleTypeDescription.Equals("Kuchen")).Select(x => x.Description).ToList();
+            Ingredients = dataHandler.GetIngredients().Select(x => x.Description).ToList();
+        }
+
+        public void RefreshList()
         {
             ArticleIngredients = new ObservableCollection<SharedArticleIngredient>(dataHandler.GetArticleIngredients(SelectedArticle));
             RaisePropertyChanged("ArticleIngredients");

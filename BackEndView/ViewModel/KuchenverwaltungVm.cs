@@ -158,7 +158,7 @@ namespace BackEndView.ViewModel
             Cancel();
         }
 
-        private void RefreshList()
+        public void RefreshList()
         {
             Shapes = dataHandler.GetShapes();
             Articles = new ObservableCollection<SharedArticle>(dataHandler.GetArticles().Where(x => x.ArticleTypeDescription.Equals("Kuchen")));
