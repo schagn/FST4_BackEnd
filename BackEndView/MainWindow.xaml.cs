@@ -45,66 +45,69 @@ namespace BackEndView
         {
             MakeAllGrey();
             ButtonDasbboard.Background = new SolidColorBrush(Colors.CadetBlue);
+            //PowderBlue
+            //SkyBlue
+            //SteelBlue
         }
 
         private void Button_Click_Zutaten(object sender, RoutedEventArgs e)
         {
             MakeAllGrey();
-            ButtonZutaten.Background = new SolidColorBrush(Colors.PowderBlue);
+            ButtonZutaten.Background = new SolidColorBrush(Colors.CadetBlue);
         }
 
         private void Button_Click_Kuchen(object sender, RoutedEventArgs e)
         {
             MakeAllGrey();
-            ButtonKuchen.Background = new SolidColorBrush(Colors.SkyBlue);
+            ButtonKuchen.Background = new SolidColorBrush(Colors.CadetBlue);
         }
 
         private void Button_Click_KuchenZutaten(object sender, RoutedEventArgs e)
         {
             MakeAllGrey();
-            ButtonKuchenZutaten.Background = new SolidColorBrush(Colors.SteelBlue);
+            ButtonKuchenZutaten.Background = new SolidColorBrush(Colors.CadetBlue);
         }
 
         private void Button_Click_Verpackung(object sender, RoutedEventArgs e)
         {
             MakeAllGrey();
-            ButtonVerpackung.Background = new SolidColorBrush(Colors.LavenderBlush);
+            ButtonVerpackung.Background = new SolidColorBrush(Colors.CadetBlue);
         }
 
         private void Button_Click_Package(object sender, RoutedEventArgs e)
         {
             MakeAllGrey();
-            ButtonPackage.Background = new SolidColorBrush(Colors.LavenderBlush);
+            ButtonPackage.Background = new SolidColorBrush(Colors.CadetBlue);
         }
 
         private void Button_Click_Angebot(object sender, RoutedEventArgs e)
         {
             MakeAllGrey();
-            ButtonAngebot.Background = new SolidColorBrush(Colors.LavenderBlush);
+            ButtonAngebot.Background = new SolidColorBrush(Colors.CadetBlue);
         }
 
         private void Button_Click_Kunden(object sender, RoutedEventArgs e)
         {
             MakeAllGrey();
-            ButtonKunden.Background = new SolidColorBrush(Colors.LavenderBlush);
+            ButtonKunden.Background = new SolidColorBrush(Colors.CadetBlue);
         }
 
         private void Button_Click_Bewertung(object sender, RoutedEventArgs e)
         {
             MakeAllGrey();
-            ButtonBewertung.Background = new SolidColorBrush(Colors.LavenderBlush);
+            ButtonBewertung.Background = new SolidColorBrush(Colors.CadetBlue);
         }
 
         private void Button_Click_Bestellung(object sender, RoutedEventArgs e)
         {
             MakeAllGrey();
-            ButtonBestellung.Background = new SolidColorBrush(Colors.LavenderBlush);
+            ButtonBestellung.Background = new SolidColorBrush(Colors.CadetBlue);
         }
 
         private void Button_Click_Regelwerk(object sender, RoutedEventArgs e)
         {
             MakeAllGrey();
-            ButtonRegelwerk.Background = new SolidColorBrush(Colors.LavenderBlush);
+            ButtonRegelwerk.Background = new SolidColorBrush(Colors.CadetBlue);
         }
     }
 }
