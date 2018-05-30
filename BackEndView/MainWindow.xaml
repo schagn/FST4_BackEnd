@@ -19,17 +19,17 @@
 
         <Border BorderBrush="Black" BorderThickness="0,1" Grid.Row="1" Padding="0">
          <StackPanel Orientation="Horizontal" Margin="5,1,5,1" HorizontalAlignment="Center">
-            <Button Content=" Dashboard " Command="{Binding DashboardButton}" Height="30"/>
-            <Button Content=" Zutaten " Command="{Binding ZutatenButton}" Height="30"/>
-            <Button Content=" Kuchen " Command="{Binding KuchenButton}" Height="30"/>
-            <Button Content=" Kuchenzutaten " Command="{Binding KuchenZutatenButton}" Height="30"/>
-            <Button Content=" Verpackung " Command="{Binding VerpackungButton}" Height="30"/>
-            <Button Content=" Package " Command="{Binding PackageButton}" Height="30"/>
-            <Button Content=" Angebotsverwaltung " Command="{Binding AngebotButton}" Height="30"/>
-            <Button Content=" Kundenverwaltung " Command="{Binding KundenButton}" Height="30"/>
-            <Button Content=" Bewertungsverwaltung " Command="{Binding BewertungButton}" Height="30"/>
-            <Button Content=" Bestellverwaltung " Command="{Binding BestellungButton}" Height="30"/>
-            <Button Content=" Regelwerkeingabe " Command="{Binding RegelwerkButton}" Height="30"/>
+                <Button Content=" Dashboard " Command="{Binding DashboardButton}" Height="30" x:Name="ButtonDasbboard"  Click="Button_Click_Dashboard"/>
+                <Button Content=" Zutaten " Command="{Binding ZutatenButton}" Height="30" x:Name="ButtonZutaten" Click="Button_Click_Zutaten" />
+            <Button Content=" Kuchen " Command="{Binding KuchenButton}" Height="30" x:Name="ButtonKuchen" Click="Button_Click_Kuchen"/>
+            <Button Content=" Kuchenzutaten " Command="{Binding KuchenZutatenButton}" Height="30" x:Name="ButtonKuchenZutaten" Click="Button_Click_KuchenZutaten"/>
+            <Button Content=" Verpackung " Command="{Binding VerpackungButton}" Height="30" x:Name="ButtonVerpackung" Click="Button_Click_Verpackung"/>
+            <Button Content=" Package " Command="{Binding PackageButton}" Height="30" x:Name="ButtonPackage" Click="Button_Click_Package"/>
+            <Button Content=" Angebotsverwaltung " Command="{Binding AngebotButton}" Height="30" x:Name="ButtonAngebot" Click="Button_Click_Angebot"/>
+            <Button Content=" Kundenverwaltung " Command="{Binding KundenButton}" Height="30" x:Name="ButtonKunden" Click="Button_Click_Kunden"/>
+            <Button Content=" Bewertungsverwaltung " Command="{Binding BewertungButton}" Height="30" x:Name="ButtonBewertung" Click="Button_Click_Bewertung" />
+            <Button Content=" Bestellverwaltung " Command="{Binding BestellungButton}" Height="30" x:Name="ButtonBestellung" Click="Button_Click_Bestellung"/>
+            <Button Content=" Regelwerkeingabe " Command="{Binding RegelwerkButton}" Height="30" x:Name="ButtonRegelwerk" Click="Button_Click_Regelwerk"/>
 
         </StackPanel>
         </Border>

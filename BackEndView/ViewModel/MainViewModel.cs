@@ -21,7 +21,15 @@ namespace BackEndView.ViewModel
         public RelayCommand DashboardButton { get; set; }
         public RelayCommand ZutatenButton { get; set; }
         public RelayCommand KuchenButton { get; set; }
-        public RelayCommand KuchenZutatenButton { get; set; }
+
+        private RelayCommand kuchenZutatenButton;
+
+        public RelayCommand KuchenZutatenButton
+        {
+            get { return kuchenZutatenButton; }
+            set { kuchenZutatenButton = value; RaisePropertyChanged(); }
+        }
+
         public RelayCommand VerpackungButton { get; set; }
         public RelayCommand PackageButton { get; set; }
         public RelayCommand AngebotButton { get; set; }
