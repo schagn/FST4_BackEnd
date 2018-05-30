@@ -43,5 +43,14 @@ namespace SharedClasses
             set { prozent = value; RaisePropertyChanged(); }
         }
 
+        private SharedArticle produkt;
+
+        public SharedArticle Produkt
+        {
+            get { return produkt; }
+            set { produkt = value; RaisePropertyChanged(); }
+        }
+
+
     }
 }

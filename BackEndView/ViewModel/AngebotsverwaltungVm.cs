@@ -54,6 +54,23 @@ namespace BackEndView.ViewModel {
             set { endDatum = value; RaisePropertyChanged(); }
         }
 
+        private ObservableCollection<SharedArticle> produkte;
+   
+        public ObservableCollection<SharedArticle> Produkte
+        {
+            get { return produkte; }
+            set { produkte = value; RaisePropertyChanged(); }
+        }
+
+
+        private SharedArticle selectedProdukt;
+
+        public SharedArticle SelectedProdukt
+        {
+            get { return selectedProdukt; }
+            set { selectedProdukt = value; RaisePropertyChanged(); }
+        }
+
         private SharedAngebot selectedAngebot;
 
         public SharedAngebot SelectedAngebot
@@ -77,6 +94,8 @@ namespace BackEndView.ViewModel {
         public AngebotsverwaltungVm()
         {
             Angebote = new ObservableCollection<SharedAngebot>();
+            Produkte = new ObservableCollection<SharedArticle>();
+            // Produkt befüllen - ACHTUNG sind nur die Kuchen 
 
             EditAngebotBtnClick = new RelayCommand(EditAngebot);
 
@@ -108,6 +127,9 @@ namespace BackEndView.ViewModel {
             Prozent = SelectedAngebot.Prozent;
             StartDatum = SelectedAngebot.StartDatum;
             EndDatum = SelectedAngebot.EndDatum;
+            SelectedProdukt = SelectedAngebot.Produkt;
+            //Produkt darf hier nicht änderbar sein !!!!! 
+            //Combobox List leer??
 
             IsEditingProcess = true;
         }
@@ -132,6 +154,7 @@ namespace BackEndView.ViewModel {
                         item.Prozent = Prozent;
                         item.StartDatum = StartDatum;
                         item.EndDatum = EndDatum;
+                        
                     }
                 }
             }
@@ -143,7 +166,9 @@ namespace BackEndView.ViewModel {
                     StartDatum = StartDatum,
                     EndDatum = EndDatum,
                     Prozent = Prozent,
-                    Code = Code
+                    Code = Code,
+                    Produkt = SelectedProdukt
+
                 });
             }
 
@@ -151,6 +176,7 @@ namespace BackEndView.ViewModel {
             Prozent = 0;
             StartDatum = DateTime.Today;
             EndDatum = DateTime.Today;
+            SelectedProdukt = null;
 
             RaisePropertyChanged("Angebote");
 
@@ -172,6 +198,7 @@ namespace BackEndView.ViewModel {
             StartDatum = DateTime.Today;
             EndDatum = DateTime.Today;
             SelectedAngebot = null;
+            SelectedProdukt = null;
 
             IsEditingProcess = false;
 
