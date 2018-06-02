@@ -40,6 +40,13 @@ namespace BackEndView.ViewModel
             set { visibility = value; RaisePropertyChanged(); }
         }
 
+        private bool creation;
+        public bool Creation
+        {
+            get { return creation; }
+            set { creation = value; RaisePropertyChanged(); }
+        }
+
         private double preis;
         public double Preis
         {
@@ -191,6 +198,7 @@ namespace BackEndView.ViewModel
                         item.Description = Beschreibung;
                         item.Visible = Visibility;
                         item.Price = Preis;
+                        item.Creation = Creation;
 
                     }
                 }
@@ -203,13 +211,14 @@ namespace BackEndView.ViewModel
                     VerpackungsId = Guid.NewGuid(),
                     Visible = Visibility,
                     Price = Preis,
-                    Creation = false,
+                    Creation = Creation,
                     Komponenten = new ObservableCollection<SharedZutat>()
                 });
             }
 
             Beschreibung = "";
             Visibility = false;
+            Creation = false;
             Preis = 0;
 
             RaisePropertyChanged("Verpackungen");
@@ -301,6 +310,7 @@ namespace BackEndView.ViewModel
             SelectedVerpackung = null;
             Beschreibung = "";
             Visibility = false;
+            Creation = false;
             Preis = 0;
         }
 
@@ -315,6 +325,7 @@ namespace BackEndView.ViewModel
             SelectedVerpackung = null;
             Beschreibung = "";
             Visibility = false;
+            Creation = false;
             Preis = 0;
             SelectedVerpackungsteil = "";
             SelectedVerpackungsArt = "";

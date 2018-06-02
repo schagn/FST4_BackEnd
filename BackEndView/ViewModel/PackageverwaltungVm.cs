@@ -40,6 +40,13 @@ namespace BackEndView.ViewModel
             set { visibility = value; RaisePropertyChanged(); }
         }
 
+        private bool creation;
+        public bool Creation
+        {
+            get { return creation; }
+            set { creation = value; RaisePropertyChanged(); }
+        }
+
         private double preis;
         public double Preis
         {
@@ -193,6 +200,7 @@ namespace BackEndView.ViewModel
                         item.Beschreibung = Beschreibung;
                         item.Visible = Visibility;
                         item.Preis = Preis;
+                        item.Creation = Creation;
                     }
                 }
             }
@@ -204,13 +212,14 @@ namespace BackEndView.ViewModel
                     PackageId = Guid.NewGuid(),
                     Visible = Visibility,
                     Preis = Preis,
-                    //Creation = false,
+                    Creation = Creation,
                     Kuchen = new ObservableCollection<SharedArticle>()
                 });
             }
 
             Beschreibung = "";
             Visibility = false;
+            Creation = false;
             Preis = 0;
 
             RaisePropertyChanged("Packages");
@@ -245,7 +254,7 @@ namespace BackEndView.ViewModel
                 PackageKomponenten.Add(item.Description);
             }
 
-
+            
             SelectedKuchenArt = "";
             SelectedKuchen = "";
         }
@@ -300,6 +309,7 @@ namespace BackEndView.ViewModel
             SelectedPackage = null;
             Beschreibung = "";
             Visibility = false;
+            Creation = false;
             Preis = 0;
         }
 
@@ -314,6 +324,7 @@ namespace BackEndView.ViewModel
             SelectedKuchen = null;
             Beschreibung = "";
             Visibility = false;
+            Creation = false;
             Preis = 0;
             SelectedLöschenKuchen = "";
             SelectedKuchenArt = "";

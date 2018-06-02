@@ -45,6 +45,12 @@ namespace SharedClasses
             set { visible = value; RaisePropertyChanged(); }
         }
 
+        private bool creation;
+        public bool Creation
+        {
+            get { return creation; }
+            set { creation = value; RaisePropertyChanged(); }
+        }
 
     }
 }

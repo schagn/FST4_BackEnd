@@ -35,7 +35,9 @@
                 <Label Content="Preis:" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right" Height="26" Margin="0,4.333" Width="38"/>
                 <TextBox Text="{Binding Preis}" Width="120" Grid.Row="1" Grid.Column="4" Margin="8,6.333,8.333,6.333"/>
                 <Label Content="Sichtbar:" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" Height="26" Margin="0.667,4.333,0,4.333"/>
-                <CheckBox Grid.Row="1" Grid.Column="6" IsChecked="{Binding Visibility}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <CheckBox Grid.Row="1" Grid.Column="5" IsChecked="{Binding Visibility}" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,0"/>
+                <Label Content="Kreation:" Grid.Row="1" Grid.Column="6" VerticalAlignment="Center" Height="26" Margin="0.667,4.333,0,4.333"/>
+                <CheckBox Grid.Row="1" Grid.Column="6" IsChecked="{Binding Creation}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                 <Label Content="Art:" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"/>
                 <ComboBox Width="120" Height="20" Grid.Row="2" Grid.Column="2" ItemsSource="{Binding KuchenArten}" SelectedItem="{Binding SelectedKuchenArt}"/>
@@ -57,6 +59,7 @@
                 <DataGridTextColumn Header="Beschreibung" Binding="{Binding Beschreibung}" />
                 <DataGridTextColumn Header="Preis" Binding="{Binding Preis}" />
                 <DataGridCheckBoxColumn Header="Sichtbar" Binding="{Binding Visible}"/>
+                <DataGridCheckBoxColumn Header="Kreation" Binding="{Binding Creation}" />
 
                 <DataGridTemplateColumn Header="Artikeln">
                     <DataGridTemplateColumn.CellTemplate>
