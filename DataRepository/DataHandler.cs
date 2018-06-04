@@ -158,6 +158,8 @@ namespace DataRepository
             }).ToList();
         }
 
+       
+
         public List<SharedBewertung> GetRatingNonVisible()
         {
             return model.rating.Where(x => x.visible == false).Select(x => new SharedBewertung()
@@ -311,24 +313,127 @@ namespace DataRepository
 
         public List<SharedBestellung> GetAllOrders()
         {
+            
+            double? voucherValue;
 
-            return model.order.Select(x => new SharedBestellung()
+            
+
+            var orders =  model.order.Select(x => new SharedBestellung()
             {
-                Artikel = x.order_has_articles.Select(y => y.article.description).ToList(),
-                KundenName = x.person.firstname + x.person.lastname,
+                BestellId = x.order_id,
+                Artikel = x.order_has_articles.Select(y => new SharedOrderArticle()
+                {
+                    id = y.article_id,
+                    name = y.article.description
+
+                }).ToList(),
+                KundenName = x.person.firstname + " " + x.person.lastname,
                 BestellDatum = x.date,
-                Bestellstatus = "Open",
+                Bestellstatus = x.status,
                 GesamtSumme = x.total_amount
 
             }).ToList();
+
+            foreach (var item in orders)
+            {
+
+                voucherValue = GetOrderVaucherValue(item.BestellId);
+
+                if(voucherValue != 0)
+                {
+                    item.GutscheinUsed = true;
+                }
+                else
+                {
+                    item.GutscheinUsed = false;
+                }
+
+                item.GutscheinWert = voucherValue;
+            }
+
+            return orders;
             
         }
 
-        // TODO 
-        public List<SharedBestellung> GetOrdersByStatus()
+        private double? GetOrderVaucherValue(Guid orderId)
+        {
+            var voucher = model.order.Where(x => x.order_id.Equals(orderId)).Select(id=> id.voucher_id).SingleOrDefault();
+            double? voucherValue = 0;
+            double? orderValue;
+            double difference;
+            
+
+            if(voucher != null)
+            {
+                orderValue = model.order.Where(z=> z.order_id.Equals(orderId)).Select(p=> p.total_amount).SingleOrDefault();
+                voucherValue = model.order.Where(y => y.order_id.Equals(orderId)).Select(w => w.voucher.amount).SingleOrDefault();
+
+                difference = (double)(voucherValue - orderValue);
+
+                if(difference < 0)
+                {
+                    return voucherValue;
+                }
+                else
+                {
+                    return orderValue;
+                }
+            }
+            return (double?)0;
+        }
+
+        public void UpdateOrderStatus(Guid id, string status)
+        {
+            var order = model.order.Where(x => x.order_id.Equals(id)).SingleOrDefault();
+
+            order.status = status;
+
+            model.SaveChanges();
+
+        }
+
+         
+        public List<SharedBestellung> GetOrdersByStatus(string selectedFilterMethode)
         {
 
-            throw new NotImplementedException();
+            double? voucherValue;
+
+
+
+            var orders = model.order.Where(order=> order.status.Equals(selectedFilterMethode)).Select(x => new SharedBestellung()
+            {
+                BestellId = x.order_id,
+                Artikel = x.order_has_articles.Select(y => new SharedOrderArticle()
+                {
+                    id = y.article_id,
+                    name = y.article.description
+
+                }).ToList(),
+                KundenName = x.person.firstname + " " + x.person.lastname,
+                BestellDatum = x.date,
+                Bestellstatus = x.status,
+                GesamtSumme = x.total_amount
+
+            }).ToList();
+
+            foreach (var item in orders)
+            {
+
+                voucherValue = GetOrderVaucherValue(item.BestellId);
+
+                if (voucherValue != 0)
+                {
+                    item.GutscheinUsed = true;
+                }
+                else
+                {
+                    item.GutscheinUsed = false;
+                }
+
+                item.GutscheinWert = voucherValue;
+            }
+
+            return orders;
 
 
         }

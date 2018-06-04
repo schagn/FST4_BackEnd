@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using DataRepository;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using SharedClasses;
 using System;
@@ -71,16 +72,27 @@ namespace BackEndView.ViewModel
         public string SelectedFilterMethode
         {
             get { return selectedFilterMethode; }
-            set { selectedFilterMethode = value; RaisePropertyChanged(); RefreshList(SelectedFilterMethode); }
+            set { selectedFilterMethode = value; RaisePropertyChanged(); FilterList(SelectedFilterMethode); }
         }
 
-        private ObservableCollection<string> selectedBestellungProdukte;
+        
 
-        public ObservableCollection<string> SelectedBestellungProdukte
+        private ObservableCollection<SharedOrderArticle> selectedBestellungProdukte;
+
+        public ObservableCollection<SharedOrderArticle> SelectedBestellungProdukte
         {
             get { return selectedBestellungProdukte; }
             set { selectedBestellungProdukte = value; RaisePropertyChanged(); }
         }
+
+        private ObservableCollection<string> selectedBestellungProduktnamen;
+
+        public ObservableCollection<string> SelectedBestellungProduktnamen
+        {
+            get { return selectedBestellungProduktnamen; }
+            set { selectedBestellungProduktnamen = value; RaisePropertyChanged(); }
+        }
+
 
         private string selectedProdukt;
 
@@ -90,14 +102,16 @@ namespace BackEndView.ViewModel
             set { selectedProdukt = value; RaisePropertyChanged(); }
         }
 
+        private DataHandler dh;
 
         public BestellverwaltungVm()
         {
-            Bestellungen = new ObservableCollection<SharedBestellung>();
+            dh = new DataHandler();
+            Bestellungen = GetAllOrders();
             Bestellstatusse = new ObservableCollection<string>();
-            Bestellstatusse.Add("erledigt");
-            Bestellstatusse.Add("gecancelt");
-            Bestellstatusse.Add("in Bearbeitung");
+            Bestellstatusse.Add("offen");
+            Bestellstatusse.Add("abgebrochen");
+            Bestellstatusse.Add("abgeschlossen");
 
 
             EditBestellungBtnClick = new RelayCommand(EditBestellung);
@@ -117,63 +131,18 @@ namespace BackEndView.ViewModel
 
             //KundeKontaktierenBtnClick = new RelayCommand();
 
-            //Create Demo Data
-            Bestellungen.Add(new SharedBestellung()
-            {
-                BestellId = Guid.NewGuid(),
-                Bestellstatus = "erledigt",
-                Artikel = new List<string>() { "Regenbogentorte", "Sachertorte", "Linzerschnitte" },
-                BestellDatum = DateTime.Now.ToLocalTime(),
-                GesamtSumme = 130,
-                GutscheinUsed = false,
-                GutscheinWert = 0,
-                KundenName = "jklfödas"
 
-            });
-
-            Bestellungen.Add(new SharedBestellung()
-            {
-                BestellId = Guid.NewGuid(),
-                Bestellstatus = "in Bearbeitung",
-                Artikel = new List<string>() { "Kardinalschnitte", "Tiramisu", "Roulade" },
-                BestellDatum = DateTime.Now.ToLocalTime(),
-                GesamtSumme = 90,
-                GutscheinUsed = true,
-                GutscheinWert = 50,
-                KundenName = "jklhgfhdrsdftzu"
-
-            });
-
-            FilterMethoden = new ObservableCollection<string>();
-            FilterMethoden = Bestellstatusse;
+            FilterMethoden = new ObservableCollection<string>(Bestellstatusse);
+            FilterMethoden.Add("Alle");
 
         }
 
+
+        // TODO: mit Gollner klären ob notwendig
         private void ProduktLöschen()
         {
 
-            foreach (var item in Bestellungen)
-            {
-                if(item.BestellId == SelectedBestellung.BestellId)
-                {
-                    //foreach (var Produkt in item.Artikel)
-                    //{
-                      //  if(Produkt.Equals(SelectedProdukt))
-                       // {
-                            //SelectedBestellung.Artikel.Remove(Produkt);
 
-                            item.Artikel.Remove(SelectedProdukt);
-                        //}
-                    //}
-                }
-            }
-
-            //SelectedBestellung.Artikel.Remove(SelectedProdukt);
-            RaisePropertyChanged("Bestellungen");
-            SelectedStatus = null;
-            BestellDatum = "";
-            BestellNummer = "";
-            SelectedProdukt = null;
 
         }
 
@@ -182,9 +151,23 @@ namespace BackEndView.ViewModel
             SelectedStatus = SelectedBestellung.Bestellstatus;
             BestellDatum = SelectedBestellung.BestellDatum.ToString();
             BestellNummer = SelectedBestellung.BestellId.ToString();
-            //SelectedBestellungProdukte = ObservableListConverter.ConvertToObservableCollection(SelectedBestellung.Artikel);
+            GetSelectedBestellungProduktnamen();
 
 
+        }
+
+        private void GetSelectedBestellungProduktnamen()
+        {
+            if(selectedBestellungProduktnamen == null)
+            {
+                SelectedBestellungProduktnamen = new ObservableCollection<string>();
+            }
+
+            foreach (var item in selectedBestellung.Artikel)
+            {
+
+                SelectedBestellungProduktnamen.Add(item.name);
+            }
         }
 
         private void DeleteSelectedBestellung(SharedBestellung b)
@@ -198,27 +181,60 @@ namespace BackEndView.ViewModel
         private void SaveBestellung()
         {
         
-             foreach (var item in Bestellungen)
-             {
-                  if (item.BestellId == SelectedBestellung.BestellId)
-                  {
-                     item.Bestellstatus = SelectedStatus;
-                  }
-             }
+             if(SelectedStatus != null && SelectedBestellung != null)
+            {
+                dh.UpdateOrderStatus(SelectedBestellung.BestellId, SelectedStatus);
+            }
 
 
             SelectedStatus = null;
             BestellNummer = "";
             BestellDatum = "";
 
-            RaisePropertyChanged("Bestellungen");
+            RefreshOrders();
         }
 
 
-        private void RefreshList(string selectedFilterMethode)
+        private void FilterList(string selectedFilterMethode)
         {
-            // je nachdem welche Filtermethode ausgewählt ist --> neu von DB laden  
+            Bestellungen.Clear();
+
+            if (selectedFilterMethode.Equals("Alle"))
+            {
+                RefreshOrders();
+            }
+            else
+            {
+                foreach (var item in dh.GetOrdersByStatus(selectedFilterMethode))
+                {
+
+                    Bestellungen.Add(item);
+                }
+
+            }
+
+            
+
         }
+
+        private ObservableCollection<SharedBestellung> GetAllOrders()
+        {
+            
+            return new ObservableCollection<SharedBestellung>(dh.GetAllOrders());
+
+        }
+
+        private void RefreshOrders()
+        {
+
+            Bestellungen.Clear();
+
+            foreach (var item in dh.GetAllOrders())
+            {
+                Bestellungen.Add(item);
+            }
+        }
+
 
         private void CancelData()
         {

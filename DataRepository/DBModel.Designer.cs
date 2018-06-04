@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'E:\Dokumente\FH\4.Semester\SYCO\FST4_Backend\DataRepository\DBModel.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\stefa\source\repos\FST4_BackEnd\DataRepository\DBModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

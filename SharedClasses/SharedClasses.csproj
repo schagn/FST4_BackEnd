@@ -65,6 +65,7 @@
     <Compile Include="SharedArticle.cs" />
     <Compile Include="SharedKategorie.cs" />
     <Compile Include="SharedKunde.cs" />
+    <Compile Include="SharedOrderArticle.cs" />
     <Compile Include="SharedPackage.cs" />
     <Compile Include="SharedRegelwerk.cs" />
     <Compile Include="SharedVerpackung.cs" />

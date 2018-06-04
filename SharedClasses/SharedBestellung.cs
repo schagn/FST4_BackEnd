@@ -44,9 +44,9 @@ namespace SharedClasses
             set { gutscheinUsed = value; RaisePropertyChanged(); }
         }
 
-        private int? gutscheinWert;
+        private double? gutscheinWert;
 
-        public int? GutscheinWert
+        public double? GutscheinWert
         {
             get { return gutscheinWert; }
             set { gutscheinWert = value; RaisePropertyChanged(); }
@@ -60,9 +60,9 @@ namespace SharedClasses
             set { bestellstatus = value; RaisePropertyChanged(); }
         }
 
-        private List<string> artikel;
+        private List<SharedOrderArticle> artikel;
 
-        public List<string> Artikel
+        public List<SharedOrderArticle> Artikel
         {
             get { return artikel; }
             set { artikel = value; RaisePropertyChanged(); }

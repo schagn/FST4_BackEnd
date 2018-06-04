@@ -37,7 +37,7 @@
                 <Label Content="Bestellstatus:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" FontWeight="Bold"/>
                 <ComboBox Width="130" Height="20" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Bestellstatusse}" SelectedItem="{Binding SelectedStatus}"/>
                 <Label Content="Produkte:" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right" FontWeight="Bold"/>
-                <ComboBox Width="130" Height="20" Grid.Row="3" Grid.Column="3" ItemsSource="{Binding SelectedBestellungProdukte}" SelectedItem="{Binding SelectedProdukt}"/>
+                <ComboBox Width="130" Height="20" Grid.Row="3" Grid.Column="3" ItemsSource="{Binding SelectedBestellungProduktnamen,UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedProdukt}"/>
 
 
             </Grid>
@@ -65,7 +65,7 @@
         <Label Content="Filter:" Width="50" Margin="0,190,860,335"/>
         <ComboBox Height="20" Width="150" Margin="40,191,700,339" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <DataGrid Margin="20,216,19.667,50" Width="910" ItemsSource="{Binding Bestellungen}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedBestellung}">
+        <DataGrid Margin="20,216,19.667,50" Width="910" ItemsSource="{Binding Bestellungen,UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedBestellung}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Kundenname" Binding="{Binding KundenName}"/>
                 <DataGridTextColumn Header="Bestelldatum" Binding="{Binding BestellDatum}"/>
