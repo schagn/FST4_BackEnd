@@ -68,6 +68,7 @@ namespace BackEndView.ViewModel
             FilterMethoden.Add("verfügbar");
             FilterMethoden.Add("nicht verfügbar");
             FilterMethoden.Add("Alle");
+            SelectedFilterMethode = "Alle";
 
             EditRegelwerkBtnClick = new RelayCommand(EditRegelwerk);
 
@@ -105,22 +106,19 @@ namespace BackEndView.ViewModel
 
             CancelDataBtnClick = new RelayCommand(CancelData);
 
+
             IsEditingProcess = false;
 
-            RefreshList(null);
+            RefreshList(SelectedFilterMethode);
         }
 
         private void RefreshList(string selected)
         {
-            if (selected == null)
-            {
-                Regelwerke = new ObservableCollection<SharedRegelwerk>(dataHandler.GetRegel());
-            }
-            else if (selected.Equals("Available"))
+            if (selected.Equals("verfügbar"))
             {
                 Regelwerke = new ObservableCollection<SharedRegelwerk>(dataHandler.GetRegelAvailable());
             }
-            else if (selected.Equals("Non-Available"))
+            else if (selected.Equals("nicht verfügbar"))
             {
                 Regelwerke = new ObservableCollection<SharedRegelwerk>(dataHandler.GetRegelNonAvailable());
             }

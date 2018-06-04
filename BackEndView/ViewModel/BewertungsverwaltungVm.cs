@@ -74,23 +74,20 @@ namespace BackEndView.ViewModel
             FilterMethoden.Add("Sichtbar");
             FilterMethoden.Add("Nicht sichtbar");
             FilterMethoden.Add("Alle");
+            SelectedFilterMethode = "Alle";
 
-            RefreshList(null);
+            RefreshList(SelectedFilterMethode);
 
         }
 
         private void RefreshList(string selected)
         {
 
-            if(selected == null)
-            {
-                Bewertungen = new ObservableCollection<SharedBewertung>(dataHandler.GetRatingAll());
-            }
-            else if (selected.Equals("Sichtbar")) 
+            if (selected.Equals("Sichtbar")) 
             {
                 Bewertungen = new ObservableCollection<SharedBewertung>(dataHandler.GetRatingVisible());
             }
-            else if (selected.Equals("Nicht Sichtbar"))
+            else if (selected.Equals("Nicht sichtbar"))
             {
                 Bewertungen = new ObservableCollection<SharedBewertung>(dataHandler.GetRatingNonVisible());
             }

@@ -140,7 +140,7 @@ namespace BackEndView.ViewModel
         private void RefreshList()
         {
             Zutaten = new ObservableCollection<SharedZutat>(dataHandler.GetZutat());
-            Categories = new ObservableCollection<string>(dataHandler.GetIngredientCategories());
+            Categories = new ObservableCollection<string>(dataHandler.GetCategories());
             RaisePropertyChanged("Zutaten");
         }
 

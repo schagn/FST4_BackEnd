@@ -189,10 +189,15 @@ namespace DataRepository
 
         #region Zutatenverwaltung
 
-        public List<string> GetIngredientCategories()
+        public List<string> GetCategories()
         {
             return model.category.Select(x => x.description).ToList();
         }
+
+        //public List<string> GetIngredientCategories(SharedZutat sharedZutat)
+        //{
+        //    return model.ingredient.w
+        //}
 
         public List<SharedZutat> GetZutat()
         {
@@ -202,7 +207,6 @@ namespace DataRepository
                 Beschreibung = x.description,
                 Preis = x.price,
                 IsAvailable = x.ing_available,
-                //Kategorie = model.category.description
             }).ToList();
         }
 
@@ -213,7 +217,7 @@ namespace DataRepository
                 ingredient_id = Guid.NewGuid(),
                 description = tempZutat.Beschreibung,
                 price = tempZutat.Preis,
-                //category.d = tempZutat.Kategorie,
+                //category
                 ing_available = tempZutat.IsAvailable
             };
 
@@ -451,5 +455,218 @@ namespace DataRepository
         }
 
         #endregion
+
+        #region Packages_verwalten
+
+        public List<SharedPackage> GetPackages(string filterVisible, string filterCreation)
+        {
+            if (filterVisible.Equals("") && filterCreation.Equals(""))
+            {
+
+            }
+            else
+            {
+                return model.package.Select(x => new SharedPackage()
+                {
+                    Beschreibung = x.description,
+                    //Creation = 
+                }).ToList();
+            }
+            return null;
+        }
+
+        #endregion
+
+        #region Verpackungsverwaltung
+
+        public List<SharedVerpackung> GetPackaging(string filterVisible, string filterCreation)
+        {
+            if (filterVisible.Equals("Sichtbar & Nicht Sichtbar"))
+            {
+                if (filterCreation.Equals("Kreation"))
+                {
+                    return model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.creation == true).Select(x => new SharedVerpackung()
+                    {
+                        VerpackungsId = x.article_id,
+                        Description = x.description,
+                        Creation = x.creation,
+                        Price = x.price,
+                        Visible = x.visible,
+                        Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
+                    }).ToList();
+                }
+                else if(filterCreation.Equals("Nicht Kreation"))
+                {
+                    return model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.creation == false).Select(x => new SharedVerpackung()
+                    {
+                        VerpackungsId = x.article_id,
+                        Description = x.description,
+                        Creation = x.creation,
+                        Price = x.price,
+                        Visible = x.visible,
+                        Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
+                    }).ToList();
+                }
+                else
+                {
+                    return model.article.Where(x => x.article_type.description.Equals("Verpackung")).Select(x => new SharedVerpackung()
+                    {
+                        VerpackungsId = x.article_id,
+                        Description = x.description,
+                        Creation = x.creation,
+                        Price = x.price,
+                        Visible = x.visible,
+                        Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
+                    }).ToList();
+                }
+            }else if (filterVisible.Equals("Sichtbar"))
+            {
+                if (filterCreation.Equals("Kreation"))
+                {
+                    return model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == true && x.creation == true).Select(x => new SharedVerpackung()
+                    {
+                        VerpackungsId = x.article_id,
+                        Description = x.description,
+                        Creation = x.creation,
+                        Price = x.price,
+                        Visible = x.visible,
+                        Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
+                    }).ToList();
+                }
+                else if (filterCreation.Equals("Nicht Kreation"))
+                {
+                    return model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == true && x.creation == false).Select(x => new SharedVerpackung()
+                    {
+                        VerpackungsId = x.article_id,
+                        Description = x.description,
+                        Creation = x.creation,
+                        Price = x.price,
+                        Visible = x.visible,
+                        Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
+                    }).ToList();
+                }
+                else
+                {
+                    return model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == true).Select(x => new SharedVerpackung()
+                    {
+                        VerpackungsId = x.article_id,
+                        Description = x.description,
+                        Creation = x.creation,
+                        Price = x.price,
+                        Visible = x.visible,
+                        Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
+                    }).ToList();
+                }
+            }else if (filterVisible.Equals("Nicht Sichtbar"))
+            {
+                if (filterCreation.Equals("Kreation"))
+                {
+                    return model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == false && x.creation == true).Select(x => new SharedVerpackung()
+                    {
+                        VerpackungsId = x.article_id,
+                        Description = x.description,
+                        Creation = x.creation,
+                        Price = x.price,
+                        Visible = x.visible,
+                        Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
+                    }).ToList();
+                }
+                else if (filterCreation.Equals("Nicht Kreation"))
+                {
+                    return model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == false && x.creation == false).Select(x => new SharedVerpackung()
+                    {
+                        VerpackungsId = x.article_id,
+                        Description = x.description,
+                        Creation = x.creation,
+                        Price = x.price,
+                        Visible = x.visible,
+                        Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
+                    }).ToList();
+                }
+                else
+                {
+                    return model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == false).Select(x => new SharedVerpackung()
+                    {
+                        VerpackungsId = x.article_id,
+                        Description = x.description,
+                        Creation = x.creation,
+                        Price = x.price,
+                        Visible = x.visible,
+                        Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
+                    }).ToList();
+                }
+            }
+            else
+            {
+                return model.article.Where(x => x.article_type.description.Equals("Verpackung")).Select(x => new SharedVerpackung()
+                {
+                    VerpackungsId = x.article_id,
+                    Description = x.description,
+                    Creation = x.creation,
+                    Price = x.price,
+                    Visible = x.visible,
+                    Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
+                }).ToList();
+            }
+        }
+
+        public void SaveVerpackung(SharedVerpackung tempVerpackung, string method)
+        {
+            if (method.Equals("create"))
+            {
+                var verpackung = new article()
+                {
+                    article_id = Guid.NewGuid(),
+                    article_type = model.article_type.SingleOrDefault(x => x.description.Equals("Verpackung")),
+                    description = tempVerpackung.Description,
+                    price = tempVerpackung.Price,
+                    creation = tempVerpackung.Creation,
+                    //shape_id = null,
+                    visible = tempVerpackung.Visible
+                };
+                model.article.Add(verpackung);
+                model.SaveChanges();
+            }
+            else
+            {
+                var verpackung = new article()
+                {
+                    article_id = tempVerpackung.VerpackungsId,
+                    article_type = model.article_type.SingleOrDefault(x => x.description.Equals("Verpackung")),
+                    description = tempVerpackung.Description,
+                    price = tempVerpackung.Price,
+                    creation = tempVerpackung.Creation,
+                    //shape_id = null,
+                    visible = tempVerpackung.Visible
+                };
+                model.article.Add(verpackung);
+                model.SaveChanges();
+            }
+        }
+
+        public void CreateVerpackungskomponenten(Guid Id, string Komponente)
+        {
+            model.article_has_ingredient.Add(new article_has_ingredient()
+            {
+                article = model.article.SingleOrDefault(x => x.article_id == Id),
+                ingredient = model.ingredient.SingleOrDefault(x => x.description.Equals(Komponente))
+            });
+            model.SaveChanges();
+        }
+
+        public void DeleteVerpackungskomponenten(Guid Id, string Komponente)
+        {
+            model.article_has_ingredient.Remove(model.article_has_ingredient.SingleOrDefault(x => x.article_id == Id && x.ingredient.description.Equals(Komponente)));
+            model.SaveChanges();
+        }
+
+        public void DeleteVerpackung(SharedVerpackung tempVerpackung)
+        {
+            model.article.Remove(model.article.SingleOrDefault(x => x.article_id == tempVerpackung.VerpackungsId));
+            model.SaveChanges();
+        }
+
+        #endregion
+
     }
 }

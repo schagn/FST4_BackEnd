@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using DataRepository;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using SharedClasses;
 using System;
@@ -33,22 +34,22 @@ namespace BackEndView.ViewModel
             set { beschreibung = value; RaisePropertyChanged(); }
         }
 
-        private bool visibility;
-        public bool Visibility
+        private bool? visibility;
+        public bool? Visibility
         {
             get { return visibility; }
             set { visibility = value; RaisePropertyChanged(); }
         }
 
-        private bool creation;
-        public bool Creation
+        private bool? creation;
+        public bool? Creation
         {
             get { return creation; }
             set { creation = value; RaisePropertyChanged(); }
         }
 
-        private double preis;
-        public double Preis
+        private double? preis;
+        public double? Preis
         {
             get { return preis; }
             set { preis = value; RaisePropertyChanged(); }
@@ -117,24 +118,31 @@ namespace BackEndView.ViewModel
         public string SelectedVisibilityFilter
         {
             get { return selectedVisibilityFilter; }
-            set { selectedVisibilityFilter = value; RaisePropertyChanged(); RefreshList(); }
+            set { selectedVisibilityFilter = value; RaisePropertyChanged(); RefreshList(SelectedVisibilityFilter, SelectedCreationFilter); }
         }
         private string selectedCreationFilter;
 
         public string SelectedCreationFilter
         {
             get { return selectedCreationFilter; }
-            set { selectedCreationFilter = value; RaisePropertyChanged(); RefreshList(); }
+            set { selectedCreationFilter = value; RaisePropertyChanged(); RefreshList(SelectedVisibilityFilter, SelectedCreationFilter); }
         }
 
         bool IsEditingProcess;
 
+        private DataHandler dataHandler;
+
         public PackageverwaltungVm()
         {
+            dataHandler = new DataHandler();
+
             Packages = new ObservableCollection<SharedPackage>();
+
             KuchenArten = new ObservableCollection<string>();
             KuchenArten.Add("Kuchenkreationen");
             KuchenArten.Add("Standardkuchen");
+
+            //db
             KuchenAuswahl = new ObservableCollection<string>();
             KuchenAuswahl.Add("Regenbogentorte");
             KuchenAuswahl.Add("Himbeertiramisu");
@@ -164,8 +172,15 @@ namespace BackEndView.ViewModel
             selectedVisibilityFilter = "Sichtbar & Nicht Sichtbar";
             selectedCreationFilter = "Kreation & Nicht Kreation";
 
-
             IsEditingProcess = false;
+
+            RefreshList(SelectedVisibilityFilter, SelectedCreationFilter);
+        }
+
+        private void RefreshList(string filterVisible, string filterCreation)
+        {
+            Packages = new ObservableCollection<SharedPackage>(dataHandler.GetPackages(filterVisible, filterCreation));
+            RaisePropertyChanged("Packages");
         }
 
         private void EditPackage()
@@ -311,11 +326,6 @@ namespace BackEndView.ViewModel
             Visibility = false;
             Creation = false;
             Preis = 0;
-        }
-
-        private void RefreshList()
-        {
-            // je nachdem welche Filtermethode ausgewählt ist --> neu von DB laden  
         }
 
         private void CancelData()

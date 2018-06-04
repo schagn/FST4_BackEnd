@@ -19,30 +19,30 @@ namespace SharedClasses
             set { description = value; RaisePropertyChanged(); }
         }
 
-        private double price;
-        public double Price
+        private double? price;
+        public double? Price
         {
             get { return price; }
             set { price = value; RaisePropertyChanged(); }
         }
 
-        private bool creation;
-        public bool Creation
+        private bool? creation;
+        public bool? Creation
         {
             get { return creation; }
             set { creation = value; RaisePropertyChanged(); }
         }
 
-        private bool visible;
-        public bool Visible
+        private bool? visible;
+        public bool? Visible
         {
             get { return visible; }
             set { visible = value; RaisePropertyChanged(); }
         }
 
-        private ObservableCollection<SharedZutat> komponenten;
+        private List<string> komponenten;
 
-        public ObservableCollection<SharedZutat> Komponenten
+        public List<string> Komponenten
         {
             get { return komponenten; }
             set { komponenten = value; RaisePropertyChanged(); }

@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using DataRepository;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using SharedClasses;
 using System;
@@ -33,22 +34,22 @@ namespace BackEndView.ViewModel
             set { beschreibung = value; RaisePropertyChanged(); }
         }
 
-        private bool visibility;
-        public bool Visibility
+        private bool? visibility;
+        public bool? Visibility
         {
             get { return visibility; }
             set { visibility = value; RaisePropertyChanged(); }
         }
 
-        private bool creation;
-        public bool Creation
+        private bool? creation;
+        public bool? Creation
         {
             get { return creation; }
             set { creation = value; RaisePropertyChanged(); }
         }
 
-        private double preis;
-        public double Preis
+        private double? preis;
+        public double? Preis
         {
             get { return preis; }
             set { preis = value; RaisePropertyChanged(); }
@@ -85,7 +86,7 @@ namespace BackEndView.ViewModel
             get { return selectedVerpackungsArt; }
             set { selectedVerpackungsArt = value; RaisePropertyChanged(); ChangeVerpackungsteile(); }
         }
-
+        
         private string selectedVerpackungsteil;
 
         public string SelectedVerpackungsteil
@@ -129,9 +130,12 @@ namespace BackEndView.ViewModel
 
         bool IsEditingProcess;
 
+        private DataHandler dataHanlder;
+
         public VerpackungsverwaltungVm()
         {
-            Verpackungen = new ObservableCollection<SharedVerpackung>();
+            dataHanlder = new DataHandler();
+
             Verpackungsteile = new ObservableCollection<string>();
             Verpackungsteile.Add("Blumenmasche");
             Verpackungsteile.Add("Sternekarton");
@@ -142,7 +146,45 @@ namespace BackEndView.ViewModel
 
             EditVerpackungBtnClick = new RelayCommand(EditVerpackung);
 
-            SaveVerpackungBtnClick = new RelayCommand(SaveVerpackung);
+            SaveVerpackungBtnClick = new RelayCommand(
+                () => 
+                {
+                    if (IsEditingProcess)
+                    {
+                        SelectedVerpackung.Description = Beschreibung;
+                        SelectedVerpackung.Creation = Creation;
+                        SelectedVerpackung.Price = Preis;
+                        SelectedVerpackung.Visible = Visibility;
+                        SelectedVerpackung.Komponenten.Clear();
+                        foreach(var item in VerpackungsKomponenten)
+                        {
+                            SelectedVerpackung.Komponenten.Add(item);
+                        }
+                        foreach (var item in SelectedVerpackung.Komponenten)
+                        {
+                            dataHanlder.DeleteVerpackungskomponenten(SelectedVerpackung.VerpackungsId, item);
+                        }
+                        dataHanlder.DeleteVerpackung(SelectedVerpackung);
+                        dataHanlder.SaveVerpackung(SelectedVerpackung, "");
+                        foreach(var item in SelectedVerpackung.Komponenten)
+                        {
+                            dataHanlder.CreateVerpackungskomponenten(SelectedVerpackung.VerpackungsId, item);
+                        }
+                    }
+                    else
+                    {
+                        dataHanlder.SaveVerpackung(new SharedVerpackung()
+                        {
+                            VerpackungsId = Guid.NewGuid(),
+                            Description = Beschreibung,
+                            Price = Preis,
+                            Creation = Creation,
+                            Visible = Visibility
+                        }, "create");
+                    }
+                    CancelData();
+                    RefreshList();
+                });
 
 
             DeleteVerpackungBtnClick = new RelayCommand(
@@ -164,16 +206,25 @@ namespace BackEndView.ViewModel
 
 
             IsEditingProcess = false;
+
+            RefreshList();
+        }
+
+        private void RefreshList()
+        {
+            Verpackungen = new ObservableCollection<SharedVerpackung>(dataHanlder.GetPackaging(SelectedVisibilityFilter,SelectedCreationFilter));
+            RaisePropertyChanged("Verpackungen");
         }
 
         private void EditVerpackung()
         {
             Beschreibung = SelectedVerpackung.Description;
             Visibility = SelectedVerpackung.Visible;
+            Creation = SelectedVerpackung.Creation;
             Preis = SelectedVerpackung.Price;
             foreach (var item in SelectedVerpackung.Komponenten)
             {
-                VerpackungsKomponenten.Add(item.Beschreibung);   
+                VerpackungsKomponenten.Add(item);   
             }
 
             IsEditingProcess = true;
@@ -181,84 +232,21 @@ namespace BackEndView.ViewModel
 
         private void DeleteSelectedVerpackung(SharedVerpackung v)
         {
-            //client.deleteZutat
-            //client Zutaten neu abfragen
-            Verpackungen.Remove(v);
-            RaisePropertyChanged("Verpackungen");
-        }
-
-        private void SaveVerpackung()
-        {
-            if (IsEditingProcess == true)
-            {
-                foreach (var item in Verpackungen)
-                {
-                    if (item.VerpackungsId == SelectedVerpackung.VerpackungsId)
-                    {
-                        item.Description = Beschreibung;
-                        item.Visible = Visibility;
-                        item.Price = Preis;
-                        item.Creation = Creation;
-
-                    }
-                }
-            }
-            else
-            {
-                Verpackungen.Add(new SharedVerpackung()
-                {
-                    Description = Beschreibung,
-                    VerpackungsId = Guid.NewGuid(),
-                    Visible = Visibility,
-                    Price = Preis,
-                    Creation = Creation,
-                    Komponenten = new ObservableCollection<SharedZutat>()
-                });
-            }
-
-            Beschreibung = "";
-            Visibility = false;
-            Creation = false;
-            Preis = 0;
-
-            RaisePropertyChanged("Verpackungen");
-
-            // client. SaveList 
-
-            IsEditingProcess = false;
+            dataHanlder.DeleteVerpackung(v);
+            RefreshList();
         }
 
         private void SaveVerpackungsItem()
         {
-            foreach (var item in Verpackungen)
-            {
-                if (item.VerpackungsId == SelectedVerpackung.VerpackungsId)
-                {
-                    SelectedVerpackung.Komponenten.Add(new SharedZutat()
-                    {
-                        Beschreibung = SelectedVerpackungsteil,
-                        IsAvailable = true,
-                        Preis = 5,
-                        ZutatenId = Guid.NewGuid()
-                        
-                    });
-                    RaisePropertyChanged("item");
-                    break;
-                }
-            }
+            dataHanlder.CreateVerpackungskomponenten(SelectedVerpackung.VerpackungsId, SelectedVerpackungsteil);
             RaisePropertyChanged("SelectedVerpackung");
             RaisePropertyChanged("SelectedVerpackung.Komponenten");
             RaisePropertyChanged("Verpackungen");
 
-            VerpackungsKomponenten.Clear();
-            foreach (var item in SelectedVerpackung.Komponenten)
-            {
-                VerpackungsKomponenten.Add(item.Beschreibung);
-            }
-
-
             SelectedVerpackungsteil = "";
             SelectedVerpackungsArt = "";
+
+            RefreshList();
         }
 
 
@@ -269,54 +257,27 @@ namespace BackEndView.ViewModel
 
             Verpackungsteile.Clear();
 
-            if(SelectedVerpackungsArt.Contains("Karton"))
+            if (SelectedVerpackungsArt.Contains("Karton"))
             {
                 Verpackungsteile.Add("Blumenkarton");
                 Verpackungsteile.Add("Sternekarton");
                 Verpackungsteile.Add("weißer Karton");
-            } else
+            }
+            else
             {
                 Verpackungsteile.Add("Sternemasche");
                 Verpackungsteile.Add("Goldmasche");
                 Verpackungsteile.Add("Schleifchen");
             }
-
-            
-
         }
 
         private void KomponenteLöschen()
         {
 
-            foreach (var item in Verpackungen)
-            {
-                if (item.VerpackungsId == SelectedVerpackung.VerpackungsId)
-                {
-                    foreach (var teil in item.Komponenten)
-                    {
-                        if(teil.Beschreibung.Contains(SelectedLöschenVerpackungsteil))
-                        {
-                            item.Komponenten.Remove(teil);
-                            break;
-                        }
-                    }
+            dataHanlder.DeleteVerpackungskomponenten(SelectedVerpackung.VerpackungsId, SelectedLöschenVerpackungsteil);
 
-                }
-            }
-
-            //SelectedBestellung.Artikel.Remove(SelectedProdukt);
             RaisePropertyChanged("Verpackungen");
             SelectedLöschenVerpackungsteil = null;
-            SelectedVerpackung = null;
-            Beschreibung = "";
-            Visibility = false;
-            Creation = false;
-            Preis = 0;
-        }
-
-        private void RefreshList()
-        {
-            // je nachdem welche Filtermethode ausgewählt ist --> neu von DB laden  
         }
 
         private void CancelData()
@@ -329,6 +290,7 @@ namespace BackEndView.ViewModel
             Preis = 0;
             SelectedVerpackungsteil = "";
             SelectedVerpackungsArt = "";
+            VerpackungsKomponenten = null;
 
             IsEditingProcess = false;
 

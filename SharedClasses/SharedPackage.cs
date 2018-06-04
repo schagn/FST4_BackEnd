@@ -21,9 +21,9 @@ namespace SharedClasses
             set { beschreibung = value; RaisePropertyChanged(); }
         }
 
-        private double preis;
+        private double? preis;
 
-        public double Preis
+        public double? Preis
         {
             get { return preis; }
             set { preis = value; RaisePropertyChanged(); }
@@ -37,16 +37,16 @@ namespace SharedClasses
             set { kuchen = value; RaisePropertyChanged(); }
         }
 
-        private bool visible;
+        private bool? visible;
 
-        public bool Visible
+        public bool? Visible
         {
             get { return visible; }
             set { visible = value; RaisePropertyChanged(); }
         }
 
-        private bool creation;
-        public bool Creation
+        private bool? creation;
+        public bool? Creation
         {
             get { return creation; }
             set { creation = value; RaisePropertyChanged(); }
