@@ -84,9 +84,9 @@ namespace BackEndView.ViewModel
         public string SelectedKuchenArt
         {
             get { return selectedKuchenArt; }
-            set { selectedKuchenArt = value; RaisePropertyChanged();  }
+            set { selectedKuchenArt = value; RaisePropertyChanged(); RefreshKuchenList(); }
         }
-        //ChangeKuchenAuswahl();
+
         private string selectedKuchen;
 
         public string SelectedKuchen
@@ -139,12 +139,12 @@ namespace BackEndView.ViewModel
             Packages = new ObservableCollection<SharedPackage>();
 
             KuchenArten = new ObservableCollection<string>();
-            KuchenArten.Add("Kuchenkreationen");
             KuchenArten.Add("Standardkuchen");
+            KuchenArten.Add("Kuchenkreationen");
             SelectedKuchenArt = "Standardkuchen";
 
             //db
-            KuchenAuswahl = new ObservableCollection<string>(dataHandler.GetCakeTypes(SelectedKuchenArt));
+            
 
             PackageKomponenten = new ObservableCollection<string>();
 
@@ -173,6 +173,11 @@ namespace BackEndView.ViewModel
             IsEditingProcess = false;
 
             RefreshList(SelectedVisibilityFilter, SelectedCreationFilter);
+        }
+
+        public void RefreshKuchenList()
+        {
+            KuchenAuswahl = new ObservableCollection<string>(dataHandler.GetCakeTypes(SelectedKuchenArt));
         }
 
         private void RefreshList(string filterVisible, string filterCreation)
@@ -265,31 +270,6 @@ namespace BackEndView.ViewModel
             SelectedKuchenArt = "";
             SelectedKuchen = "";
         }
-
-
-        //private void ChangeKuchenAuswahl()
-        //{
-        //    //wenn vorher Karton ausgewählt und gespeichert, dann jetzt nicht mehr anzeigen
-        //    // jede Kategorie, die bereits in DB ist soll nicht mehr angezeigt werden 
-
-        //    KuchenAuswahl.Clear();
-
-        //    if (SelectedKuchenArt.Contains("Kuchenkreation"))
-        //    {
-        //        KuchenAuswahl.Add("Regenbogentorte");
-        //        KuchenAuswahl.Add("Himbeertiramisu");
-        //        KuchenAuswahl.Add("Pyramide");
-        //    }
-        //    else
-        //    {
-        //        KuchenAuswahl.Add("Sachertorte");
-        //        KuchenAuswahl.Add("Linzer Schnitte");
-        //        KuchenAuswahl.Add("Esterhazy Schnitte");
-        //    }
-
-
-
-        //}
 
         private void KomponenteLöschen()
         {

@@ -634,11 +634,11 @@ namespace DataRepository
         {
             if (art.Equals("Kuchenkreationen"))
             {
-                return model.article.Where(x => x.creation == true).Select(x => x.description).ToList();
+                return model.article.Where(x => x.creation == true && x.article_type.description.Equals("Kuchen")).Select(x => x.description).ToList();
             }
             else
             {
-                return model.article.Where(x => x.creation == false).Select(x => x.description).ToList();
+                return model.article.Where(x => x.creation == false && x.article_type.description.Equals("Kuchen")).Select(x => x.description).ToList();
             }
         }
 
@@ -672,6 +672,12 @@ namespace DataRepository
                 item.KuchenString = string.Join(", ", item.Kuchen);
             }
             return (package);
+        }
+
+        public void DeletePackage(SharedPackage tempPackage)
+        {
+            model.package.Remove(model.package.SingleOrDefault(x => x.package_id == tempPackage.PackageId));
+            model.SaveChanges();
         }
 
         #endregion
