@@ -66,7 +66,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Beschreibung" Binding="{Binding Beschreibung}"/>
                 <DataGridTextColumn Header="Preis" Binding="{Binding Preis}"/>
-                <DataGridTextColumn Header="Kategorien" Binding="{Binding Kategorie}" />
+                <DataGridTextColumn Header="Kategorien" Binding="{Binding KategorieString}" />
 
                 <DataGridTemplateColumn Header="Verfügbarkeit">
                     <DataGridTemplateColumn.CellTemplate>

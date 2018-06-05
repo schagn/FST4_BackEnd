@@ -36,13 +36,15 @@ namespace SharedClasses
             set { isAvailable = value; RaisePropertyChanged(); }
         }
 
-        private ObservableCollection<string> kategorie;
+        private List<string> kategorie;
 
-        public ObservableCollection<string> Kategorie
+        public List<string> Kategorie
         {
             get { return kategorie; }
             set { kategorie = value; }
         }
+
+        public string KategorieString { get; set; }
 
 
         public Guid ZutatenId { get; set; }

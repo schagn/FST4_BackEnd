@@ -29,9 +29,9 @@ namespace SharedClasses
             set { preis = value; RaisePropertyChanged(); }
         }
 
-        private ObservableCollection<SharedArticle> kuchen;
+        private List<string> kuchen;
 
-        public ObservableCollection<SharedArticle> Kuchen
+        public List<string> Kuchen
         {
             get { return kuchen; }
             set { kuchen = value; RaisePropertyChanged(); }
@@ -52,5 +52,6 @@ namespace SharedClasses
             set { creation = value; RaisePropertyChanged(); }
         }
 
+        public string KuchenString { get; set; }
     }
 }

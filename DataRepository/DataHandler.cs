@@ -196,20 +196,56 @@ namespace DataRepository
             return model.category.Select(x => x.description).ToList();
         }
 
-        //public List<string> GetIngredientCategories(SharedZutat sharedZutat)
-        //{
-        //    return model.ingredient.w
-        //}
-
-        public List<SharedZutat> GetZutat()
+        public List<SharedZutat> GetZutat(string filter)
         {
-            return model.ingredient.Select(x => new SharedZutat()
+            if (filter.Equals("Available"))
             {
-                ZutatenId = x.ingredient_id,
-                Beschreibung = x.description,
-                Preis = x.price,
-                IsAvailable = x.ing_available,
-            }).ToList();
+                var list = model.ingredient.Where(x => x.ing_available == true).Select(x => new SharedZutat()
+                {
+                    ZutatenId = x.ingredient_id,
+                    Beschreibung = x.description,
+                    Preis = x.price,
+                    IsAvailable = x.ing_available,
+                    Kategorie = x.category.Select(y => y.description).ToList()
+                }).ToList();
+                foreach (var item in list)
+                {
+                    item.KategorieString = string.Join(", ", item.Kategorie);
+                }
+                return list;
+            }
+            else if(filter.Equals("Not available"))
+            {
+                var list = model.ingredient.Where(x => x.ing_available == false).Select(x => new SharedZutat()
+                {
+                    ZutatenId = x.ingredient_id,
+                    Beschreibung = x.description,
+                    Preis = x.price,
+                    IsAvailable = x.ing_available,
+                    Kategorie = x.category.Select(y => y.description).ToList()
+                }).ToList();
+                foreach (var item in list)
+                {
+                    item.KategorieString = string.Join(", ", item.Kategorie);
+                }
+                return list;
+            }
+            else
+            {
+                var list = model.ingredient.Select(x => new SharedZutat()
+                {
+                    ZutatenId = x.ingredient_id,
+                    Beschreibung = x.description,
+                    Preis = x.price,
+                    IsAvailable = x.ing_available,
+                    Kategorie = x.category.Select(y => y.description).ToList()
+                }).ToList();
+                foreach (var item in list)
+                {
+                    item.KategorieString = string.Join(", ", item.Kategorie);
+                }
+                return list;
+            }
         }
 
         public void CreateZutat(SharedZutat tempZutat)
@@ -219,7 +255,6 @@ namespace DataRepository
                 ingredient_id = Guid.NewGuid(),
                 description = tempZutat.Beschreibung,
                 price = tempZutat.Preis,
-                //category
                 ing_available = tempZutat.IsAvailable
             };
 
@@ -227,11 +262,20 @@ namespace DataRepository
             model.SaveChanges();
         }
 
+        public void CreateZutatKategorie(SharedZutat tempZutat, List<string> categories)
+        {
+            //TODO
+        }
+
+        public void DeleteZutatKategorie(SharedZutat tempZutat, List<string> categories)
+        {
+            //TODO
+        }
+
         public void UpdateZutat(SharedZutat tempZutat)
         {
             var zutat = model.ingredient.SingleOrDefault(x => x.ingredient_id == tempZutat.ZutatenId);
             zutat.description = tempZutat.Beschreibung;
-            //zutat.category = model.category.SingleOrDefault(x => x.description.Equals(tempZutat.Kategorie));
             zutat.price = tempZutat.Preis;
             zutat.ing_available = tempZutat.IsAvailable;
 
@@ -586,21 +630,48 @@ namespace DataRepository
 
         #region Packages_verwalten
 
-        public List<SharedPackage> GetPackages(string filterVisible, string filterCreation)
+        public List<string> GetCakeTypes(string art)
         {
-            if (filterVisible.Equals("") && filterCreation.Equals(""))
+            if (art.Equals("Kuchenkreationen"))
             {
-
+                return model.article.Where(x => x.creation == true).Select(x => x.description).ToList();
             }
             else
             {
-                return model.package.Select(x => new SharedPackage()
-                {
-                    Beschreibung = x.description,
-                    //Creation = 
-                }).ToList();
+                return model.article.Where(x => x.creation == false).Select(x => x.description).ToList();
             }
-            return null;
+        }
+
+        public List<SharedPackage> GetPackages(string filterVisible, string filterCreation)
+        {
+            //if (filterVisible.Equals("Sichtbar & Nicht Sichtbar"))
+            //{
+            //    if (filterCreation.Equals("Kreation"))
+            //    {
+            //        //return model.package.Where(x => x.)
+            //    }
+            //}
+            //else
+            //{
+            //    return model.package.Select(x => new SharedPackage()
+            //    {
+            //        Beschreibung = x.description,
+            //        //Creation = 
+            //    }).ToList();
+            //}
+            var package = model.package.Select(x => new SharedPackage()
+            {
+                PackageId = x.package_id,
+                Beschreibung = x.description,
+                Preis = x.price,
+                Visible = x.pack_active,
+                Kuchen = x.article.Select(y => y.description).ToList()
+            }).ToList();
+            foreach (var item in package)
+            {
+                item.KuchenString = string.Join(", ", item.Kuchen);
+            }
+            return (package);
         }
 
         #endregion
@@ -794,6 +865,63 @@ namespace DataRepository
             model.SaveChanges();
         }
 
+        #endregion
+
+        #region Angebotsverwaltung
+
+        public List<SharedAngebot> GetAllSpecialOffers()
+        {
+            var offers = model.special_offer.Select(x => new SharedAngebot()
+            {
+                AngebotId = x.special_offer_id,
+                Code = x.code,
+                StartDatum = x.start_date,
+                EndDatum = x.end_date,
+                Prozent = x.percentage
+
+
+            }).ToList();
+
+            return offers;
+
+        }
+
+        public void AddNewSpecialOffer(SharedAngebot sOffer)
+        {
+
+            var specialOffer = new special_offer()
+            {
+                special_offer_id = Guid.NewGuid(),
+                code = sOffer.Code,
+                start_date = sOffer.StartDatum,
+                end_date = sOffer.EndDatum,
+                percentage = sOffer.Prozent
+
+            };
+
+            model.special_offer.Add(specialOffer);
+            model.SaveChanges();
+        }
+
+        public void UpdateSpecialOffer(SharedAngebot sOffer)
+        {
+
+            var specialOffer = model.special_offer.SingleOrDefault(x => x.special_offer_id.Equals(sOffer.AngebotId));
+
+            specialOffer.code = sOffer.Code;
+            specialOffer.start_date = sOffer.StartDatum;
+            specialOffer.end_date = sOffer.EndDatum;
+            specialOffer.percentage = sOffer.Prozent;
+
+            model.SaveChanges();
+        }
+
+        public void DeleteSpecialOffer(SharedAngebot sOffer)
+        {
+
+            model.special_offer.Remove(model.special_offer.SingleOrDefault(x => x.special_offer_id.Equals(sOffer.AngebotId)));
+            model.SaveChanges();
+        }
         #endregion
 
     }

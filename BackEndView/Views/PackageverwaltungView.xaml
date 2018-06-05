@@ -60,27 +60,7 @@
                 <DataGridTextColumn Header="Preis" Binding="{Binding Preis}" />
                 <DataGridCheckBoxColumn Header="Sichtbar" Binding="{Binding Visible}"/>
                 <DataGridCheckBoxColumn Header="Kreation" Binding="{Binding Creation}" />
-
-                <DataGridTemplateColumn Header="Artikeln">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ItemsControl ItemsSource="{Binding Kuchen}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel Orientation="Horizontal"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border BorderBrush="BlanchedAlmond" BorderThickness="0.5">
-                                            <Label Content="{Binding Description}"  />
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Artikel" Binding="{Binding KuchenString}" />
 
             </DataGrid.Columns>
         </DataGrid>

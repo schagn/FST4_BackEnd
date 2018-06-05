@@ -109,12 +109,8 @@ namespace BackEndView.ViewModel
                             //Kategorie = SelectedCategorie
                         });
                     }
-                    ZutatenName = "";
-                    ZutatenPreis = 0;
-                    SelectedCategorie = null;
-
-                    IsEditingProcess = false;
-                    RefreshList();
+                    CancelData();
+                    RefreshList(selectedFilterMethode);
                 });
 
 
@@ -126,34 +122,30 @@ namespace BackEndView.ViewModel
 
             CancelDataBtnClick = new RelayCommand(CancelData);
 
-            RefreshList();
-
             FilterMethoden = new ObservableCollection<string>();
             FilterMethoden.Add("Available");
             FilterMethoden.Add("Not available");
             FilterMethoden.Add("Alle");
 
+            SelectedFilterMethode = "Alle";
+
+            Categories = new ObservableCollection<string>(dataHandler.GetCategories());
+            RefreshList(selectedFilterMethode);
 
             IsEditingProcess = false;
         }
 
-        private void RefreshList()
-        {
-            Zutaten = new ObservableCollection<SharedZutat>(dataHandler.GetZutat());
-            Categories = new ObservableCollection<string>(dataHandler.GetCategories());
-            RaisePropertyChanged("Zutaten");
-        }
-
         private void RefreshList(string selectedFilterMethode)
         {
-            // je nachdem welche Filtermethode ausgewählt ist --> neu von DB laden  
+            Zutaten = new ObservableCollection<SharedZutat>(dataHandler.GetZutat(SelectedFilterMethode));
+            RaisePropertyChanged("Zutaten");
         }
 
         private void EditZutat()
         {
             ZutatenName = SelectedZutat.Beschreibung;
             ZutatenPreis = SelectedZutat.Preis;
-            SelectedCategorie = SelectedZutat.Kategorie;
+            //SelectedCategorie = new ObservableCollection<string>(SelectedZutat.Kategorie);
             Visibility = SelectedZutat.IsAvailable;
 
             IsEditingProcess = true;
@@ -162,7 +154,7 @@ namespace BackEndView.ViewModel
         private void DeleteSelectedProduct(SharedZutat p)
         {
             dataHandler.DeleteZutat(p);
-            RefreshList();
+            RefreshList(selectedFilterMethode);
         }
 
         private void CancelData()
