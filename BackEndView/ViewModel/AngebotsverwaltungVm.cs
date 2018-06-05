@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using DataRepository;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using SharedClasses;
 using System;
@@ -30,46 +31,47 @@ namespace BackEndView.ViewModel {
             set { code = value; RaisePropertyChanged(); }
         }
 
-        private double prozent;
+        private double? prozent;
 
-        public double Prozent
+        public double? Prozent
         {
             get { return prozent; }
             set { prozent = value; RaisePropertyChanged(); }
         }
 
-        private DateTime startDatum;
+        private DateTime? startDatum;
 
-        public DateTime StartDatum
+        public DateTime? StartDatum
         {
             get { return startDatum; }
             set { startDatum = value; RaisePropertyChanged(); }
         }
 
-        private DateTime endDatum;
+        private DateTime? endDatum;
 
-        public DateTime EndDatum
+        public DateTime? EndDatum
         {
             get { return endDatum; }
             set { endDatum = value; RaisePropertyChanged(); }
         }
 
-        private ObservableCollection<SharedArticle> produkte;
+        /*private ObservableCollection<SharedArticle> produkte;
    
         public ObservableCollection<SharedArticle> Produkte
         {
             get { return produkte; }
             set { produkte = value; RaisePropertyChanged(); }
-        }
+        }*/
 
 
-        private SharedArticle selectedProdukt;
+        /*private SharedArticle selectedProdukt;
 
         public SharedArticle SelectedProdukt
         {
             get { return selectedProdukt; }
             set { selectedProdukt = value; RaisePropertyChanged(); }
         }
+        */
 
         private SharedAngebot selectedAngebot;
 
@@ -91,11 +93,13 @@ namespace BackEndView.ViewModel {
 
         bool IsEditingProcess;
 
+        private DataHandler dh;
+
         public AngebotsverwaltungVm()
         {
-            Angebote = new ObservableCollection<SharedAngebot>();
-            Produkte = new ObservableCollection<SharedArticle>();
-            // Produkt befüllen - ACHTUNG sind nur die Kuchen 
+            dh = new DataHandler();
+
+            Angebote = new ObservableCollection<SharedAngebot>(dh.GetAllSpecialOffers());
 
             EditAngebotBtnClick = new RelayCommand(EditAngebot);
 
@@ -115,6 +119,7 @@ namespace BackEndView.ViewModel {
             IsEditingProcess = false;
 
             FilterMethoden = new ObservableCollection<string>();
+            FilterMethoden.Add("Alle");
             FilterMethoden.Add("Aktuell");
             FilterMethoden.Add("Vergangenheit");
             FilterMethoden.Add("Zukunft");
@@ -127,7 +132,7 @@ namespace BackEndView.ViewModel {
             Prozent = SelectedAngebot.Prozent;
             StartDatum = SelectedAngebot.StartDatum;
             EndDatum = SelectedAngebot.EndDatum;
-            SelectedProdukt = SelectedAngebot.Produkt;
+           
             //Produkt darf hier nicht änderbar sein !!!!! 
             //Combobox List leer??
 
@@ -146,49 +151,73 @@ namespace BackEndView.ViewModel {
         {
             if (IsEditingProcess == true)
             {
-                foreach (var item in Angebote)
-                {
-                    if (item.AngebotId == SelectedAngebot.AngebotId)
-                    {
-                        item.Code = Code;
-                        item.Prozent = Prozent;
-                        item.StartDatum = StartDatum;
-                        item.EndDatum = EndDatum;
-                        
-                    }
-                }
+                SelectedAngebot.Code = Code;
+                SelectedAngebot.StartDatum = StartDatum;
+                SelectedAngebot.EndDatum = EndDatum;
+                SelectedAngebot.Prozent = Prozent;
+                dh.UpdateSpecialOffer(SelectedAngebot);
             }
             else
             {
-                Angebote.Add(new SharedAngebot()
+
+                dh.AddNewSpecialOffer(new SharedAngebot()
                 {
-                    AngebotId = Guid.NewGuid(),
-                    StartDatum = StartDatum,
-                    EndDatum = EndDatum,
-                    Prozent = Prozent,
-                    Code = Code,
-                    Produkt = SelectedProdukt
+                    Code = this.Code,
+                    StartDatum = this.StartDatum,
+                    EndDatum = this.EndDatum,
+                    Prozent = this.Prozent
 
                 });
+                
             }
 
             Code = "";
             Prozent = 0;
             StartDatum = DateTime.Today;
             EndDatum = DateTime.Today;
-            SelectedProdukt = null;
-
-            RaisePropertyChanged("Angebote");
-
-
-            // client. SaveList 
+            //SelectedProdukt = null;
+            
+            ReloadListFromDatabase();
 
             IsEditingProcess = false;
         }
 
         private void RefreshList(string selectedFilterMethode)
         {
-            // je nachdem welche Filtermethode ausgewählt ist --> neu von DB laden  
+            if (SelectedFilterMethode.Equals("Alle"))
+            {
+                ReloadListFromDatabase();
+
+            }
+            else
+            {
+                ReloadListFromDatabase();
+               
+
+                foreach (var item in FilterListByTime())
+                {
+
+                    Angebote.Add(item);
+                }
+                
+                
+
+
+            }
+
+        }
+
+        private void ReloadListFromDatabase()
+        {
+
+
+            Angebote.Clear();
+
+            foreach (var item in dh.GetAllSpecialOffers())
+            {
+                Angebote.Add(item);
+            }
+
         }
 
         private void CancelData()
@@ -198,9 +227,28 @@ namespace BackEndView.ViewModel {
             StartDatum = DateTime.Today;
             EndDatum = DateTime.Today;
             SelectedAngebot = null;
-            SelectedProdukt = null;
+            //SelectedProdukt = null;
 
             IsEditingProcess = false;
+
+        }
+
+        private List<SharedAngebot> FilterListByTime()
+        {
+            var newList = new List<SharedAngebot>();
+            DateTime today = DateTime.Today;
+            
+
+            if (SelectedFilterMethode.Equals("Aktuell")) newList = Angebote.Where(x => (DateTime.Compare(today,x.StartDatum.GetValueOrDefault()) > 0) && (DateTime.Compare(today,x.EndDatum.GetValueOrDefault()) < 0)).ToList();
+
+            if (SelectedFilterMethode.Equals("Vergangenheit")) newList = Angebote.Where(y => (DateTime.Compare(today,y.EndDatum.GetValueOrDefault()) > 0)).ToList();
+
+            if (SelectedFilterMethode.Equals("Zukunft")) newList = Angebote.Where(z => (DateTime.Compare(today,z.StartDatum.GetValueOrDefault()) < 0)).ToList();
+
+            Angebote.Clear();
+
+            return newList;
+                    
 
         }
 

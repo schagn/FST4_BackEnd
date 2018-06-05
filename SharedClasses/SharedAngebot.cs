@@ -19,37 +19,37 @@ namespace SharedClasses
             set { code = value; RaisePropertyChanged(); }
         }
 
-        private DateTime startDatum;
+        private DateTime? startDatum;
 
-        public DateTime StartDatum
+        public DateTime? StartDatum
         {
             get { return startDatum; }
             set { startDatum = value; RaisePropertyChanged(); }
         }
 
-        private DateTime endDatum;
+        private DateTime? endDatum;
 
-        public DateTime EndDatum
+        public DateTime? EndDatum
         {
             get { return endDatum; }
             set { endDatum = value; RaisePropertyChanged(); }
         }
 
-        private double prozent;
+        private double? prozent;
 
-        public double Prozent
+        public double? Prozent
         {
             get { return prozent; }
             set { prozent = value; RaisePropertyChanged(); }
         }
 
-        private SharedArticle produkt;
+       // private SharedArticle produkt;
 
-        public SharedArticle Produkt
+        /*public SharedArticle Produkt
         {
             get { return produkt; }
             set { produkt = value; RaisePropertyChanged(); }
-        }
+        }*/
 
 
     }

@@ -149,7 +149,7 @@
             <PropertyRef Name="special_offer_id" />
           </Key>
           <Property Name="special_offer_id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="code" Type="nvarchar" MaxLength="10" />
+          <Property Name="code" Type="nvarchar" MaxLength="55" />
           <Property Name="start_date" Type="date" />
           <Property Name="end_date" Type="date" />
           <Property Name="percentage" Type="float" />
@@ -625,7 +625,7 @@
             <PropertyRef Name="special_offer_id" />
           </Key>
           <Property Name="special_offer_id" Type="Guid" Nullable="false" />
-          <Property Name="code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="code" Type="String" MaxLength="55" FixedLength="false" Unicode="true" />
           <Property Name="start_date" Type="DateTime" Precision="0" />
           <Property Name="end_date" Type="DateTime" Precision="0" />
           <Property Name="percentage" Type="Double" />
