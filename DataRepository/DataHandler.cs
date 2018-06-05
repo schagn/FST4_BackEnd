@@ -438,6 +438,24 @@ namespace DataRepository
 
         }
 
+        public SharedEmailCustomer GetEmailCustomerForOrder(SharedBestellung ord)
+        {
+
+            var mailCusomter = model.order.Where(x => x.order_id.Equals(ord.BestellId)).Select(y => new SharedEmailCustomer()
+            {
+                email = y.person.e_mail,
+                firstname = y.person.firstname,
+                lastname = y.person.lastname
+                
+
+
+            }).SingleOrDefault();
+
+            return mailCusomter;
+
+
+        }
+            
         #endregion
 
         #region Kundenverwaltung

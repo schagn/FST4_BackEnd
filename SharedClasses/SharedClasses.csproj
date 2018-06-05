@@ -61,6 +61,7 @@
     <Compile Include="SharedBestellung.cs" />
     <Compile Include="SharedBewertung.cs" />
     <Compile Include="SharedCity.cs" />
+    <Compile Include="SharedEmailCustomer.cs" />
     <Compile Include="SharedIngredient.cs" />
     <Compile Include="SharedArticle.cs" />
     <Compile Include="SharedKategorie.cs" />

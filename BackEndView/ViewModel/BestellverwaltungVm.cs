@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Utilities;
 
 namespace BackEndView.ViewModel
 {
@@ -118,6 +118,8 @@ namespace BackEndView.ViewModel
 
             SaveBestellungBtnClick = new RelayCommand(SaveBestellung);
 
+            KundeKontaktierenBtnClick = new RelayCommand(ContactCustomer);
+
 
             DeleteBestellungBtnClick = new RelayCommand(
                 () =>
@@ -134,6 +136,17 @@ namespace BackEndView.ViewModel
 
             FilterMethoden = new ObservableCollection<string>(Bestellstatusse);
             FilterMethoden.Add("Alle");
+
+        }
+
+        private void ContactCustomer()
+        {
+           if(SelectedBestellung != null && SelectedProdukt != null)
+            {
+
+                CustomerMailService.InformCustomerAboutDelay(SelectedBestellung, dh.GetEmailCustomerForOrder(SelectedBestellung), SelectedProdukt);
+            }
+
 
         }
 

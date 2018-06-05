@@ -226,6 +226,10 @@
       <Project>{92E4448C-6E44-4FBE-ABE3-C8B8AF6AF44F}</Project>
       <Name>SharedClasses</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{0c889581-3f27-4e9d-96af-3b26471ef93a}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Sterne1.JPG" />
