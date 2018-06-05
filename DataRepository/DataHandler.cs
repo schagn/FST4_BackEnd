@@ -453,7 +453,12 @@ namespace DataRepository
 
             return mailCusomter;
 
+        }
 
+        public void DeleteProductFromOrder(Guid orderId, Guid productId)
+        {
+            model.order_has_articles.Remove(model.order_has_articles.SingleOrDefault(x=> x.order_id.Equals(orderId) && x.article_id.Equals(productId)));
+            model.SaveChanges();
         }
             
         #endregion

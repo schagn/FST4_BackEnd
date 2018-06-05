@@ -151,9 +151,20 @@ namespace BackEndView.ViewModel
         }
 
 
-        // TODO: mit Gollner klären ob notwendig
+        
         private void ProduktLöschen()
         {
+            if(SelectedBestellung != null && SelectedProdukt != null)
+            {
+
+                Guid pId = GetIdForProduct(SelectedProdukt);
+                dh.DeleteProductFromOrder(SelectedBestellung.BestellId, pId);
+                SelectedBestellungProdukte = new ObservableCollection<SharedOrderArticle>(SelectedBestellung.Artikel);
+                GetSelectedBestellungProduktnamen();
+                RefreshOrders();
+                CancelData();
+            }
+
 
 
 
@@ -164,6 +175,7 @@ namespace BackEndView.ViewModel
             SelectedStatus = SelectedBestellung.Bestellstatus;
             BestellDatum = SelectedBestellung.BestellDatum.ToString();
             BestellNummer = SelectedBestellung.BestellId.ToString();
+            SelectedBestellungProdukte =  new ObservableCollection<SharedOrderArticle>(SelectedBestellung.Artikel);
             GetSelectedBestellungProduktnamen();
 
 
@@ -183,6 +195,8 @@ namespace BackEndView.ViewModel
             }
         }
 
+
+        // TODO: mit Gollner klären ob notwendig
         private void DeleteSelectedBestellung(SharedBestellung b)
         {
             //client.deleteZutat
@@ -258,6 +272,18 @@ namespace BackEndView.ViewModel
             SelectedProdukt = null;
 
            
+        }
+
+        private Guid GetIdForProduct(string name)
+        {
+            Guid id = Guid.NewGuid();
+
+            foreach (var item in SelectedBestellungProdukte)
+            {
+                if (item.name.Equals(name)) id = item.id;
+
+            }
+            return id;
         }
 
     }
