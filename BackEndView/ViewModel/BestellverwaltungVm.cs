@@ -113,7 +113,6 @@ namespace BackEndView.ViewModel
             Bestellstatusse.Add("abgebrochen");
             Bestellstatusse.Add("abgeschlossen");
 
-
             EditBestellungBtnClick = new RelayCommand(EditBestellung);
 
             SaveBestellungBtnClick = new RelayCommand(SaveBestellung);
@@ -188,9 +187,11 @@ namespace BackEndView.ViewModel
                 SelectedBestellungProduktnamen = new ObservableCollection<string>();
             }
 
+            SelectedBestellungProduktnamen.Clear();
+
             foreach (var item in selectedBestellung.Artikel)
             {
-
+                
                 SelectedBestellungProduktnamen.Add(item.name);
             }
         }
