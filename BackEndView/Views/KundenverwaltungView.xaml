@@ -116,7 +116,7 @@
                 <!--<DataGridTextColumn Header="Passwort" Binding="{Binding Passwort}"/>-->
                 <DataGridCheckBoxColumn Header="Geschäftskunde" Binding="{Binding IsBusinessCustomer}" />
                 <DataGridTextColumn Header="UID" Binding="{Binding UID}" />
-                <DataGridCheckBoxColumn Header="Geschäftskunde" Binding="{Binding IsVisible}" />
+                <DataGridCheckBoxColumn Header="Visible" Binding="{Binding IsVisible}" />
 
             </DataGrid.Columns>
         </DataGrid>

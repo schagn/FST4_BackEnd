@@ -17,7 +17,6 @@
                     <ColumnDefinition Width="100*"/>
                     <ColumnDefinition Width="140*"/>
                     <ColumnDefinition Width="100*"/>
-                    <ColumnDefinition Width="140*"/>
                     <ColumnDefinition Width="100*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -35,9 +34,9 @@
                 <Label Content="{Binding BestellDatum}" Grid.Row="2" Grid.Column="3"/>
 
                 <Label Content="Bestellstatus:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" FontWeight="Bold"/>
-                <ComboBox Width="130" Height="20" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Bestellstatusse}" SelectedItem="{Binding SelectedStatus}"/>
+                <ComboBox Width="130" Height="20" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Bestellstatusse}" SelectedItem="{Binding SelectedStatus}" HorizontalAlignment="Left" Margin="10,0,0,0"/>
                 <Label Content="Produkte:" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right" FontWeight="Bold"/>
-                <ComboBox Width="130" Height="20" Grid.Row="3" Grid.Column="3" ItemsSource="{Binding SelectedBestellungProduktnamen,UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedProdukt}"/>
+                <ComboBox Width="130" Height="20" Grid.Row="3" Grid.Column="3" ItemsSource="{Binding SelectedBestellungProduktnamen,UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedProdukt}" HorizontalAlignment="Left" Margin="10,0,0,0"/>
 
 
             </Grid>

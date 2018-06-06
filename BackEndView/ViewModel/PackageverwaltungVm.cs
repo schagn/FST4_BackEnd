@@ -150,7 +150,29 @@ namespace BackEndView.ViewModel
 
             EditPackageBtnClick = new RelayCommand(EditPackage);
 
-            SavePackageBtnClick = new RelayCommand(SavePackage);
+            SavePackageBtnClick = new RelayCommand(
+                () =>
+                {
+                    if (IsEditingProcess)
+                    {
+                        SelectedPackage.Beschreibung = Beschreibung;
+                        SelectedPackage.Preis = Preis;
+                        SelectedPackage.Visible = Visibility;
+                        dataHandler.UpdatePackage(SelectedPackage);
+                    }
+                    else
+                    {
+                        dataHandler.CreatePackage(new SharedPackage()
+                        {
+                            PackageId = Guid.NewGuid(),
+                            Beschreibung = Beschreibung,
+                            Preis = Preis,
+                            Visible = Visibility
+                        });
+                    }
+                    CancelData();
+                    RefreshList(SelectedVisibilityFilter, SelectedCreationFilter);
+                });
 
 
             DeletePackageBtnClick = new RelayCommand(
@@ -192,9 +214,13 @@ namespace BackEndView.ViewModel
             Beschreibung = SelectedPackage.Beschreibung;
             Visibility = SelectedPackage.Visible;
             Preis = SelectedPackage.Preis;
-            foreach (var item in SelectedPackage.Kuchen)
+            if(SelectedPackage.Kuchen == null)
             {
-                PackageKomponenten.Add(item);
+                foreach (var item in SelectedPackage.Kuchen)
+                {
+                    PackageKomponenten.Add(item);
+                }
+
             }
 
             IsEditingProcess = true;
@@ -202,9 +228,8 @@ namespace BackEndView.ViewModel
 
         private void DeleteSelectedPackage(SharedPackage p)
         {
-            //client.deleteZutat
-            //client Zutaten neu abfragen
-            Packages.Remove(p);
+            dataHandler.DeletePackage(p);
+            RefreshList(SelectedVisibilityFilter, SelectedCreationFilter);
             RaisePropertyChanged("Packages");
         }
 
@@ -248,27 +273,7 @@ namespace BackEndView.ViewModel
 
         private void SavePackageItem()
         {
-            foreach (var item in Packages)
-            {
-                if (item.PackageId == SelectedPackage.PackageId)
-                {
-                    SelectedPackage.Kuchen.Add("test");
-                    RaisePropertyChanged("item");
-                    break;
-                }
-            }
-            RaisePropertyChanged("SelectedPackage");
-            RaisePropertyChanged("Packages");
-
-            PackageKomponenten.Clear();
-            foreach (var item in SelectedPackage.Kuchen)
-            {
-                PackageKomponenten.Add(item);
-            }
-
-            
-            SelectedKuchenArt = "";
-            SelectedKuchen = "";
+            //dataHandler
         }
 
         private void KomponenteLöschen()

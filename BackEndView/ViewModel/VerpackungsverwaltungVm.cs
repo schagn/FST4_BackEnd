@@ -160,27 +160,18 @@ namespace BackEndView.ViewModel
                         {
                             SelectedVerpackung.Komponenten.Add(item);
                         }
-                        foreach (var item in SelectedVerpackung.Komponenten)
-                        {
-                            dataHanlder.DeleteVerpackungskomponenten(SelectedVerpackung.VerpackungsId, item);
-                        }
-                        dataHanlder.DeleteVerpackung(SelectedVerpackung);
-                        dataHanlder.SaveVerpackung(SelectedVerpackung, "");
-                        foreach(var item in SelectedVerpackung.Komponenten)
-                        {
-                            dataHanlder.CreateVerpackungskomponenten(SelectedVerpackung.VerpackungsId, item);
-                        }
+                        dataHanlder.UpdateVerpackung(SelectedVerpackung);
                     }
                     else
                     {
-                        dataHanlder.SaveVerpackung(new SharedVerpackung()
+                        dataHanlder.CreateVerpackung(new SharedVerpackung()
                         {
                             VerpackungsId = Guid.NewGuid(),
                             Description = Beschreibung,
                             Price = Preis,
                             Creation = Creation,
                             Visible = Visibility
-                        }, "create");
+                        });
                     }
                     CancelData();
                     RefreshList();

@@ -255,7 +255,8 @@ namespace DataRepository
                 ingredient_id = Guid.NewGuid(),
                 description = tempZutat.Beschreibung,
                 price = tempZutat.Preis,
-                ing_available = tempZutat.IsAvailable
+                ing_available = tempZutat.IsAvailable,
+                //category = tempZutat.Kategorie
             };
 
             model.ingredient.Add(zutat);
@@ -509,7 +510,6 @@ namespace DataRepository
 
         #region Kundenverwaltung
 
-
         public List<SharedKunde> GetAllCustomers()
         {
 
@@ -674,6 +674,29 @@ namespace DataRepository
             return (package);
         }
 
+        public void CreatePackage(SharedPackage tempPackage)
+        {
+            model.package.Add(new package()
+            {
+                package_id = tempPackage.PackageId,
+                description = tempPackage.Beschreibung,
+                price = tempPackage.Preis,
+                pack_active = tempPackage.Visible
+            });
+            model.SaveChanges();
+        }
+
+        public void UpdatePackage(SharedPackage tempPackage)
+        {
+            var package = model.package.SingleOrDefault(x => x.package_id == tempPackage.PackageId);
+
+            package.description = tempPackage.Beschreibung;
+            package.price = tempPackage.Preis;
+            package.pack_active = tempPackage.Visible;
+
+            model.SaveChanges();
+        }
+
         public void DeletePackage(SharedPackage tempPackage)
         {
             model.package.Remove(model.package.SingleOrDefault(x => x.package_id == tempPackage.PackageId));
@@ -690,7 +713,7 @@ namespace DataRepository
             {
                 if (filterCreation.Equals("Kreation"))
                 {
-                    return model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.creation == true).Select(x => new SharedVerpackung()
+                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.creation == true).Select(x => new SharedVerpackung()
                     {
                         VerpackungsId = x.article_id,
                         Description = x.description,
@@ -699,10 +722,15 @@ namespace DataRepository
                         Visible = x.visible,
                         Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
                     }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KomponentenString = string.Join(", ", item.Komponenten);
+                    }
+                    return list;
                 }
                 else if(filterCreation.Equals("Nicht Kreation"))
                 {
-                    return model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.creation == false).Select(x => new SharedVerpackung()
+                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.creation == false).Select(x => new SharedVerpackung()
                     {
                         VerpackungsId = x.article_id,
                         Description = x.description,
@@ -711,10 +739,15 @@ namespace DataRepository
                         Visible = x.visible,
                         Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
                     }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KomponentenString = string.Join(", ", item.Komponenten);
+                    }
+                    return list;
                 }
                 else
                 {
-                    return model.article.Where(x => x.article_type.description.Equals("Verpackung")).Select(x => new SharedVerpackung()
+                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung")).Select(x => new SharedVerpackung()
                     {
                         VerpackungsId = x.article_id,
                         Description = x.description,
@@ -723,12 +756,17 @@ namespace DataRepository
                         Visible = x.visible,
                         Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
                     }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KomponentenString = string.Join(", ", item.Komponenten);
+                    }
+                    return list;
                 }
             }else if (filterVisible.Equals("Sichtbar"))
             {
                 if (filterCreation.Equals("Kreation"))
                 {
-                    return model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == true && x.creation == true).Select(x => new SharedVerpackung()
+                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == true && x.creation == true).Select(x => new SharedVerpackung()
                     {
                         VerpackungsId = x.article_id,
                         Description = x.description,
@@ -737,10 +775,15 @@ namespace DataRepository
                         Visible = x.visible,
                         Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
                     }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KomponentenString = string.Join(", ", item.Komponenten);
+                    }
+                    return list;
                 }
                 else if (filterCreation.Equals("Nicht Kreation"))
                 {
-                    return model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == true && x.creation == false).Select(x => new SharedVerpackung()
+                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == true && x.creation == false).Select(x => new SharedVerpackung()
                     {
                         VerpackungsId = x.article_id,
                         Description = x.description,
@@ -749,10 +792,15 @@ namespace DataRepository
                         Visible = x.visible,
                         Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
                     }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KomponentenString = string.Join(", ", item.Komponenten);
+                    }
+                    return list;
                 }
                 else
                 {
-                    return model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == true).Select(x => new SharedVerpackung()
+                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == true).Select(x => new SharedVerpackung()
                     {
                         VerpackungsId = x.article_id,
                         Description = x.description,
@@ -761,12 +809,17 @@ namespace DataRepository
                         Visible = x.visible,
                         Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
                     }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KomponentenString = string.Join(", ", item.Komponenten);
+                    }
+                    return list;
                 }
             }else if (filterVisible.Equals("Nicht Sichtbar"))
             {
                 if (filterCreation.Equals("Kreation"))
                 {
-                    return model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == false && x.creation == true).Select(x => new SharedVerpackung()
+                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == false && x.creation == true).Select(x => new SharedVerpackung()
                     {
                         VerpackungsId = x.article_id,
                         Description = x.description,
@@ -775,10 +828,15 @@ namespace DataRepository
                         Visible = x.visible,
                         Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
                     }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KomponentenString = string.Join(", ", item.Komponenten);
+                    }
+                    return list;
                 }
                 else if (filterCreation.Equals("Nicht Kreation"))
                 {
-                    return model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == false && x.creation == false).Select(x => new SharedVerpackung()
+                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == false && x.creation == false).Select(x => new SharedVerpackung()
                     {
                         VerpackungsId = x.article_id,
                         Description = x.description,
@@ -787,10 +845,15 @@ namespace DataRepository
                         Visible = x.visible,
                         Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
                     }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KomponentenString = string.Join(", ", item.Komponenten);
+                    }
+                    return list;
                 }
                 else
                 {
-                    return model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == false).Select(x => new SharedVerpackung()
+                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == false).Select(x => new SharedVerpackung()
                     {
                         VerpackungsId = x.article_id,
                         Description = x.description,
@@ -799,11 +862,16 @@ namespace DataRepository
                         Visible = x.visible,
                         Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
                     }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KomponentenString = string.Join(", ", item.Komponenten);
+                    }
+                    return list;
                 }
             }
             else
             {
-                return model.article.Where(x => x.article_type.description.Equals("Verpackung")).Select(x => new SharedVerpackung()
+                var list = model.article.Where(x => x.article_type.description.Equals("Verpackung")).Select(x => new SharedVerpackung()
                 {
                     VerpackungsId = x.article_id,
                     Description = x.description,
@@ -812,41 +880,42 @@ namespace DataRepository
                     Visible = x.visible,
                     Komponenten = x.article_has_ingredient.Select(y => y.ingredient.description).ToList()
                 }).ToList();
+                foreach (var item in list)
+                {
+                    item.KomponentenString = string.Join(", ", item.Komponenten);
+                }
+                return list;
             }
         }
 
-        public void SaveVerpackung(SharedVerpackung tempVerpackung, string method)
+        public void CreateVerpackung(SharedVerpackung tempVerpackung)
         {
-            if (method.Equals("create"))
-            {
-                var verpackung = new article()
-                {
-                    article_id = Guid.NewGuid(),
-                    article_type = model.article_type.SingleOrDefault(x => x.description.Equals("Verpackung")),
-                    description = tempVerpackung.Description,
-                    price = tempVerpackung.Price,
-                    creation = tempVerpackung.Creation,
-                    //shape_id = null,
-                    visible = tempVerpackung.Visible
-                };
-                model.article.Add(verpackung);
-                model.SaveChanges();
-            }
-            else
-            {
-                var verpackung = new article()
-                {
-                    article_id = tempVerpackung.VerpackungsId,
-                    article_type = model.article_type.SingleOrDefault(x => x.description.Equals("Verpackung")),
-                    description = tempVerpackung.Description,
-                    price = tempVerpackung.Price,
-                    creation = tempVerpackung.Creation,
-                    //shape_id = null,
-                    visible = tempVerpackung.Visible
-                };
-                model.article.Add(verpackung);
-                model.SaveChanges();
-            }
+             var verpackung = new article()
+             {
+                 article_id = tempVerpackung.VerpackungsId,
+                 article_type = model.article_type.SingleOrDefault(x => x.description.Equals("Verpackung")),
+                 description = tempVerpackung.Description,
+                 price = tempVerpackung.Price,
+                 creation = tempVerpackung.Creation,
+                 //shape_id = null,
+                 visible = tempVerpackung.Visible
+             };
+             model.article.Add(verpackung);
+             model.SaveChanges();        
+        }
+
+        public void UpdateVerpackung(SharedVerpackung tempVerpackung)
+        {
+            var verpackung = model.article.SingleOrDefault(x => x.article_id == tempVerpackung.VerpackungsId);
+            verpackung.article_id = tempVerpackung.VerpackungsId;
+            verpackung.article_type = model.article_type.SingleOrDefault(x => x.description.Equals("Verpackung"));
+            verpackung.description = tempVerpackung.Description;
+            verpackung.price = tempVerpackung.Price;
+            verpackung.creation = tempVerpackung.Creation;
+            //shape_id = null,
+            verpackung.visible = tempVerpackung.Visible;
+
+            model.SaveChanges();
         }
 
         public void CreateVerpackungskomponenten(Guid Id, string Komponente)

@@ -48,6 +48,8 @@ namespace SharedClasses
             set { komponenten = value; RaisePropertyChanged(); }
         }
 
+        public string KomponentenString { get; set; }
+
 
     }
 }
