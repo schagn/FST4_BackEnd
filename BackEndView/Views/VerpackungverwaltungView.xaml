@@ -28,7 +28,7 @@
                 </Grid.RowDefinitions>
 
                 <Label Content="Verpackung hinzufügen oder ändern:" FontStyle="Oblique" Grid.Row="1" Margin="0,0.333,89.667,0.333" Grid.ColumnSpan="2"/>
-                <Label Content="Komponente hinzufügen:" FontStyle="Oblique" Grid.Row="1" Margin="0,34.333,33.333,27.667" Grid.RowSpan="3"/>
+                <Label Content="Komponente auswählen:" FontStyle="Oblique" Grid.Row="1" Margin="0,34.333,33.333,27.667" Grid.RowSpan="3"/>
                 <Label Content="Komponente löschen:" FontStyle="Oblique" Grid.Row="3" Margin="0,0,33.333,28" Grid.RowSpan="2"/>
                 <Label Content="Beschreibung:" Grid.Row="1" Grid.Column="1" Width="84" VerticalAlignment="Center" HorizontalAlignment="Right" Height="26" Margin="0,4.333,0.333,4.333"/>
                 <TextBox Text="{Binding Beschreibung}" Width="120" Grid.Row="1" Grid.Column="2" Margin="7.667,6.333,8.667,6.333" />
@@ -40,10 +40,12 @@
                 <CheckBox Grid.Row="1" Grid.Column="6" IsChecked="{Binding Creation}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
 
-                <Label Content="Art:" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"/>
-                <ComboBox Width="120" Height="20" Grid.Row="2" Grid.Column="2" ItemsSource="{Binding VerpackungsArten}" SelectedItem="{Binding SelectedVerpackungsArt}"/>
-                <Label Content="Beschreibung:" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Right"/>
-                <ComboBox Width="120" Height="20" Grid.Row="2" Grid.Column="4" ItemsSource="{Binding Verpackungsteile}" SelectedItem="{Binding SelectedVerpackungsteil}" />
+                <Label Content="Karton:" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"/>
+                <ComboBox Width="120" Height="20" Grid.Row="2" Grid.Column="2" ItemsSource="{Binding Kartons}" SelectedItem="{Binding SelectedKarton}"/>
+                <Label Content="Masche:" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Right"/>
+                <ComboBox Width="120" Height="20" Grid.Row="2" Grid.Column="4" ItemsSource="{Binding Maschen}" SelectedItem="{Binding SelectedMasche}" />
+                <Label Content="Sticker:" Grid.Row="2" Grid.Column="5" HorizontalAlignment="Left"/>
+                <ComboBox Width="120" Height="20" Grid.Row="2" Grid.Column="5" Grid.ColumnSpan="2" Margin="25,0,0,0" ItemsSource="{Binding Sticker}" SelectedItem="{Binding SelectedSticker}" />
 
                 <Label Content="Komponenten:" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right"/>
                 <ComboBox Width="120" Height="20" Grid.Row="3" Grid.Column="2" ItemsSource="{Binding KomponentenString}" SelectedItem="{Binding SelectedLöschenVerpackungsteil}"/>
@@ -116,8 +118,8 @@
         </Border>
         <Button Content="Speichern" Width="150" Height="30" Command="{Binding SaveVerpackungBtnClick}" Margin="778,144,22,376"/>
         <Button Content="Abbrechen" Width="150" Height="30" Command="{Binding CancelDataBtnClick}" Margin="605,144,195,376"/>
-        <Button Content="Komponente löschen" Width="140" Height="30" Command="{Binding KomponenteLöschenBtnClick}" Margin="253,144,527,376"/>
-        <Button Content="Komponente hinzufügen" Width="140" Height="30" Command="{Binding SaveVerpackungsItemBtnClick }" Margin="428,144,368,376"/>
+        <Button Content="Komponente löschen" Width="140" Height="30" Command="{Binding KomponenteLöschenBtnClick}" Margin="428,144,368,376"/>
+        <!--<Button Content="Komponente hinzufügen" Width="140" Height="30" Command="{Binding SaveVerpackungsItemBtnClick }" Margin="428,144,368,376"/>-->
 
 
         <Button Content="Bearbeiten" Height="30" Width="150" Command="{Binding EditVerpackungBtnClick}" Margin="605,505,195,15" />

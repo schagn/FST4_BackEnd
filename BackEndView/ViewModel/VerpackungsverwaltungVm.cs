@@ -63,36 +63,52 @@ namespace BackEndView.ViewModel
             set { selectedVerpackung = value; RaisePropertyChanged(); }
         }
 
-        private ObservableCollection<string> verpackungsArten;
+        private ObservableCollection<string> maschen;
 
-        public ObservableCollection<string> VerpackungsArten
+        public ObservableCollection<string> Maschen
         {
-            get { return verpackungsArten; }
-            set { verpackungsArten = value; RaisePropertyChanged();  }
+            get { return maschen; }
+            set { maschen = value; RaisePropertyChanged();  }
         }
 
-        private ObservableCollection<string> verpackungsteile;
+        private ObservableCollection<string> kartons;
 
-        public ObservableCollection<string> Verpackungsteile
+        public ObservableCollection<string> Kartons
         {
-            get { return verpackungsteile; }
-            set { verpackungsteile = value; RaisePropertyChanged(); }
+            get { return kartons; }
+            set { kartons = value; RaisePropertyChanged(); }
         }
 
-        private string selectedVerpackungsArt;
+        private ObservableCollection<string> sticker;
 
-        public string SelectedVerpackungsArt
+        public ObservableCollection<string> Sticker
         {
-            get { return selectedVerpackungsArt; }
-            set { selectedVerpackungsArt = value; RaisePropertyChanged(); ChangeVerpackungsteile(); }
+            get { return sticker; }
+            set { sticker = value; RaisePropertyChanged(); }
+        }
+
+        private string selectedMasche;
+
+        public string SelectedMasche
+        {
+            get { return selectedMasche; }
+            set { selectedMasche = value; RaisePropertyChanged(); }
         }
         
-        private string selectedVerpackungsteil;
+        private string selectedKarton;
 
-        public string SelectedVerpackungsteil
+        public string SelectedKarton
         {
-            get { return selectedVerpackungsteil; }
-            set { selectedVerpackungsteil = value; RaisePropertyChanged(); }
+            get { return selectedKarton; }
+            set { selectedKarton = value; RaisePropertyChanged(); }
+        }
+
+        private string selectedSticker;
+
+        public string SelectedSticker
+        {
+            get { return selectedSticker; }
+            set { selectedSticker = value; RaisePropertyChanged(); }
         }
 
         private ObservableCollection<string> verpackungsKomponenten;
@@ -136,13 +152,10 @@ namespace BackEndView.ViewModel
         {
             dataHanlder = new DataHandler();
 
-            Verpackungsteile = new ObservableCollection<string>();
-            Verpackungsteile.Add("Blumenmasche");
-            Verpackungsteile.Add("Sternekarton");
-            VerpackungsArten = new ObservableCollection<string>();
-            VerpackungsArten.Add("Karton");
-            VerpackungsArten.Add("Masche");
-            VerpackungsKomponenten = new ObservableCollection<string>();
+            Maschen = new ObservableCollection<string>();
+            Kartons = new ObservableCollection<string>();
+            Sticker = new ObservableCollection<string>();
+           
 
             EditVerpackungBtnClick = new RelayCommand(EditVerpackung);
 
@@ -184,7 +197,7 @@ namespace BackEndView.ViewModel
                     DeleteSelectedVerpackung(SelectedVerpackung);
                 });
 
-            SaveVerpackungsItemBtnClick = new RelayCommand(SaveVerpackungsItem);
+            //SaveVerpackungsItemBtnClick = new RelayCommand(SaveVerpackungsItem);
 
             KomponenteLöschenBtnClick = new RelayCommand(KomponenteLöschen);
 
@@ -227,40 +240,21 @@ namespace BackEndView.ViewModel
             RefreshList();
         }
 
-        private void SaveVerpackungsItem()
-        {
-            dataHanlder.CreateVerpackungskomponenten(SelectedVerpackung.VerpackungsId, SelectedVerpackungsteil);
-            RaisePropertyChanged("SelectedVerpackung");
-            RaisePropertyChanged("SelectedVerpackung.Komponenten");
-            RaisePropertyChanged("Verpackungen");
+        //private void SaveVerpackungsItem()
+        //{
+        //    dataHanlder.CreateVerpackungskomponenten(SelectedVerpackung.VerpackungsId, SelectedVerpackungsteil);
+        //    RaisePropertyChanged("SelectedVerpackung");
+        //    RaisePropertyChanged("SelectedVerpackung.Komponenten");
+        //    RaisePropertyChanged("Verpackungen");
 
-            SelectedVerpackungsteil = "";
-            SelectedVerpackungsArt = "";
+        //    SelectedVerpackungsteil = "";
+        //    SelectedVerpackungsArt = "";
 
-            RefreshList();
-        }
+        //    RefreshList();
+        //}
 
 
-        private void ChangeVerpackungsteile()
-        {
-            //wenn vorher Karton ausgewählt und gespeichert, dann jetzt nicht mehr anzeigen
-            // jede Kategorie, die bereits in DB ist soll nicht mehr angezeigt werden 
-
-            Verpackungsteile.Clear();
-
-            if (SelectedVerpackungsArt.Contains("Karton"))
-            {
-                Verpackungsteile.Add("Blumenkarton");
-                Verpackungsteile.Add("Sternekarton");
-                Verpackungsteile.Add("weißer Karton");
-            }
-            else
-            {
-                Verpackungsteile.Add("Sternemasche");
-                Verpackungsteile.Add("Goldmasche");
-                Verpackungsteile.Add("Schleifchen");
-            }
-        }
+       
 
         private void KomponenteLöschen()
         {
@@ -279,8 +273,9 @@ namespace BackEndView.ViewModel
             Visibility = false;
             Creation = false;
             Preis = 0;
-            SelectedVerpackungsteil = "";
-            SelectedVerpackungsArt = "";
+            SelectedKarton = "";
+            SelectedMasche = "";
+            SelectedSticker = "";
             VerpackungsKomponenten = null;
 
             IsEditingProcess = false;
