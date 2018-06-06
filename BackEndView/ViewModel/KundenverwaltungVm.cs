@@ -106,6 +106,13 @@ namespace BackEndView.ViewModel
         }
 
 
+        private bool isVisible;
+        public bool IsVisible
+        {
+            get { return isVisible; }
+            set { isVisible = value; RaisePropertyChanged(); }
+        }
+
 
         private SharedKunde selectedKunde;
 
@@ -168,6 +175,7 @@ namespace BackEndView.ViewModel
             Land = SelectedKunde.Land;
             Passwort = Passwort;
             IsBusinessCustomer = SelectedKunde.IsBusinessCustomer;
+            IsVisible = SelectedKunde.IsVisible;
 
             IsEditingProcess = true;
         }
@@ -194,6 +202,7 @@ namespace BackEndView.ViewModel
                 SelectedKunde.Ort = Ort;
                 SelectedKunde.Land = Land;
                 SelectedKunde.IsBusinessCustomer = IsBusinessCustomer;
+                SelectedKunde.IsVisible = IsVisible;
 
                 dh.UpdateCustomer(SelectedKunde);
                 SelectedKunde = null;
@@ -215,8 +224,10 @@ namespace BackEndView.ViewModel
                     PLZ = PLZ,
                     Ort = Ort,
                     Land = Land,
-                    IsBusinessCustomer = IsBusinessCustomer
-                    //Passwort = PasswordHelper.GetPassword(depobj)
+                    IsBusinessCustomer = IsBusinessCustomer,
+                    IsVisible = IsVisible,
+                    Passwort = Passwort
+                    
                 };
                 dh.AddCusomter(newCustomer);
                 
@@ -232,7 +243,8 @@ namespace BackEndView.ViewModel
             PLZ = 0;
             Ort = "";
             Land = "";
-            Passwort = "";  
+            Passwort = "";
+            IsVisible = false;
         }
 
         private void FilterList(string selectedFilterMethode)
@@ -291,6 +303,7 @@ namespace BackEndView.ViewModel
             Land = "";
             Passwort = "";
             IsBusinessCustomer = false;
+            IsVisible = false;
             SelectedKunde = null;
 
             IsEditingProcess = false;

@@ -90,5 +90,22 @@ namespace SharedClasses
             get { return isBusinessCustomer; }
             set { isBusinessCustomer = value; RaisePropertyChanged(); }
         }
+
+        private float uid;
+
+        public float UID
+        {
+            get { return uid; }
+            set { uid = value; RaisePropertyChanged(); }
+        }
+
+
+        private bool isVisible;
+        public bool IsVisible
+        {
+            get { return isVisible; }
+            set { isVisible = value; RaisePropertyChanged(); }
+        }
+
     }
 }
