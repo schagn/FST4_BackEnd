@@ -28,7 +28,7 @@
                 </Grid.RowDefinitions>
 
                 <Label Content="Verpackung hinzufügen oder ändern:" FontStyle="Oblique" Grid.Row="1" Margin="0,0.333,89.667,0.333" Grid.ColumnSpan="2"/>
-                <Label Content="Komponente auswählen:" FontStyle="Oblique" Grid.Row="1" Margin="0,34.333,33.333,27.667" Grid.RowSpan="3"/>
+                <Label Content="Komponenten auswählen:" FontStyle="Oblique" Grid.Row="1" Margin="0,34.333,33.333,27.667" Grid.RowSpan="3"/>
                 <Label Content="Komponente löschen:" FontStyle="Oblique" Grid.Row="3" Margin="0,0,33.333,28" Grid.RowSpan="2"/>
                 <Label Content="Beschreibung:" Grid.Row="1" Grid.Column="1" Width="84" VerticalAlignment="Center" HorizontalAlignment="Right" Height="26" Margin="0,4.333,0.333,4.333"/>
                 <TextBox Text="{Binding Beschreibung}" Width="120" Grid.Row="1" Grid.Column="2" Margin="7.667,6.333,8.667,6.333" />
@@ -89,8 +89,9 @@
 
                 <DataGridCheckBoxColumn Header="Sichtbar" Binding="{Binding Visible}" />
                 <DataGridCheckBoxColumn Header="Kreation" Binding="{Binding Creation}" />
+                <DataGridTextColumn Header="Komponenten" Binding="{Binding KomponentenString}"/>
 
-                <DataGridTemplateColumn Header="Komponenten">
+                <!--<DataGridTemplateColumn Header="Komponenten">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ItemsControl ItemsSource="{Binding Komponenten}">
@@ -109,7 +110,7 @@
                             </ItemsControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                </DataGridTemplateColumn>-->
 
             </DataGrid.Columns>
         </DataGrid>

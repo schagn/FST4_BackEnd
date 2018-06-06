@@ -20,6 +20,14 @@ namespace SharedClasses
             set { bestellDatum = value; RaisePropertyChanged(); }
         }
 
+        private DateTime? lieferDatum;
+
+        public DateTime? LieferDatum
+        {
+            get { return lieferDatum; }
+            set { lieferDatum = value; RaisePropertyChanged(); }
+        }
+
         private double? gesamtSumme;
 
         public double? GesamtSumme

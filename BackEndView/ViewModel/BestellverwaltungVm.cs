@@ -25,9 +25,11 @@ namespace BackEndView.ViewModel
 
         public RelayCommand SaveBestellungBtnClick { get; set; }
 
-        public RelayCommand ProduktLöschenBtnClick { get; set; }
+        public RelayCommand BestellpostenLöschenBtnClick { get; set; }
 
-        public RelayCommand KundeKontaktierenBtnClick { get; set; }
+        public RelayCommand LieferverzögerungMeldenBtnClick { get; set; }
+
+        public RelayCommand BestellungStornierenBtnClick { get; set; }
 
         public ObservableCollection<SharedBestellung> Bestellungen { get; set; }
 
@@ -64,6 +66,15 @@ namespace BackEndView.ViewModel
             get { return bestellDatum; }
             set { bestellDatum = value; RaisePropertyChanged(); }
         }
+
+        private DateTime? lieferDatum;
+
+        public DateTime? LieferDatum
+        {
+            get { return lieferDatum; }
+            set { lieferDatum = value; RaisePropertyChanged(); }
+        }
+
 
         public ObservableCollection<string> FilterMethoden { get; set; }
 
@@ -113,21 +124,30 @@ namespace BackEndView.ViewModel
             Bestellstatusse.Add("abgebrochen");
             Bestellstatusse.Add("abgeschlossen");
 
+            LieferDatum = DateTime.Today;
+
             EditBestellungBtnClick = new RelayCommand(EditBestellung);
 
             SaveBestellungBtnClick = new RelayCommand(SaveBestellung);
 
-            KundeKontaktierenBtnClick = new RelayCommand(ContactCustomer);
+            BestellpostenLöschenBtnClick = new RelayCommand(ProduktLöschen);
+
+            LieferverzögerungMeldenBtnClick = new RelayCommand(ContactCustomer);
+
+            BestellungStornierenBtnClick = new RelayCommand(BestellungStornieren);
 
 
             DeleteBestellungBtnClick = new RelayCommand(
                 () =>
                 {
-                    DeleteSelectedBestellung(SelectedBestellung);
-                });
+                },
+                () =>
+                {
+                    return false;
+                }
+                );
 
-            ProduktLöschenBtnClick = new RelayCommand(ProduktLöschen);
-
+       
             CancelDataBtnClick = new RelayCommand(CancelData);
 
             //KundeKontaktierenBtnClick = new RelayCommand();
@@ -142,7 +162,7 @@ namespace BackEndView.ViewModel
         {
            if(SelectedBestellung != null && SelectedProdukt != null)
             {
-
+                // nur Lieferverzögerung mitteilen
                 CustomerMailService.InformCustomerAboutDelay(SelectedBestellung, dh.GetEmailCustomerForOrder(SelectedBestellung), SelectedProdukt);
             }
 
@@ -154,7 +174,7 @@ namespace BackEndView.ViewModel
         private void ProduktLöschen()
         {
             if(SelectedBestellung != null && SelectedProdukt != null)
-            {
+            { // BLEIBT!!
 
                 Guid pId = GetIdForProduct(SelectedProdukt);
                 dh.DeleteProductFromOrder(SelectedBestellung.BestellId, pId);
@@ -162,11 +182,23 @@ namespace BackEndView.ViewModel
                 GetSelectedBestellungProduktnamen();
                 RefreshOrders();
                 CancelData();
+                //Summe der Bestellung muss reduziert werden 
             }
 
 
 
+            // Kundenemail mit das Produkt "blablabla" wurde aus deiner Bestellung gelöscht
+            // Differenzbetrag wird an ihre Bezahlmethode zurücküberwiesen
 
+
+        }
+
+        private void BestellungStornieren()
+        {
+            SelectedBestellung.Bestellstatus = "abgebrochen";
+
+            // Kundenmail mit gesamte Bestellung wurde storniert, ... eventuell Grund nennen
+            // Ihr Geld wird möglichst rasch zurück überwiesen
         }
 
         private void EditBestellung()
@@ -176,6 +208,7 @@ namespace BackEndView.ViewModel
             BestellNummer = SelectedBestellung.BestellId.ToString();
             SelectedBestellungProdukte =  new ObservableCollection<SharedOrderArticle>(SelectedBestellung.Artikel);
             GetSelectedBestellungProduktnamen();
+            LieferDatum = SelectedBestellung.LieferDatum;
 
 
         }
@@ -197,7 +230,7 @@ namespace BackEndView.ViewModel
         }
 
 
-        // TODO: mit Gollner klären ob notwendig
+        // TODO: mit Gollner klären ob notwendig - GIBT KEIN LÖSCHEN!!!!!! 
         private void DeleteSelectedBestellung(SharedBestellung b)
         {
             //client.deleteZutat
@@ -211,6 +244,7 @@ namespace BackEndView.ViewModel
         
              if(SelectedStatus != null && SelectedBestellung != null)
             {
+                // LIEFERDATUM HINZUFÜGEN !!!! 
                 dh.UpdateOrderStatus(SelectedBestellung.BestellId, SelectedStatus);
             }
 
@@ -218,6 +252,7 @@ namespace BackEndView.ViewModel
             SelectedStatus = null;
             BestellNummer = "";
             BestellDatum = "";
+            LieferDatum = DateTime.Today;
 
             RefreshOrders();
         }
@@ -271,6 +306,7 @@ namespace BackEndView.ViewModel
             BestellDatum = "";
             SelectedBestellung = null;
             SelectedProdukt = null;
+            LieferDatum = DateTime.Today;
 
            
         }
