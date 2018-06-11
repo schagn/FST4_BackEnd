@@ -6,6 +6,7 @@ using SharedClasses;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,6 @@ namespace BackEndView.ViewModel
 {
     public class KuchenverwaltungVm : ViewModelBase
     {
-        string imagePath = @"C:\inetpub\wwwroot\GetYourCake4.0\images\artikelbilder\artikel";
         private string description;
 
         public string Description
@@ -151,15 +151,15 @@ namespace BackEndView.ViewModel
             Creation = SelectedArticle != null ? SelectedArticle.Creation : false;
             Visible = SelectedArticle != null ? SelectedArticle.Visible : false;
             SelectedShape = SelectedArticle != null ? SelectedArticle.ShapeDescription : null;
-            if(Directory.Exists(imagePath))
+            if(Directory.Exists(ConfigurationManager.AppSettings["imageFolder"]))
             {
-                if(File.Exists(Path.Combine(imagePath, SelectedArticle.ArticleId + ".jpg")))
+                if(File.Exists(Path.Combine(ConfigurationManager.AppSettings["imageFolder"], SelectedArticle.ArticleId + ".jpg")))
                 {
-                    FilePath = Path.Combine(imagePath, SelectedArticle.ArticleId + ".jpg");
+                    FilePath = Path.Combine(ConfigurationManager.AppSettings["imageFolder"], SelectedArticle.ArticleId + ".jpg");
                 }
-                if (File.Exists(Path.Combine(imagePath, SelectedArticle.ArticleId + ".png")))
+                if (File.Exists(Path.Combine(ConfigurationManager.AppSettings["imageFolder"], SelectedArticle.ArticleId + ".png")))
                 {
-                    FilePath = Path.Combine(imagePath, SelectedArticle.ArticleId + ".png");
+                    FilePath = Path.Combine(ConfigurationManager.AppSettings["imageFolder"], SelectedArticle.ArticleId + ".png");
                 }
             }
         }

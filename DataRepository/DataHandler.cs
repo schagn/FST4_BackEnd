@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,6 @@ namespace DataRepository
     public class DataHandler
     {
         FST4Entities model = new FST4Entities();
-        string imagePath = @"C:\inetpub\wwwroot\GetYourCake4.0\images\artikelbilder\artikel";
 
         #region Kuchenverwaltung+Zutaten
 
@@ -64,11 +64,11 @@ namespace DataRepository
 
             if (!String.IsNullOrEmpty(filePath) && File.Exists(filePath) && (Path.GetExtension(filePath) == ".jpg" || Path.GetExtension(filePath) == ".png"))
             {
-                if (!Directory.Exists(imagePath))
+                if (!Directory.Exists(ConfigurationManager.AppSettings["imageFolder"]))
                 {
-                    Directory.CreateDirectory(imagePath);
+                    Directory.CreateDirectory(ConfigurationManager.AppSettings["imageFolder"]);
                 }
-                string tempDestFile = Path.Combine(imagePath, tempGuid + Path.GetExtension(filePath));
+                string tempDestFile = Path.Combine(ConfigurationManager.AppSettings["imageFolder"], tempGuid + Path.GetExtension(filePath));
                 File.Copy(filePath, tempDestFile);
             }
         }
@@ -140,11 +140,11 @@ namespace DataRepository
 
             if (!String.IsNullOrEmpty(filePath) && File.Exists(filePath) && (Path.GetExtension(filePath) == ".jpg" || Path.GetExtension(filePath) == ".png"))
             {
-                if (!Directory.Exists(imagePath))
+                if (!Directory.Exists(ConfigurationManager.AppSettings["imageFolder"]))
                 {
-                    Directory.CreateDirectory(imagePath);
+                    Directory.CreateDirectory(ConfigurationManager.AppSettings["imageFolder"]);
                 }
-                string tempDestFile = Path.Combine(imagePath, article.article_id + Path.GetExtension(filePath));
+                string tempDestFile = Path.Combine(ConfigurationManager.AppSettings["imageFolder"], article.article_id + Path.GetExtension(filePath));
                 File.Copy(filePath, tempDestFile, true);
             }
         }
