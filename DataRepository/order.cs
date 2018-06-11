@@ -21,11 +21,12 @@ namespace DataRepository
         }
     
         public System.Guid order_id { get; set; }
-        public Nullable<System.DateTime> date { get; set; }
+        public Nullable<System.DateTime> order_date { get; set; }
+        public Nullable<System.DateTime> delivery_date { get; set; }
         public Nullable<double> total_amount { get; set; }
+        public string status { get; set; }
         public System.Guid person_id { get; set; }
         public System.Guid voucher_id { get; set; }
-        public string status { get; set; }
     
         public virtual person person { get; set; }
         public virtual voucher voucher { get; set; }

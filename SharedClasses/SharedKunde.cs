@@ -44,9 +44,9 @@ namespace SharedClasses
             set { passwort = value; RaisePropertyChanged(); }
         }
 
-        private string geburtsdatum;
+        private DateTime geburtsdatum;
 
-        public string Geburtsdatum
+        public DateTime Geburtsdatum
         {
             get { return geburtsdatum; }
             set { geburtsdatum = value; RaisePropertyChanged(); }

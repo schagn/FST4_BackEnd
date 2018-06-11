@@ -26,13 +26,14 @@ namespace DataRepository
         public string firstname { get; set; }
         public string lastname { get; set; }
         public string e_mail { get; set; }
+        public string phone_number { get; set; }
         public string password { get; set; }
-        public string birthdate { get; set; }
+        public Nullable<System.DateTime> birthdate { get; set; }
         public string street { get; set; }
         public string country { get; set; }
         public int zip_code { get; set; }
         public System.Guid type_id { get; set; }
-        public string phone_number { get; set; }
+        public int valid { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<business_customer> business_customer { get; set; }

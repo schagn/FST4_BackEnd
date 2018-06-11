@@ -18,10 +18,10 @@ namespace DataRepository
         public article()
         {
             this.article_has_ingredient = new HashSet<article_has_ingredient>();
+            this.article_has_mass = new HashSet<article_has_mass>();
             this.order_has_articles = new HashSet<order_has_articles>();
             this.rating = new HashSet<rating>();
             this.package = new HashSet<package>();
-            this.order_has_articles1 = new HashSet<order_has_articles>();
         }
     
         public System.Guid article_id { get; set; }
@@ -31,18 +31,19 @@ namespace DataRepository
         public Nullable<bool> visible { get; set; }
         public System.Guid shape_id { get; set; }
         public System.Guid article_type_id { get; set; }
+        public Nullable<System.DateTime> timestamp { get; set; }
     
         public virtual article_type article_type { get; set; }
         public virtual shape shape { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<article_has_ingredient> article_has_ingredient { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<article_has_mass> article_has_mass { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<order_has_articles> order_has_articles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<rating> rating { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<package> package { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<order_has_articles> order_has_articles1 { get; set; }
     }
 }

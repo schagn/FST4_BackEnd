@@ -12,13 +12,14 @@ namespace DataRepository
     using System;
     using System.Collections.Generic;
     
-    public partial class order_has_articles
+    public partial class simeontest
     {
-        public System.Guid order_id { get; set; }
-        public System.Guid article_id { get; set; }
+        public System.Guid id { get; set; }
+        public Nullable<System.DateTime> startdate { get; set; }
         public Nullable<int> amount { get; set; }
-    
-        public virtual article article { get; set; }
-        public virtual order order { get; set; }
+        public Nullable<double> price { get; set; }
+        public Nullable<bool> used { get; set; }
+        public Nullable<bool> visible { get; set; }
+        public string description { get; set; }
     }
 }

@@ -54,8 +54,8 @@ namespace BackEndView.ViewModel
             set { passwort = value; RaisePropertyChanged(); }
         }
 
-        private string geburtsdatum;
-        public string Geburtsdatum
+        private DateTime geburtsdatum;
+        public DateTime Geburtsdatum
         {
             get { return geburtsdatum; }
             set { geburtsdatum = value; RaisePropertyChanged(); }
@@ -237,7 +237,7 @@ namespace BackEndView.ViewModel
 
             VorName = "";
             NachName = "";
-            Geburtsdatum = "";
+            Geburtsdatum = DateTime.MinValue;
             EMail = "";
             Strasse = "";
             PLZ = 0;
@@ -295,7 +295,7 @@ namespace BackEndView.ViewModel
         {
             VorName = "";
             NachName = "";
-            Geburtsdatum = "";
+            Geburtsdatum = DateTime.MinValue;
             EMail = "";
             Strasse = "";
             PLZ = 0;

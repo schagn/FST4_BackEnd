@@ -373,7 +373,7 @@ namespace DataRepository
 
                 }).ToList(),
                 KundenName = x.person.firstname + " " + x.person.lastname,
-                BestellDatum = x.date,
+                BestellDatum = x.order_date,
                 Bestellstatus = x.status,
                 GesamtSumme = x.total_amount
 
@@ -455,7 +455,7 @@ namespace DataRepository
 
                 }).ToList(),
                 KundenName = x.person.firstname + " " + x.person.lastname,
-                BestellDatum = x.date,
+                BestellDatum = x.order_date,
                 Bestellstatus = x.status,
                 GesamtSumme = x.total_amount
 
@@ -517,7 +517,7 @@ namespace DataRepository
             {
                 KundenId = x.person_id,
                 EMail = x.e_mail,
-                Geburtsdatum = x.birthdate,
+                Geburtsdatum = x.birthdate.Value,
                 VorName = x.firstname,
                 NachName = x.lastname,
                 Land = x.country,
@@ -611,7 +611,7 @@ namespace DataRepository
             {
                 KundenId = x.person_id,
                 EMail = x.e_mail,
-                Geburtsdatum = x.birthdate,
+                Geburtsdatum = x.birthdate.Value,
                 VorName = x.firstname,
                 NachName = x.lastname,
                 Land = x.country,

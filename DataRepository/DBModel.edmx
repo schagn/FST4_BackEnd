@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FST4Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="FST4Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="article">
           <Key>
             <PropertyRef Name="article_id" />
@@ -16,6 +16,7 @@
           <Property Name="visible" Type="bit" />
           <Property Name="shape_id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="article_type_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="timestamp" Type="datetime" />
         </EntityType>
         <EntityType Name="article_has_ingredient">
           <Key>
@@ -25,6 +26,14 @@
           <Property Name="article_id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ingredient_id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="amount" Type="float" />
+        </EntityType>
+        <EntityType Name="article_has_mass">
+          <Key>
+            <PropertyRef Name="fk_mass_id" />
+            <PropertyRef Name="fk_article_id" />
+          </Key>
+          <Property Name="fk_mass_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="fk_article_id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="article_type">
           <Key>
@@ -64,6 +73,7 @@
           <Property Name="description" Type="nvarchar" MaxLength="45" />
           <Property Name="price" Type="float" />
           <Property Name="ing_available" Type="bit" />
+          <Property Name="unit" Type="varchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="ingredient_has_category">
           <Key>
@@ -73,12 +83,29 @@
           <Property Name="ingredient_id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="category_id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
+        <EntityType Name="mass">
+          <Key>
+            <PropertyRef Name="mass_id" />
+          </Key>
+          <Property Name="mass_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="mass_description" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="mass_has_ingredient">
+          <Key>
+            <PropertyRef Name="fk_ingredient_id" />
+            <PropertyRef Name="fk_mass_id" />
+          </Key>
+          <Property Name="fk_ingredient_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="fk_mass_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="amount" Type="varchar" MaxLength="45" />
+        </EntityType>
         <EntityType Name="order">
           <Key>
             <PropertyRef Name="order_id" />
           </Key>
           <Property Name="order_id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="date" Type="date" />
+          <Property Name="order_date" Type="date" />
+          <Property Name="delivery_date" Type="date" />
           <Property Name="total_amount" Type="float" />
           <Property Name="status" Type="varchar" MaxLength="15" />
           <Property Name="person_id" Type="uniqueidentifier" Nullable="false" />
@@ -120,11 +147,12 @@
           <Property Name="e-mail" Type="nvarchar" MaxLength="45" />
           <Property Name="phone_number" Type="varchar" MaxLength="15" />
           <Property Name="password" Type="nvarchar" MaxLength="45" />
-          <Property Name="birthdate" Type="nvarchar" MaxLength="45" />
+          <Property Name="birthdate" Type="date" />
           <Property Name="street" Type="nvarchar" MaxLength="45" />
           <Property Name="country" Type="nvarchar" MaxLength="45" />
           <Property Name="zip_code" Type="int" Nullable="false" />
           <Property Name="type_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="valid" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="rating">
           <Key>
@@ -143,6 +171,18 @@
           </Key>
           <Property Name="shape_id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="description" Type="nvarchar" MaxLength="45" />
+        </EntityType>
+        <EntityType Name="simeontest">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="startdate" Type="date" />
+          <Property Name="amount" Type="int" />
+          <Property Name="price" Type="float" />
+          <Property Name="used" Type="bit" />
+          <Property Name="visible" Type="bit" />
+          <Property Name="description" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="special_offer">
           <Key>
@@ -228,6 +268,54 @@
             </Principal>
             <Dependent Role="business customer">
               <PropertyRef Name="person_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_article_has_mass_article">
+          <End Role="article" Type="Self.article" Multiplicity="1" />
+          <End Role="article_has_mass" Type="Self.article_has_mass" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="article">
+              <PropertyRef Name="article_id" />
+            </Principal>
+            <Dependent Role="article_has_mass">
+              <PropertyRef Name="fk_article_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_article_has_mass_mass">
+          <End Role="mass" Type="Self.mass" Multiplicity="1" />
+          <End Role="article_has_mass" Type="Self.article_has_mass" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mass">
+              <PropertyRef Name="mass_id" />
+            </Principal>
+            <Dependent Role="article_has_mass">
+              <PropertyRef Name="fk_article_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mass_has_ingredient_ingredient">
+          <End Role="ingredient" Type="Self.ingredient" Multiplicity="1" />
+          <End Role="mass_has_ingredient" Type="Self.mass_has_ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ingredient">
+              <PropertyRef Name="ingredient_id" />
+            </Principal>
+            <Dependent Role="mass_has_ingredient">
+              <PropertyRef Name="fk_ingredient_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mass_has_ingredient_mass">
+          <End Role="mass" Type="Self.mass" Multiplicity="1" />
+          <End Role="mass_has_ingredient" Type="Self.mass_has_ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mass">
+              <PropertyRef Name="mass_id" />
+            </Principal>
+            <Dependent Role="mass_has_ingredient">
+              <PropertyRef Name="fk_mass_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -378,12 +466,15 @@
         <EntityContainer Name="FST4ModelStoreContainer">
           <EntitySet Name="article" EntityType="Self.article" Schema="fst4" store:Type="Tables" />
           <EntitySet Name="article_has_ingredient" EntityType="Self.article_has_ingredient" Schema="fst4" store:Type="Tables" />
+          <EntitySet Name="article_has_mass" EntityType="Self.article_has_mass" Schema="fst4" store:Type="Tables" />
           <EntitySet Name="article_type" EntityType="Self.article_type" Schema="fst4" store:Type="Tables" />
           <EntitySet Name="business customer" EntityType="Self.business customer" Schema="fst4" store:Type="Tables" />
           <EntitySet Name="category" EntityType="Self.category" Schema="fst4" store:Type="Tables" />
           <EntitySet Name="city" EntityType="Self.city" Schema="fst4" store:Type="Tables" />
           <EntitySet Name="ingredient" EntityType="Self.ingredient" Schema="fst4" store:Type="Tables" />
           <EntitySet Name="ingredient_has_category" EntityType="Self.ingredient_has_category" Schema="fst4" store:Type="Tables" />
+          <EntitySet Name="mass" EntityType="Self.mass" Schema="fst4" store:Type="Tables" />
+          <EntitySet Name="mass_has_ingredient" EntityType="Self.mass_has_ingredient" Schema="fst4" store:Type="Tables" />
           <EntitySet Name="order" EntityType="Self.order" Schema="fst4" store:Type="Tables" />
           <EntitySet Name="order_has_articles" EntityType="Self.order_has_articles" Schema="fst4" store:Type="Tables" />
           <EntitySet Name="package" EntityType="Self.package" Schema="fst4" store:Type="Tables" />
@@ -391,6 +482,7 @@
           <EntitySet Name="person" EntityType="Self.person" Schema="fst4" store:Type="Tables" />
           <EntitySet Name="rating" EntityType="Self.rating" Schema="fst4" store:Type="Tables" />
           <EntitySet Name="shape" EntityType="Self.shape" Schema="fst4" store:Type="Tables" />
+          <EntitySet Name="simeontest" EntityType="Self.simeontest" Schema="fst4" store:Type="Tables" />
           <EntitySet Name="special_offer" EntityType="Self.special_offer" Schema="fst4" store:Type="Tables" />
           <EntitySet Name="type" EntityType="Self.type" Schema="fst4" store:Type="Tables" />
           <EntitySet Name="voucher" EntityType="Self.voucher" Schema="fst4" store:Type="Tables" />
@@ -413,6 +505,22 @@
           <AssociationSet Name="business customer$fk_Business customer_person1" Association="Self.business customer$fk_Business customer_person1">
             <End Role="person" EntitySet="person" />
             <End Role="business customer" EntitySet="business customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_article_has_mass_article" Association="Self.FK_article_has_mass_article">
+            <End Role="article" EntitySet="article" />
+            <End Role="article_has_mass" EntitySet="article_has_mass" />
+          </AssociationSet>
+          <AssociationSet Name="FK_article_has_mass_mass" Association="Self.FK_article_has_mass_mass">
+            <End Role="mass" EntitySet="mass" />
+            <End Role="article_has_mass" EntitySet="article_has_mass" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mass_has_ingredient_ingredient" Association="Self.FK_mass_has_ingredient_ingredient">
+            <End Role="ingredient" EntitySet="ingredient" />
+            <End Role="mass_has_ingredient" EntitySet="mass_has_ingredient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mass_has_ingredient_mass" Association="Self.FK_mass_has_ingredient_mass">
+            <End Role="mass" EntitySet="mass" />
+            <End Role="mass_has_ingredient" EntitySet="mass_has_ingredient" />
           </AssociationSet>
           <AssociationSet Name="ingredient_has_category$fk_ingredient_has_category_category1" Association="Self.ingredient_has_category$fk_ingredient_has_category_category1">
             <End Role="category" EntitySet="category" />
@@ -463,7 +571,8 @@
             <End Role="rating" EntitySet="rating" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FST4Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -478,13 +587,14 @@
           <Property Name="visible" Type="Boolean" />
           <Property Name="shape_id" Type="Guid" Nullable="false" />
           <Property Name="article_type_id" Type="Guid" Nullable="false" />
+          <Property Name="timestamp" Type="DateTime" Precision="3" />
           <NavigationProperty Name="article_type" Relationship="Self.article_fk_article_article_type1" FromRole="article" ToRole="article_type" />
           <NavigationProperty Name="shape" Relationship="Self.article_fk_article_shape1" FromRole="article" ToRole="shape" />
           <NavigationProperty Name="article_has_ingredient" Relationship="Self.article_has_ingredient_fk_article_has_ingredient_article1" FromRole="article" ToRole="article_has_ingredient" />
+          <NavigationProperty Name="article_has_mass" Relationship="Self.FK_article_has_mass_article" FromRole="article" ToRole="article_has_mass" />
           <NavigationProperty Name="order_has_articles" Relationship="Self.order_has_articles_fk_order_has_articles_article1" FromRole="article" ToRole="order_has_articles" />
           <NavigationProperty Name="rating" Relationship="Self.rating_fk_rating_article1" FromRole="article" ToRole="rating" />
           <NavigationProperty Name="package" Relationship="Self.package_has_articles" FromRole="article" ToRole="package" />
-          <NavigationProperty Name="order_has_articles1" Relationship="FST4Model.order_has_articles_fk_order_has_articles_article11" FromRole="article" ToRole="order_has_articles" />
         </EntityType>
         <EntityType Name="article_has_ingredient">
           <Key>
@@ -496,6 +606,16 @@
           <Property Name="amount" Type="Double" />
           <NavigationProperty Name="article" Relationship="Self.article_has_ingredient_fk_article_has_ingredient_article1" FromRole="article_has_ingredient" ToRole="article" />
           <NavigationProperty Name="ingredient" Relationship="Self.article_has_ingredient_fk_article_has_ingredient_ingredient1" FromRole="article_has_ingredient" ToRole="ingredient" />
+        </EntityType>
+        <EntityType Name="article_has_mass">
+          <Key>
+            <PropertyRef Name="fk_mass_id" />
+            <PropertyRef Name="fk_article_id" />
+          </Key>
+          <Property Name="fk_mass_id" Type="Guid" Nullable="false" />
+          <Property Name="fk_article_id" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="article" Relationship="Self.FK_article_has_mass_article" FromRole="article_has_mass" ToRole="article" />
+          <NavigationProperty Name="mass" Relationship="Self.FK_article_has_mass_mass" FromRole="article_has_mass" ToRole="mass" />
         </EntityType>
         <EntityType Name="article_type">
           <Key>
@@ -520,8 +640,8 @@
           </Key>
           <Property Name="category_id" Type="Guid" Nullable="false" />
           <Property Name="description" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ingredient" Relationship="Self.ingredient_has_category" FromRole="category" ToRole="ingredient" />
           <Property Name="cat_active" Type="Boolean" />
+          <NavigationProperty Name="ingredient" Relationship="Self.ingredient_has_category" FromRole="category" ToRole="ingredient" />
         </EntityType>
         <EntityType Name="city">
           <Key>
@@ -538,23 +658,46 @@
           <Property Name="ingredient_id" Type="Guid" Nullable="false" />
           <Property Name="description" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
           <Property Name="price" Type="Double" />
-          <NavigationProperty Name="article_has_ingredient" Relationship="Self.article_has_ingredient_fk_article_has_ingredient_ingredient1" FromRole="ingredient" ToRole="article_has_ingredient" />
-          <NavigationProperty Name="category" Relationship="Self.ingredient_has_category" FromRole="ingredient" ToRole="category" />
           <Property Name="ing_available" Type="Boolean" />
+          <Property Name="unit" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="article_has_ingredient" Relationship="Self.article_has_ingredient_fk_article_has_ingredient_ingredient1" FromRole="ingredient" ToRole="article_has_ingredient" />
+          <NavigationProperty Name="mass_has_ingredient" Relationship="Self.FK_mass_has_ingredient_ingredient" FromRole="ingredient" ToRole="mass_has_ingredient" />
+          <NavigationProperty Name="category" Relationship="Self.ingredient_has_category" FromRole="ingredient" ToRole="category" />
+        </EntityType>
+        <EntityType Name="mass">
+          <Key>
+            <PropertyRef Name="mass_id" />
+          </Key>
+          <Property Name="mass_id" Type="Guid" Nullable="false" />
+          <Property Name="mass_description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="article_has_mass" Relationship="Self.FK_article_has_mass_mass" FromRole="mass" ToRole="article_has_mass" />
+          <NavigationProperty Name="mass_has_ingredient" Relationship="Self.FK_mass_has_ingredient_mass" FromRole="mass" ToRole="mass_has_ingredient" />
+        </EntityType>
+        <EntityType Name="mass_has_ingredient">
+          <Key>
+            <PropertyRef Name="fk_ingredient_id" />
+            <PropertyRef Name="fk_mass_id" />
+          </Key>
+          <Property Name="fk_ingredient_id" Type="Guid" Nullable="false" />
+          <Property Name="fk_mass_id" Type="Guid" Nullable="false" />
+          <Property Name="amount" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ingredient" Relationship="Self.FK_mass_has_ingredient_ingredient" FromRole="mass_has_ingredient" ToRole="ingredient" />
+          <NavigationProperty Name="mass" Relationship="Self.FK_mass_has_ingredient_mass" FromRole="mass_has_ingredient" ToRole="mass" />
         </EntityType>
         <EntityType Name="order">
           <Key>
             <PropertyRef Name="order_id" />
           </Key>
           <Property Name="order_id" Type="Guid" Nullable="false" />
-          <Property Name="date" Type="DateTime" Precision="0" />
+          <Property Name="order_date" Type="DateTime" Precision="0" />
+          <Property Name="delivery_date" Type="DateTime" Precision="0" />
           <Property Name="total_amount" Type="Double" />
+          <Property Name="status" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="person_id" Type="Guid" Nullable="false" />
           <Property Name="voucher_id" Type="Guid" Nullable="false" />
           <NavigationProperty Name="person" Relationship="Self.order_fk_order_person1" FromRole="order" ToRole="person" />
           <NavigationProperty Name="voucher" Relationship="Self.order_fk_order_voucher1" FromRole="order" ToRole="voucher" />
           <NavigationProperty Name="order_has_articles" Relationship="Self.order_has_articles_fk_order_has_articles_order1" FromRole="order" ToRole="order_has_articles" />
-          <Property Name="status" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="order_has_articles">
           <Key>
@@ -562,11 +705,10 @@
             <PropertyRef Name="article_id" />
           </Key>
           <Property Name="order_id" Type="Guid" Nullable="false" />
-          <Property Name="article_id" Nullable="false" Type="Guid" />
+          <Property Name="article_id" Type="Guid" Nullable="false" />
           <Property Name="amount" Type="Int32" />
           <NavigationProperty Name="article" Relationship="Self.order_has_articles_fk_order_has_articles_article1" FromRole="order_has_articles" ToRole="article" />
           <NavigationProperty Name="order" Relationship="Self.order_has_articles_fk_order_has_articles_order1" FromRole="order_has_articles" ToRole="order" />
-          <NavigationProperty Name="article1" Relationship="FST4Model.order_has_articles_fk_order_has_articles_article11" FromRole="order_has_articles" ToRole="article" />
         </EntityType>
         <EntityType Name="package">
           <Key>
@@ -575,8 +717,8 @@
           <Property Name="package_id" Type="Guid" Nullable="false" />
           <Property Name="description" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
           <Property Name="price" Type="Double" />
-          <NavigationProperty Name="article" Relationship="Self.package_has_articles" FromRole="package" ToRole="article" />
           <Property Name="pack_active" Type="Boolean" />
+          <NavigationProperty Name="article" Relationship="Self.package_has_articles" FromRole="package" ToRole="article" />
         </EntityType>
         <EntityType Name="person">
           <Key>
@@ -586,18 +728,19 @@
           <Property Name="firstname" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
           <Property Name="lastname" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
           <Property Name="e_mail" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="phone_number" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="password" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
-          <Property Name="birthdate" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="birthdate" Type="DateTime" Precision="0" />
           <Property Name="street" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
           <Property Name="country" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
           <Property Name="zip_code" Type="Int32" Nullable="false" />
           <Property Name="type_id" Type="Guid" Nullable="false" />
+          <Property Name="valid" Type="Int32" Nullable="false" />
           <NavigationProperty Name="business_customer" Relationship="Self.business_customer_fk_Business_customer_person1" FromRole="person" ToRole="business_customer" />
           <NavigationProperty Name="city" Relationship="Self.person_fk_person_city1" FromRole="person" ToRole="city" />
           <NavigationProperty Name="order" Relationship="Self.order_fk_order_person1" FromRole="person" ToRole="order" />
           <NavigationProperty Name="type" Relationship="Self.person_fk_person_type1" FromRole="person" ToRole="type" />
           <NavigationProperty Name="rating" Relationship="Self.rating_fk_rating_person1" FromRole="person" ToRole="rating" />
-          <Property Name="phone_number" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="rating">
           <Key>
@@ -619,6 +762,18 @@
           <Property Name="shape_id" Type="Guid" Nullable="false" />
           <Property Name="description" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="article" Relationship="Self.article_fk_article_shape1" FromRole="shape" ToRole="article" />
+        </EntityType>
+        <EntityType Name="simeontest">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="startdate" Type="DateTime" Precision="0" />
+          <Property Name="amount" Type="Int32" />
+          <Property Name="price" Type="Double" />
+          <Property Name="used" Type="Boolean" />
+          <Property Name="visible" Type="Boolean" />
+          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="special_offer">
           <Key>
@@ -685,6 +840,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_article_has_mass_article">
+          <End Role="article" Type="Self.article" Multiplicity="1" />
+          <End Role="article_has_mass" Type="Self.article_has_mass" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="article">
+              <PropertyRef Name="article_id" />
+            </Principal>
+            <Dependent Role="article_has_mass">
+              <PropertyRef Name="fk_article_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="order_has_articles_fk_order_has_articles_article1">
           <End Role="article" Type="Self.article" Multiplicity="1" />
           <End Role="order_has_articles" Type="Self.order_has_articles" Multiplicity="*" />
@@ -721,6 +888,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_article_has_mass_mass">
+          <End Role="mass" Type="Self.mass" Multiplicity="1" />
+          <End Role="article_has_mass" Type="Self.article_has_mass" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mass">
+              <PropertyRef Name="mass_id" />
+            </Principal>
+            <Dependent Role="article_has_mass">
+              <PropertyRef Name="fk_article_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="business_customer_fk_Business_customer_person1">
           <End Role="person" Type="Self.person" Multiplicity="1" />
           <End Role="business_customer" Type="Self.business_customer" Multiplicity="*" />
@@ -742,6 +921,30 @@
             </Principal>
             <Dependent Role="person">
               <PropertyRef Name="zip_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mass_has_ingredient_ingredient">
+          <End Role="ingredient" Type="Self.ingredient" Multiplicity="1" />
+          <End Role="mass_has_ingredient" Type="Self.mass_has_ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ingredient">
+              <PropertyRef Name="ingredient_id" />
+            </Principal>
+            <Dependent Role="mass_has_ingredient">
+              <PropertyRef Name="fk_ingredient_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mass_has_ingredient_mass">
+          <End Role="mass" Type="Self.mass" Multiplicity="1" />
+          <End Role="mass_has_ingredient" Type="Self.mass_has_ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mass">
+              <PropertyRef Name="mass_id" />
+            </Principal>
+            <Dependent Role="mass_has_ingredient">
+              <PropertyRef Name="fk_mass_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -816,17 +1019,21 @@
         <EntityContainer Name="FST4Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="article" EntityType="Self.article" />
           <EntitySet Name="article_has_ingredient" EntityType="Self.article_has_ingredient" />
+          <EntitySet Name="article_has_mass" EntityType="Self.article_has_mass" />
           <EntitySet Name="article_type" EntityType="Self.article_type" />
           <EntitySet Name="business_customer" EntityType="Self.business_customer" />
           <EntitySet Name="category" EntityType="Self.category" />
           <EntitySet Name="city" EntityType="Self.city" />
           <EntitySet Name="ingredient" EntityType="Self.ingredient" />
+          <EntitySet Name="mass" EntityType="Self.mass" />
+          <EntitySet Name="mass_has_ingredient" EntityType="Self.mass_has_ingredient" />
           <EntitySet Name="order" EntityType="Self.order" />
           <EntitySet Name="order_has_articles" EntityType="Self.order_has_articles" />
           <EntitySet Name="package" EntityType="Self.package" />
           <EntitySet Name="person" EntityType="Self.person" />
           <EntitySet Name="rating" EntityType="Self.rating" />
           <EntitySet Name="shape" EntityType="Self.shape" />
+          <EntitySet Name="simeontest" EntityType="Self.simeontest" />
           <EntitySet Name="special_offer" EntityType="Self.special_offer" />
           <EntitySet Name="type" EntityType="Self.type" />
           <EntitySet Name="voucher" EntityType="Self.voucher" />
@@ -842,6 +1049,10 @@
             <End Role="article" EntitySet="article" />
             <End Role="article_has_ingredient" EntitySet="article_has_ingredient" />
           </AssociationSet>
+          <AssociationSet Name="FK_article_has_mass_article" Association="Self.FK_article_has_mass_article">
+            <End Role="article" EntitySet="article" />
+            <End Role="article_has_mass" EntitySet="article_has_mass" />
+          </AssociationSet>
           <AssociationSet Name="order_has_articles_fk_order_has_articles_article1" Association="Self.order_has_articles_fk_order_has_articles_article1">
             <End Role="article" EntitySet="article" />
             <End Role="order_has_articles" EntitySet="order_has_articles" />
@@ -854,6 +1065,10 @@
             <End Role="ingredient" EntitySet="ingredient" />
             <End Role="article_has_ingredient" EntitySet="article_has_ingredient" />
           </AssociationSet>
+          <AssociationSet Name="FK_article_has_mass_mass" Association="Self.FK_article_has_mass_mass">
+            <End Role="mass" EntitySet="mass" />
+            <End Role="article_has_mass" EntitySet="article_has_mass" />
+          </AssociationSet>
           <AssociationSet Name="business_customer_fk_Business_customer_person1" Association="Self.business_customer_fk_Business_customer_person1">
             <End Role="person" EntitySet="person" />
             <End Role="business_customer" EntitySet="business_customer" />
@@ -861,6 +1076,14 @@
           <AssociationSet Name="person_fk_person_city1" Association="Self.person_fk_person_city1">
             <End Role="city" EntitySet="city" />
             <End Role="person" EntitySet="person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mass_has_ingredient_ingredient" Association="Self.FK_mass_has_ingredient_ingredient">
+            <End Role="ingredient" EntitySet="ingredient" />
+            <End Role="mass_has_ingredient" EntitySet="mass_has_ingredient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mass_has_ingredient_mass" Association="Self.FK_mass_has_ingredient_mass">
+            <End Role="mass" EntitySet="mass" />
+            <End Role="mass_has_ingredient" EntitySet="mass_has_ingredient" />
           </AssociationSet>
           <AssociationSet Name="order_fk_order_person1" Association="Self.order_fk_order_person1">
             <End Role="person" EntitySet="person" />
@@ -890,23 +1113,7 @@
             <End Role="article" EntitySet="article" />
             <End Role="package" EntitySet="package" />
           </AssociationSet>
-          <AssociationSet Name="order_has_articles_fk_order_has_articles_article11" Association="FST4Model.order_has_articles_fk_order_has_articles_article11">
-            <End Role="article" EntitySet="article" />
-            <End Role="order_has_articles" EntitySet="order_has_articles" />
-          </AssociationSet>
         </EntityContainer>
-        <Association Name="order_has_articles_fk_order_has_articles_article11">
-          <End Type="FST4Model.article" Role="article" Multiplicity="1" />
-          <End Type="FST4Model.order_has_articles" Role="order_has_articles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="article">
-              <PropertyRef Name="article_id" />
-            </Principal>
-            <Dependent Role="order_has_articles">
-              <PropertyRef Name="article_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -923,6 +1130,7 @@
                 <ScalarProperty Name="visible" ColumnName="visible" />
                 <ScalarProperty Name="shape_id" ColumnName="shape_id" />
                 <ScalarProperty Name="article_type_id" ColumnName="article_type_id" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -932,6 +1140,14 @@
                 <ScalarProperty Name="article_id" ColumnName="article_id" />
                 <ScalarProperty Name="ingredient_id" ColumnName="ingredient_id" />
                 <ScalarProperty Name="amount" ColumnName="amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="article_has_mass">
+            <EntityTypeMapping TypeName="FST4Model.article_has_mass">
+              <MappingFragment StoreEntitySet="article_has_mass">
+                <ScalarProperty Name="fk_mass_id" ColumnName="fk_mass_id" />
+                <ScalarProperty Name="fk_article_id" ColumnName="fk_article_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -955,9 +1171,9 @@
           <EntitySetMapping Name="category">
             <EntityTypeMapping TypeName="FST4Model.category">
               <MappingFragment StoreEntitySet="category">
-                <ScalarProperty Name="cat_active" ColumnName="cat_active" />
                 <ScalarProperty Name="category_id" ColumnName="category_id" />
                 <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="cat_active" ColumnName="cat_active" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -972,20 +1188,39 @@
           <EntitySetMapping Name="ingredient">
             <EntityTypeMapping TypeName="FST4Model.ingredient">
               <MappingFragment StoreEntitySet="ingredient">
-                <ScalarProperty Name="ing_available" ColumnName="ing_available" />
                 <ScalarProperty Name="ingredient_id" ColumnName="ingredient_id" />
                 <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="ing_available" ColumnName="ing_available" />
+                <ScalarProperty Name="unit" ColumnName="unit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mass">
+            <EntityTypeMapping TypeName="FST4Model.mass">
+              <MappingFragment StoreEntitySet="mass">
+                <ScalarProperty Name="mass_id" ColumnName="mass_id" />
+                <ScalarProperty Name="mass_description" ColumnName="mass_description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mass_has_ingredient">
+            <EntityTypeMapping TypeName="FST4Model.mass_has_ingredient">
+              <MappingFragment StoreEntitySet="mass_has_ingredient">
+                <ScalarProperty Name="fk_ingredient_id" ColumnName="fk_ingredient_id" />
+                <ScalarProperty Name="fk_mass_id" ColumnName="fk_mass_id" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="order">
             <EntityTypeMapping TypeName="FST4Model.order">
               <MappingFragment StoreEntitySet="order">
-                <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="order_id" ColumnName="order_id" />
-                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="order_date" ColumnName="order_date" />
+                <ScalarProperty Name="delivery_date" ColumnName="delivery_date" />
                 <ScalarProperty Name="total_amount" ColumnName="total_amount" />
+                <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="person_id" ColumnName="person_id" />
                 <ScalarProperty Name="voucher_id" ColumnName="voucher_id" />
               </MappingFragment>
@@ -1003,27 +1238,28 @@
           <EntitySetMapping Name="package">
             <EntityTypeMapping TypeName="FST4Model.package">
               <MappingFragment StoreEntitySet="package">
-                <ScalarProperty Name="pack_active" ColumnName="pack_active" />
                 <ScalarProperty Name="package_id" ColumnName="package_id" />
                 <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="pack_active" ColumnName="pack_active" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="person">
             <EntityTypeMapping TypeName="FST4Model.person">
               <MappingFragment StoreEntitySet="person">
-                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
                 <ScalarProperty Name="person_id" ColumnName="person_id" />
                 <ScalarProperty Name="firstname" ColumnName="firstname" />
                 <ScalarProperty Name="lastname" ColumnName="lastname" />
                 <ScalarProperty Name="e_mail" ColumnName="e-mail" />
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="birthdate" ColumnName="birthdate" />
                 <ScalarProperty Name="street" ColumnName="street" />
                 <ScalarProperty Name="country" ColumnName="country" />
                 <ScalarProperty Name="zip_code" ColumnName="zip_code" />
                 <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="valid" ColumnName="valid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1042,6 +1278,19 @@
             <EntityTypeMapping TypeName="FST4Model.shape">
               <MappingFragment StoreEntitySet="shape">
                 <ScalarProperty Name="shape_id" ColumnName="shape_id" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="simeontest">
+            <EntityTypeMapping TypeName="FST4Model.simeontest">
+              <MappingFragment StoreEntitySet="simeontest">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="startdate" ColumnName="startdate" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="used" ColumnName="used" />
+                <ScalarProperty Name="visible" ColumnName="visible" />
                 <ScalarProperty Name="description" ColumnName="description" />
               </MappingFragment>
             </EntityTypeMapping>

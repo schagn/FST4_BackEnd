@@ -55,6 +55,9 @@
     <Compile Include="article_has_ingredient.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="article_has_mass.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="article_type.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
@@ -86,6 +89,12 @@
     <Compile Include="ingredient.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="mass.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="mass_has_ingredient.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="order.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
@@ -103,6 +112,9 @@
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="shape.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="simeontest.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="special_offer.cs">

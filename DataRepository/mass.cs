@@ -12,27 +12,21 @@ namespace DataRepository
     using System;
     using System.Collections.Generic;
     
-    public partial class ingredient
+    public partial class mass
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ingredient()
+        public mass()
         {
-            this.article_has_ingredient = new HashSet<article_has_ingredient>();
+            this.article_has_mass = new HashSet<article_has_mass>();
             this.mass_has_ingredient = new HashSet<mass_has_ingredient>();
-            this.category = new HashSet<category>();
         }
     
-        public System.Guid ingredient_id { get; set; }
-        public string description { get; set; }
-        public Nullable<double> price { get; set; }
-        public Nullable<bool> ing_available { get; set; }
-        public string unit { get; set; }
+        public System.Guid mass_id { get; set; }
+        public string mass_description { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<article_has_ingredient> article_has_ingredient { get; set; }
+        public virtual ICollection<article_has_mass> article_has_mass { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mass_has_ingredient> mass_has_ingredient { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<category> category { get; set; }
     }
 }

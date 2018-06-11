@@ -27,17 +27,21 @@ namespace DataRepository
     
         public virtual DbSet<article> article { get; set; }
         public virtual DbSet<article_has_ingredient> article_has_ingredient { get; set; }
+        public virtual DbSet<article_has_mass> article_has_mass { get; set; }
         public virtual DbSet<article_type> article_type { get; set; }
         public virtual DbSet<business_customer> business_customer { get; set; }
         public virtual DbSet<category> category { get; set; }
         public virtual DbSet<city> city { get; set; }
         public virtual DbSet<ingredient> ingredient { get; set; }
+        public virtual DbSet<mass> mass { get; set; }
+        public virtual DbSet<mass_has_ingredient> mass_has_ingredient { get; set; }
         public virtual DbSet<order> order { get; set; }
         public virtual DbSet<order_has_articles> order_has_articles { get; set; }
         public virtual DbSet<package> package { get; set; }
         public virtual DbSet<person> person { get; set; }
         public virtual DbSet<rating> rating { get; set; }
         public virtual DbSet<shape> shape { get; set; }
+        public virtual DbSet<simeontest> simeontest { get; set; }
         public virtual DbSet<special_offer> special_offer { get; set; }
         public virtual DbSet<type> type { get; set; }
         public virtual DbSet<voucher> voucher { get; set; }
