@@ -1,10 +1,12 @@
 ﻿using DataRepository;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using Microsoft.Win32;
 using SharedClasses;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ namespace BackEndView.ViewModel
 {
     public class KuchenverwaltungVm : ViewModelBase
     {
+        string imagePath = @"C:\inetpub\wwwroot\GetYourCake4.0\images\artikelbilder\artikel";
         private string description;
 
         public string Description
@@ -60,10 +63,20 @@ namespace BackEndView.ViewModel
             get { return selectedArticle; }
             set { selectedArticle = value; RaisePropertyChanged(); }
         }
+
+        private string filePath;
+
+        public string FilePath
+        {
+            get { return filePath; }
+            set { filePath = value; RaisePropertyChanged(); }
+        }
+
         public RelayCommand BtnCancelClicked { get; set; }
         public RelayCommand BtnDeleteClicked { get; set; }
         public RelayCommand BtnEditClicked { get; set; }
         public RelayCommand BtnSaveClicked { get; set; }
+        public RelayCommand BtnBrowseClicked { get; set; }
         public List<string> VisibilityFilter { get; set; }
         public List<string> CreationFilter { get; set; }
         private string selectedVisibilityFilter;
@@ -97,9 +110,18 @@ namespace BackEndView.ViewModel
             BtnDeleteClicked = new RelayCommand(Delete);
             BtnEditClicked = new RelayCommand(Edit);
             BtnSaveClicked = new RelayCommand(Save);
+            BtnBrowseClicked = new RelayCommand(Browse);
             dataHandler = new DataHandler();
 
             RefreshList();
+        }
+
+        private void Browse()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Multiselect = false;
+            openFileDialog.ShowDialog();
+            FilePath = openFileDialog.FileName;
         }
 
         private void Cancel()
@@ -111,6 +133,7 @@ namespace BackEndView.ViewModel
             Creation = false;
             Visible = false;
             SelectedShape = null;
+            FilePath = null;
         }
 
         private void Delete()
@@ -128,6 +151,17 @@ namespace BackEndView.ViewModel
             Creation = SelectedArticle != null ? SelectedArticle.Creation : false;
             Visible = SelectedArticle != null ? SelectedArticle.Visible : false;
             SelectedShape = SelectedArticle != null ? SelectedArticle.ShapeDescription : null;
+            if(Directory.Exists(imagePath))
+            {
+                if(File.Exists(Path.Combine(imagePath, SelectedArticle.ArticleId + ".jpg")))
+                {
+                    FilePath = Path.Combine(imagePath, SelectedArticle.ArticleId + ".jpg");
+                }
+                if (File.Exists(Path.Combine(imagePath, SelectedArticle.ArticleId + ".png")))
+                {
+                    FilePath = Path.Combine(imagePath, SelectedArticle.ArticleId + ".png");
+                }
+            }
         }
 
         private void Save()
@@ -140,7 +174,7 @@ namespace BackEndView.ViewModel
                 tempArticle.Price = Price;
                 tempArticle.ShapeDescription = SelectedShape;
                 tempArticle.Visible = Visible;
-                dataHandler.UpdateArticle(tempArticle);
+                dataHandler.UpdateArticle(tempArticle, FilePath);
             }
             else
             {
@@ -152,7 +186,7 @@ namespace BackEndView.ViewModel
                     Price = Price,
                     ShapeDescription = SelectedShape,
                     Visible = Visible
-                });
+                }, FilePath);
             }
             RefreshList();
             Cancel();

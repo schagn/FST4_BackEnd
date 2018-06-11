@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace DataRepository
     public class DataHandler
     {
         FST4Entities model = new FST4Entities();
+        string imagePath = @"C:\inetpub\wwwroot\GetYourCake4.0\images\artikelbilder\artikel";
 
         #region Kuchenverwaltung+Zutaten
 
@@ -44,11 +46,12 @@ namespace DataRepository
             return list;
         }
 
-        public void CreateArticle(SharedArticle sharedArticle)
+        public void CreateArticle(SharedArticle sharedArticle, string filePath)
         {
+            Guid tempGuid = Guid.NewGuid();
             var article = new article()
             {
-                article_id = Guid.NewGuid(),
+                article_id = tempGuid,
                 article_type = model.article_type.SingleOrDefault(x => x.description.Equals(sharedArticle.ArticleTypeDescription)),
                 creation = sharedArticle.Creation,
                 description = sharedArticle.Description,
@@ -58,6 +61,16 @@ namespace DataRepository
             };
             model.article.Add(article);
             model.SaveChanges();
+
+            if (!String.IsNullOrEmpty(filePath) && File.Exists(filePath) && (Path.GetExtension(filePath) == ".jpg" || Path.GetExtension(filePath) == ".png"))
+            {
+                if (!Directory.Exists(imagePath))
+                {
+                    Directory.CreateDirectory(imagePath);
+                }
+                string tempDestFile = Path.Combine(imagePath, tempGuid + Path.GetExtension(filePath));
+                File.Copy(filePath, tempDestFile);
+            }
         }
 
         public List<SharedIngredient> GetIngredients()
@@ -114,7 +127,7 @@ namespace DataRepository
             model.SaveChanges();
         }
 
-        public void UpdateArticle(SharedArticle tempArticle)
+        public void UpdateArticle(SharedArticle tempArticle, string filePath)
         {
             var article = model.article.SingleOrDefault(x => x.article_id == tempArticle.ArticleId);
             article.article_type = model.article_type.SingleOrDefault(x => x.description.Equals(tempArticle.ArticleTypeDescription));
@@ -124,6 +137,16 @@ namespace DataRepository
             article.shape = model.shape.SingleOrDefault(x => x.description.Equals(tempArticle.ShapeDescription));
             article.visible = tempArticle.Visible;
             model.SaveChanges();
+
+            if (!String.IsNullOrEmpty(filePath) && File.Exists(filePath) && (Path.GetExtension(filePath) == ".jpg" || Path.GetExtension(filePath) == ".png"))
+            {
+                if (!Directory.Exists(imagePath))
+                {
+                    Directory.CreateDirectory(imagePath);
+                }
+                string tempDestFile = Path.Combine(imagePath, article.article_id + Path.GetExtension(filePath));
+                File.Copy(filePath, tempDestFile, true);
+            }
         }
 
         #endregion
