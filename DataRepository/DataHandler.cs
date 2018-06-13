@@ -99,6 +99,14 @@ namespace DataRepository
 
         public void DeleteArticle(Guid articleId)
         {
+            foreach(var item in model.package.Where(x => x.article.Count(y => y.article_id == articleId) > 0))
+            {
+                item.article.Remove(item.article.SingleOrDefault(x => x.article_id == articleId));
+            }
+            model.order_has_articles.RemoveRange(model.order_has_articles.Where(x => x.article_id == articleId));
+            model.rating.RemoveRange(model.rating.Where(x => x.article_id == articleId));
+            model.article_has_ingredient.RemoveRange(model.article_has_ingredient.Where(x => x.article_id == articleId));
+            model.article_has_mass.RemoveRange(model.article_has_mass.Where(x => x.fk_article_id == articleId));
             model.article.Remove(model.article.SingleOrDefault(x => x.article_id == articleId));
             model.SaveChanges();
         }
