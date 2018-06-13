@@ -161,6 +161,8 @@ namespace BackEndView.ViewModel
             FilterMethoden.Add("Alle");
 
             IsEditingProcess = false;
+
+            Geburtsdatum = DateTime.Parse("2000/01/01");
         }
 
         private void EditKunde()
