@@ -405,6 +405,7 @@ namespace DataRepository
                 }).ToList(),
                 KundenName = x.person.firstname + " " + x.person.lastname,
                 BestellDatum = x.order_date,
+                LieferDatum = x.delivery_date,
                 Bestellstatus = x.status,
                 GesamtSumme = x.total_amount
 
@@ -458,11 +459,12 @@ namespace DataRepository
             return (double?)0;
         }
 
-        public void UpdateOrderStatus(Guid id, string status)
+        public void UpdateOrder(Guid id, string status, DateTime deliveryDate)
         {
             var order = model.order.Where(x => x.order_id.Equals(id)).SingleOrDefault();
 
             order.status = status;
+            order.delivery_date = deliveryDate;
 
             model.SaveChanges();
 

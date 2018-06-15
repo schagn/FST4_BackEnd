@@ -67,9 +67,9 @@ namespace BackEndView.ViewModel
             set { bestellDatum = value; RaisePropertyChanged(); }
         }
 
-        private DateTime? lieferDatum;
+        private DateTime lieferDatum;
 
-        public DateTime? LieferDatum
+        public DateTime LieferDatum
         {
             get { return lieferDatum; }
             set { lieferDatum = value; RaisePropertyChanged(); }
@@ -208,7 +208,7 @@ namespace BackEndView.ViewModel
             BestellNummer = SelectedBestellung.BestellId.ToString();
             SelectedBestellungProdukte =  new ObservableCollection<SharedOrderArticle>(SelectedBestellung.Artikel);
             GetSelectedBestellungProduktnamen();
-            LieferDatum = SelectedBestellung.LieferDatum;
+            LieferDatum = SelectedBestellung.LieferDatum.GetValueOrDefault();
 
 
         }
@@ -244,8 +244,8 @@ namespace BackEndView.ViewModel
         
              if(SelectedStatus != null && SelectedBestellung != null)
             {
-                // LIEFERDATUM HINZUFÜGEN !!!! 
-                dh.UpdateOrderStatus(SelectedBestellung.BestellId, SelectedStatus);
+                // LIEFERDATUM HINZUFÜGEN !!!! - Agnes hats erledigt
+                dh.UpdateOrder(SelectedBestellung.BestellId, SelectedStatus, LieferDatum);
             }
 
 

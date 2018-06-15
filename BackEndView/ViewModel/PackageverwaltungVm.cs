@@ -245,12 +245,15 @@ namespace BackEndView.ViewModel
                         item.Visible = Visibility;
                         item.Preis = Preis;
                         item.Creation = Creation;
+                        item.Kuchen.Add(SelectedKuchen);
+
+                        dataHandler.UpdatePackage(item);
                     }
                 }
             }
             else
             {
-                Packages.Add(new SharedPackage()
+                dataHandler.CreatePackage(new SharedPackage()
                 {
                     Beschreibung = Beschreibung,
                     PackageId = Guid.NewGuid(),
@@ -266,7 +269,7 @@ namespace BackEndView.ViewModel
             Creation = false;
             Preis = 0;
 
-            RaisePropertyChanged("Packages");
+            RefreshList(SelectedVisibilityFilter, SelectedCreationFilter);
 
             IsEditingProcess = false;
         }
