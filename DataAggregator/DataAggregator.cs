@@ -37,11 +37,38 @@ namespace DataAggregator
                 
             }
 
-
-
-
         }
+
+        public static Dictionary<Guid, SharedAggregatedRating> getRatingPerProduct()
+        {
+
+            List<SharedBewertung> allRatings = dh.GetRatingAll();
+            Dictionary<Guid, SharedAggregatedRating> ratingPerProduct = new Dictionary<Guid, SharedAggregatedRating>();
+
+            foreach (var item in allRatings)
+            {
+                if (!ratingPerProduct.ContainsKey(item.ArticleId))
+                {
+                    ratingPerProduct.Add(item.ArticleId, new SharedAggregatedRating
+                    {
+                        AccumulatedRating = item.Sterne.GetValueOrDefault(),
+                        NumberofRatings = 1
+
+                    });
+                }
+                else
+                {
+                    ratingPerProduct[item.ArticleId].AccumulatedRating += item.Sterne.GetValueOrDefault();
+                    ratingPerProduct[item.ArticleId].NumberofRatings += 1;
+
+                }
+            }
+
+            return ratingPerProduct;
 
 
     }
+    }
+
+ 
 }

@@ -163,7 +163,7 @@ namespace BackEndView.ViewModel
            if(SelectedBestellung != null && SelectedProdukt != null)
             {
                 // nur Lieferverzögerung mitteilen
-                CustomerMailService.InformCustomerAboutDelay(SelectedBestellung, dh.GetEmailCustomerForOrder(SelectedBestellung), SelectedProdukt);
+                CustomerMailService.InformCustomerAboutDelay(SelectedBestellung, dh.GetEmailCustomerForOrder(SelectedBestellung));
             }
 
 
@@ -174,7 +174,7 @@ namespace BackEndView.ViewModel
         private void ProduktLöschen()
         {
             if(SelectedBestellung != null && SelectedProdukt != null)
-            { // BLEIBT!!
+            { 
 
                 Guid pId = GetIdForProduct(SelectedProdukt);
                 dh.DeleteProductFromOrder(SelectedBestellung.BestellId, pId);
@@ -182,10 +182,10 @@ namespace BackEndView.ViewModel
                 GetSelectedBestellungProduktnamen();
                 RefreshOrders();
                 CancelData();
-                //Summe der Bestellung muss reduziert werden 
+               
             }
 
-
+            CustomerMailService.InformCustomerAboutDeletedProduct(SelectedBestellung, dh.GetEmailCustomerForOrder(selectedBestellung), SelectedProdukt);
 
             // Kundenemail mit das Produkt "blablabla" wurde aus deiner Bestellung gelöscht
             // Differenzbetrag wird an ihre Bezahlmethode zurücküberwiesen
@@ -196,9 +196,9 @@ namespace BackEndView.ViewModel
         private void BestellungStornieren()
         {
             SelectedBestellung.Bestellstatus = "abgebrochen";
+            dh.UpdateOrder(SelectedBestellung);
 
-            // Kundenmail mit gesamte Bestellung wurde storniert, ... eventuell Grund nennen
-            // Ihr Geld wird möglichst rasch zurück überwiesen
+            CustomerMailService.InformCustomerAboutCancellation(SelectedBestellung, dh.GetEmailCustomerForOrder(selectedBestellung));
         }
 
         private void EditBestellung()
@@ -244,8 +244,8 @@ namespace BackEndView.ViewModel
         
              if(SelectedStatus != null && SelectedBestellung != null)
             {
-                // LIEFERDATUM HINZUFÜGEN !!!! - Agnes hats erledigt
-                dh.UpdateOrder(SelectedBestellung.BestellId, SelectedStatus, LieferDatum);
+                
+                dh.UpdateOrder(SelectedBestellung);
             }
 
 
