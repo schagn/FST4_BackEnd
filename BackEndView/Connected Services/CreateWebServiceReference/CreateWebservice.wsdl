@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="InsertStatement">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="statementModel" type="tns:StatementModel" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="StatementModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TableName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PrimaryKeyNames" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="PrimaryKeyValues" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="Columns" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="Values" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sender" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InsertStatementResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InsertStatementResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="InsertStatementSoapIn">
+    <wsdl:part name="parameters" element="tns:InsertStatement" />
+  </wsdl:message>
+  <wsdl:message name="InsertStatementSoapOut">
+    <wsdl:part name="parameters" element="tns:InsertStatementResponse" />
+  </wsdl:message>
+  <wsdl:portType name="CreateWebServiceSoap">
+    <wsdl:operation name="InsertStatement">
+      <wsdl:input message="tns:InsertStatementSoapIn" />
+      <wsdl:output message="tns:InsertStatementSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CreateWebServiceSoap" type="tns:CreateWebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="InsertStatement">
+      <soap:operation soapAction="http://tempuri.org/InsertStatement" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CreateWebServiceSoap12" type="tns:CreateWebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="InsertStatement">
+      <soap12:operation soapAction="http://tempuri.org/InsertStatement" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CreateWebService">
+    <wsdl:port name="CreateWebServiceSoap" binding="tns:CreateWebServiceSoap">
+      <soap:address location="http://localhost/FST4_Sync/CreateWebservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="CreateWebServiceSoap12" binding="tns:CreateWebServiceSoap12">
+      <soap12:address location="http://localhost/FST4_Sync/CreateWebservice.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
