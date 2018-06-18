@@ -247,7 +247,7 @@ namespace DataRepository
             CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
             StatementModel statementModel = new StatementModel();
             statementModel.Type = "Update";
-            statementModel.TableName = "article";
+            statementModel.TableName = "article_has_ingredient";
             statementModel.PrimaryKeyNames = new ArrayOfString() { "article_id", "ingredient_id" };
             statementModel.PrimaryKeyValues = new ArrayOfString() { tempArticle.article_id.ToString(), tempIngredient.ingredient_id.ToString() };
             statementModel.Columns = new ArrayOfString();
