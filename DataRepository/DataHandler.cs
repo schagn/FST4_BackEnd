@@ -459,12 +459,12 @@ namespace DataRepository
             return (double?)0;
         }
 
-        public void UpdateOrder(Guid id, string status, DateTime deliveryDate)
+        public void UpdateOrder(SharedBestellung ord)
         {
-            var order = model.order.Where(x => x.order_id.Equals(id)).SingleOrDefault();
+            var order = model.order.Where(x => x.order_id.Equals(ord.BestellId)).SingleOrDefault();
 
-            order.status = status;
-            order.delivery_date = deliveryDate;
+            order.status = ord.Bestellstatus;
+            order.delivery_date = ord.LieferDatum;
 
             model.SaveChanges();
 
@@ -535,9 +535,21 @@ namespace DataRepository
 
         public void DeleteProductFromOrder(Guid orderId, Guid productId)
         {
+
+            var amount = model.order_has_articles.SingleOrDefault(x => x.order_id.Equals(orderId) && x.article_id.Equals(productId)).amount;
             model.order_has_articles.Remove(model.order_has_articles.SingleOrDefault(x=> x.order_id.Equals(orderId) && x.article_id.Equals(productId)));
+
+            
+            var order = model.order.Where(x => x.order_id.Equals(orderId)).SingleOrDefault();
+            var product = model.article.Where(y => y.article_id.Equals(productId)).SingleOrDefault();
+
+            order.total_amount = order.total_amount - (product.price * amount);
+
+
             model.SaveChanges();
         }
+
+        
             
         #endregion
 
@@ -1031,6 +1043,12 @@ namespace DataRepository
             model.SaveChanges();
         }
         #endregion
+
+        #region Berichte
+
+        
+
+#endregion
 
     }
 }
