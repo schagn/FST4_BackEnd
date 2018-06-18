@@ -1,4 +1,5 @@
-﻿using SharedClasses;
+﻿using DataRepository.CreateWebServiceReference;
+using SharedClasses;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -46,41 +47,14 @@ namespace DataRepository
             return list;
         }
 
-        public void CreateArticle(SharedArticle sharedArticle, string filePath)
-        {
-            Guid tempGuid = Guid.NewGuid();
-            var article = new article()
-            {
-                article_id = tempGuid,
-                article_type = model.article_type.SingleOrDefault(x => x.description.Equals(sharedArticle.ArticleTypeDescription)),
-                creation = sharedArticle.Creation,
-                description = sharedArticle.Description,
-                price = sharedArticle.Price,
-                shape = model.shape.SingleOrDefault(x => x.description.Equals(sharedArticle.ShapeDescription)),
-                visible = sharedArticle.Visible
-            };
-            model.article.Add(article);
-            model.SaveChanges();
-
-            if (!String.IsNullOrEmpty(filePath) && File.Exists(filePath) && (Path.GetExtension(filePath) == ".jpg" || Path.GetExtension(filePath) == ".png"))
-            {
-                if (!Directory.Exists(ConfigurationManager.AppSettings["imageFolder"]))
-                {
-                    Directory.CreateDirectory(ConfigurationManager.AppSettings["imageFolder"]);
-                }
-                string tempDestFile = Path.Combine(ConfigurationManager.AppSettings["imageFolder"], tempGuid + Path.GetExtension(filePath));
-                File.Copy(filePath, tempDestFile);
-            }
-        }
-
         public List<SharedIngredient> GetIngredients()
         {
-                return model.ingredient.Select(x => new SharedIngredient()
-                {
-                    Description = x.description,
-                    IngredientId = x.ingredient_id,
-                    Price = x.price.Value
-                }).ToList();
+            return model.ingredient.Select(x => new SharedIngredient()
+            {
+                Description = x.description,
+                IngredientId = x.ingredient_id,
+                Price = x.price.Value
+            }).ToList();
         }
 
         public List<SharedArticleIngredient> GetArticleIngredients(string selectedArticle)
@@ -97,6 +71,58 @@ namespace DataRepository
             }).ToList();
         }
 
+        public void CreateArticle(SharedArticle sharedArticle, string filePath)
+        {
+            Guid tempGuid = Guid.NewGuid();
+            var tempArticleType = model.article_type.SingleOrDefault(x => x.description.Equals(sharedArticle.ArticleTypeDescription));
+            var tempShape = model.shape.SingleOrDefault(x => x.description.Equals(sharedArticle.ShapeDescription));
+            var article = new article()
+            {
+                article_id = tempGuid,
+                article_type = tempArticleType,
+                creation = sharedArticle.Creation,
+                description = sharedArticle.Description,
+                price = sharedArticle.Price,
+                shape = tempShape,
+                visible = sharedArticle.Visible
+            };
+            model.article.Add(article);
+            model.SaveChanges();
+
+            if (!String.IsNullOrEmpty(filePath) && File.Exists(filePath) && (Path.GetExtension(filePath) == ".jpg" || Path.GetExtension(filePath) == ".png"))
+            {
+                if (!Directory.Exists(ConfigurationManager.AppSettings["imageFolder"]))
+                {
+                    Directory.CreateDirectory(ConfigurationManager.AppSettings["imageFolder"]);
+                }
+                string tempDestFile = Path.Combine(ConfigurationManager.AppSettings["imageFolder"], tempGuid + Path.GetExtension(filePath));
+                File.Copy(filePath, tempDestFile);
+            }
+
+            CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
+            StatementModel statementModel = new StatementModel();
+            statementModel.Type = "Insert";
+            statementModel.TableName = "article";
+            statementModel.PrimaryKeyNames = new ArrayOfString() { "article_id" };
+            statementModel.PrimaryKeyValues = new ArrayOfString() { tempGuid.ToString() };
+            statementModel.Columns = new ArrayOfString();
+            statementModel.Values = new ArrayOfString();
+            statementModel.Columns.Add("article_type_id");
+            statementModel.Values.Add(tempArticleType.article_type_id.ToString());
+            statementModel.Columns.Add("creation");
+            statementModel.Values.Add(sharedArticle.Creation.ToString());
+            statementModel.Columns.Add("description");
+            statementModel.Values.Add(sharedArticle.Description);
+            statementModel.Columns.Add("price");
+            statementModel.Values.Add(sharedArticle.Price.ToString());
+            statementModel.Columns.Add("shape_id");
+            statementModel.Values.Add(tempShape.shape_id.ToString());
+            statementModel.Columns.Add("visible");
+            statementModel.Values.Add(sharedArticle.Visible.ToString());
+            statementModel.Sender = "Backend";
+            string response = client.InsertStatement(statementModel);
+        }
+
         public void DeleteArticle(Guid articleId)
         {
             foreach(var item in model.package.Where(x => x.article.Count(y => y.article_id == articleId) > 0))
@@ -108,30 +134,6 @@ namespace DataRepository
             model.article_has_ingredient.RemoveRange(model.article_has_ingredient.Where(x => x.article_id == articleId));
             model.article_has_mass.RemoveRange(model.article_has_mass.Where(x => x.fk_article_id == articleId));
             model.article.Remove(model.article.SingleOrDefault(x => x.article_id == articleId));
-            model.SaveChanges();
-        }
-
-        public void DeleteArticleIngredient(string selectedArticle, string selectedIngredient)
-        {
-            model.article_has_ingredient.Remove(model.article_has_ingredient.SingleOrDefault(x => x.article.description.Equals(selectedArticle) && x.ingredient.description.Equals(selectedIngredient)));
-            model.SaveChanges();
-        }
-
-        public void CreateArticleIngredient(string selectedArticle, string selectedIngredient, double amount)
-        {
-            model.article_has_ingredient.Add(new article_has_ingredient()
-            {
-                amount = amount,
-                article = model.article.SingleOrDefault(x => x.description.Equals(selectedArticle)),
-                ingredient = model.ingredient.SingleOrDefault(x => x.description.Equals(selectedIngredient))
-            });
-            model.SaveChanges();
-        }
-
-        public void UpdateArticleIngredient(string selectedArticle, string selectedIngredient, double amount)
-        {
-            var item = model.article_has_ingredient.SingleOrDefault(x => x.article.description.Equals(selectedArticle) && x.ingredient.description.Equals(selectedIngredient));
-            item.amount = amount;
             model.SaveChanges();
         }
 
@@ -155,6 +157,30 @@ namespace DataRepository
                 string tempDestFile = Path.Combine(ConfigurationManager.AppSettings["imageFolder"], article.article_id + Path.GetExtension(filePath));
                 File.Copy(filePath, tempDestFile, true);
             }
+        }
+
+        public void CreateArticleIngredient(string selectedArticle, string selectedIngredient, double amount)
+        {
+            model.article_has_ingredient.Add(new article_has_ingredient()
+            {
+                amount = amount,
+                article = model.article.SingleOrDefault(x => x.description.Equals(selectedArticle)),
+                ingredient = model.ingredient.SingleOrDefault(x => x.description.Equals(selectedIngredient))
+            });
+            model.SaveChanges();
+        }
+
+        public void DeleteArticleIngredient(string selectedArticle, string selectedIngredient)
+        {
+            model.article_has_ingredient.Remove(model.article_has_ingredient.SingleOrDefault(x => x.article.description.Equals(selectedArticle) && x.ingredient.description.Equals(selectedIngredient)));
+            model.SaveChanges();
+        }
+
+        public void UpdateArticleIngredient(string selectedArticle, string selectedIngredient, double amount)
+        {
+            var item = model.article_has_ingredient.SingleOrDefault(x => x.article.description.Equals(selectedArticle) && x.ingredient.description.Equals(selectedIngredient));
+            item.amount = amount;
+            model.SaveChanges();
         }
 
         #endregion
@@ -548,7 +574,7 @@ namespace DataRepository
 
             model.SaveChanges();
         }
-
+            
         
             
         #endregion
