@@ -195,26 +195,67 @@ namespace DataRepository
 
         public void CreateArticleIngredient(string selectedArticle, string selectedIngredient, double amount)
         {
+            var tempArticle = model.article.SingleOrDefault(x => x.description.Equals(selectedArticle));
+            var tempIngredient = model.ingredient.SingleOrDefault(x => x.description.Equals(selectedIngredient));
             model.article_has_ingredient.Add(new article_has_ingredient()
             {
                 amount = amount,
-                article = model.article.SingleOrDefault(x => x.description.Equals(selectedArticle)),
-                ingredient = model.ingredient.SingleOrDefault(x => x.description.Equals(selectedIngredient))
+                article = tempArticle,
+                ingredient = tempIngredient
             });
             model.SaveChanges();
+
+            CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
+            StatementModel statementModel = new StatementModel();
+            statementModel.Type = "Insert";
+            statementModel.TableName = "article_has_ingredient";
+            statementModel.PrimaryKeyNames = new ArrayOfString() { "article_id", "ingredient_id" };
+            statementModel.PrimaryKeyValues = new ArrayOfString() { tempArticle.article_id.ToString(), tempIngredient.ingredient_id.ToString() };
+            statementModel.Columns = new ArrayOfString();
+            statementModel.Values = new ArrayOfString();
+            statementModel.Columns.Add("amount");
+            statementModel.Values.Add(amount.ToString());
+            statementModel.Sender = "Backend";
+            string response = client.InsertStatement(statementModel);
         }
 
         public void DeleteArticleIngredient(string selectedArticle, string selectedIngredient)
         {
-            model.article_has_ingredient.Remove(model.article_has_ingredient.SingleOrDefault(x => x.article.description.Equals(selectedArticle) && x.ingredient.description.Equals(selectedIngredient)));
+            var tempArticle = model.article.SingleOrDefault(x => x.description.Equals(selectedArticle));
+            var tempIngredient = model.ingredient.SingleOrDefault(x => x.description.Equals(selectedIngredient));
+            model.article_has_ingredient.Remove(model.article_has_ingredient.SingleOrDefault(x => x.article_id == tempArticle.article_id && x.ingredient_id == tempIngredient.ingredient_id));
             model.SaveChanges();
+
+            CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
+            StatementModel statementModel = new StatementModel();
+            statementModel.Type = "Delete";
+            statementModel.TableName = "article_has_ingredient";
+            statementModel.PrimaryKeyNames = new ArrayOfString() { "article_id", "ingredient_id" };
+            statementModel.PrimaryKeyValues = new ArrayOfString() { tempArticle.article_id.ToString(), tempIngredient.ingredient_id.ToString() };
+            statementModel.Sender = "Backend";
+            string response = client.InsertStatement(statementModel);
         }
 
         public void UpdateArticleIngredient(string selectedArticle, string selectedIngredient, double amount)
         {
-            var item = model.article_has_ingredient.SingleOrDefault(x => x.article.description.Equals(selectedArticle) && x.ingredient.description.Equals(selectedIngredient));
+            var tempArticle = model.article.SingleOrDefault(x => x.description.Equals(selectedArticle));
+            var tempIngredient = model.ingredient.SingleOrDefault(x => x.description.Equals(selectedIngredient));
+            var item = model.article_has_ingredient.SingleOrDefault(x => x.article_id == tempArticle.article_id && x.ingredient_id == tempIngredient.ingredient_id);
             item.amount = amount;
             model.SaveChanges();
+
+            CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
+            StatementModel statementModel = new StatementModel();
+            statementModel.Type = "Update";
+            statementModel.TableName = "article";
+            statementModel.PrimaryKeyNames = new ArrayOfString() { "article_id", "ingredient_id" };
+            statementModel.PrimaryKeyValues = new ArrayOfString() { tempArticle.article_id.ToString(), tempIngredient.ingredient_id.ToString() };
+            statementModel.Columns = new ArrayOfString();
+            statementModel.Values = new ArrayOfString();
+            statementModel.Columns.Add("amount");
+            statementModel.Values.Add(amount.ToString());
+            statementModel.Sender = "Backend";
+            string response = client.InsertStatement(statementModel);
         }
 
         #endregion
