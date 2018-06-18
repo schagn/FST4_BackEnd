@@ -135,16 +135,27 @@ namespace DataRepository
             model.article_has_mass.RemoveRange(model.article_has_mass.Where(x => x.fk_article_id == articleId));
             model.article.Remove(model.article.SingleOrDefault(x => x.article_id == articleId));
             model.SaveChanges();
+
+            CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
+            StatementModel statementModel = new StatementModel();
+            statementModel.Type = "Delete";
+            statementModel.TableName = "article";
+            statementModel.PrimaryKeyNames = new ArrayOfString() { "article_id" };
+            statementModel.PrimaryKeyValues = new ArrayOfString() { articleId.ToString() };
+            statementModel.Sender = "Backend";
+            string response = client.InsertStatement(statementModel);
         }
 
         public void UpdateArticle(SharedArticle tempArticle, string filePath)
         {
             var article = model.article.SingleOrDefault(x => x.article_id == tempArticle.ArticleId);
-            article.article_type = model.article_type.SingleOrDefault(x => x.description.Equals(tempArticle.ArticleTypeDescription));
+            var tempArticleType = model.article_type.SingleOrDefault(x => x.description.Equals(tempArticle.ArticleTypeDescription));
+            var tempShape = model.shape.SingleOrDefault(x => x.description.Equals(tempArticle.ShapeDescription));
+            article.article_type = tempArticleType;
             article.creation = tempArticle.Creation;
             article.description = tempArticle.Description;
             article.price = tempArticle.Price;
-            article.shape = model.shape.SingleOrDefault(x => x.description.Equals(tempArticle.ShapeDescription));
+            article.shape = tempShape;
             article.visible = tempArticle.Visible;
             model.SaveChanges();
 
@@ -157,6 +168,29 @@ namespace DataRepository
                 string tempDestFile = Path.Combine(ConfigurationManager.AppSettings["imageFolder"], article.article_id + Path.GetExtension(filePath));
                 File.Copy(filePath, tempDestFile, true);
             }
+
+            CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
+            StatementModel statementModel = new StatementModel();
+            statementModel.Type = "Update";
+            statementModel.TableName = "article";
+            statementModel.PrimaryKeyNames = new ArrayOfString() { "article_id" };
+            statementModel.PrimaryKeyValues = new ArrayOfString() { tempArticle.ArticleId.ToString() };
+            statementModel.Columns = new ArrayOfString();
+            statementModel.Values = new ArrayOfString();
+            statementModel.Columns.Add("article_type_id");
+            statementModel.Values.Add(tempArticleType.article_type_id.ToString());
+            statementModel.Columns.Add("creation");
+            statementModel.Values.Add(tempArticle.Creation.ToString());
+            statementModel.Columns.Add("description");
+            statementModel.Values.Add(tempArticle.Description);
+            statementModel.Columns.Add("price");
+            statementModel.Values.Add(tempArticle.Price.ToString());
+            statementModel.Columns.Add("shape_id");
+            statementModel.Values.Add(tempShape.shape_id.ToString());
+            statementModel.Columns.Add("visible");
+            statementModel.Values.Add(tempArticle.Visible.ToString());
+            statementModel.Sender = "Backend";
+            string response = client.InsertStatement(statementModel);
         }
 
         public void CreateArticleIngredient(string selectedArticle, string selectedIngredient, double amount)
