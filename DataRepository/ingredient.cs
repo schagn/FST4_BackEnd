@@ -27,9 +27,12 @@ namespace DataRepository
         public Nullable<double> price { get; set; }
         public Nullable<bool> ing_available { get; set; }
         public string unit { get; set; }
+        public string path { get; set; }
+        public Nullable<System.Guid> fk_ingredient_type_id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<article_has_ingredient> article_has_ingredient { get; set; }
+        public virtual ingredient_type ingredient_type { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<mass_has_ingredient> mass_has_ingredient { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

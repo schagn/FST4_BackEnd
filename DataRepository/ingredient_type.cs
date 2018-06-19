@@ -12,25 +12,18 @@ namespace DataRepository
     using System;
     using System.Collections.Generic;
     
-    public partial class package
+    public partial class ingredient_type
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public package()
+        public ingredient_type()
         {
-            this.order_has_package = new HashSet<order_has_package>();
-            this.article = new HashSet<article>();
+            this.ingredient = new HashSet<ingredient>();
         }
     
-        public System.Guid package_id { get; set; }
+        public System.Guid ingredient_type_id { get; set; }
         public string description { get; set; }
-        public string details { get; set; }
-        public Nullable<double> price { get; set; }
-        public Nullable<bool> pack_active { get; set; }
-        public Nullable<bool> creation { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<order_has_package> order_has_package { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<article> article { get; set; }
+        public virtual ICollection<ingredient> ingredient { get; set; }
     }
 }

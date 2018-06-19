@@ -17,6 +17,7 @@ namespace DataRepository
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public order()
         {
+            this.order_has_package = new HashSet<order_has_package>();
             this.order_has_articles = new HashSet<order_has_articles>();
         }
     
@@ -26,8 +27,10 @@ namespace DataRepository
         public Nullable<double> total_amount { get; set; }
         public string status { get; set; }
         public System.Guid person_id { get; set; }
-        public System.Guid voucher_id { get; set; }
+        public Nullable<System.Guid> voucher_id { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<order_has_package> order_has_package { get; set; }
         public virtual person person { get; set; }
         public virtual voucher voucher { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -26,8 +26,12 @@ namespace DataRepository
     
         public System.Guid article_id { get; set; }
         public string description { get; set; }
+        public string details { get; set; }
         public Nullable<double> price { get; set; }
         public Nullable<bool> creation { get; set; }
+        public string preperation_description { get; set; }
+        public string extras { get; set; }
+        public Nullable<System.Guid> person_id { get; set; }
         public Nullable<bool> visible { get; set; }
         public System.Guid shape_id { get; set; }
         public System.Guid article_type_id { get; set; }

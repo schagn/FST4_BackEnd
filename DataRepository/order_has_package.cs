@@ -12,13 +12,13 @@ namespace DataRepository
     using System;
     using System.Collections.Generic;
     
-    public partial class mass_has_ingredient
+    public partial class order_has_package
     {
-        public System.Guid fk_ingredient_id { get; set; }
-        public System.Guid fk_mass_id { get; set; }
+        public System.Guid fk_package_id { get; set; }
+        public System.Guid fk_order_id { get; set; }
         public Nullable<double> amount { get; set; }
     
-        public virtual ingredient ingredient { get; set; }
-        public virtual mass mass { get; set; }
+        public virtual order order { get; set; }
+        public virtual package package { get; set; }
     }
 }
