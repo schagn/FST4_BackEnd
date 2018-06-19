@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharedAggregatedRating.cs" />
+    <Compile Include="SharedAggregatedValueWithUnit.cs" />
     <Compile Include="SharedAngebot.cs" />
     <Compile Include="SharedArticleIngredient.cs" />
     <Compile Include="SharedBestellung.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="SharedOrderArticle.cs" />
     <Compile Include="SharedPackage.cs" />
     <Compile Include="SharedRegelwerk.cs" />
+    <Compile Include="SharedOrderIngridient.cs" />
     <Compile Include="SharedShortOrder.cs" />
     <Compile Include="SharedVerpackung.cs" />
     <Compile Include="SharedZutat.cs" />

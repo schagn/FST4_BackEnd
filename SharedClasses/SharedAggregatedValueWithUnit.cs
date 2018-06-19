@@ -6,21 +6,11 @@ using System.Threading.Tasks;
 
 namespace SharedClasses
 {
-    public class SharedOrderIngridient
+    public class SharedAggregatedValueWithUnit
     {
-
-        public string name;
 
         public double amount;
 
         public string unit;
-
-
-
-        override
-            public string ToString()
-        {
-            return this.name + " " + this.amount + " " + this.unit; 
-        }
     }
 }

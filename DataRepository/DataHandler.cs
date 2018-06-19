@@ -1197,7 +1197,7 @@ namespace DataRepository
 
                 id = y.article_id,
                 name = y.article.description,
-                quantity = y.amount.GetValueOrDefault()
+                quantity = y.amount.Value
             }).ToList();
 
             return order;
@@ -1211,7 +1211,7 @@ namespace DataRepository
 
                 name = y.ingredient.description,
                 unit = y.ingredient.unit,
-                amount = y.amount.GetValueOrDefault() * amountMultiplier
+                amount = y.amount.Value * amountMultiplier
 
             }).ToList();
 

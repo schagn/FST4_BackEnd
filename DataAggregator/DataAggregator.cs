@@ -2,6 +2,7 @@
 using SharedClasses;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,17 +40,19 @@ namespace DataAggregator
 
         }
 
-        public static Dictionary<Guid, SharedAggregatedRating> getRatingPerProduct()
+        public static DataTable getRatingPerProduct()
         {
 
             List<SharedBewertung> allRatings = dh.GetRatingAll();
-            Dictionary<Guid, SharedAggregatedRating> ratingPerProduct = new Dictionary<Guid, SharedAggregatedRating>();
-
+            Dictionary<string, SharedAggregatedRating> ratingPerProduct = new Dictionary<string, SharedAggregatedRating>();
+            string name;
             foreach (var item in allRatings)
             {
-                if (!ratingPerProduct.ContainsKey(item.ArticleId))
+                name = item.ArtikelName;
+
+                if (!ratingPerProduct.ContainsKey(name))
                 {
-                    ratingPerProduct.Add(item.ArticleId, new SharedAggregatedRating
+                    ratingPerProduct.Add(name, new SharedAggregatedRating
                     {
                         AccumulatedRating = item.Sterne.GetValueOrDefault(),
                         NumberofRatings = 1
@@ -58,23 +61,24 @@ namespace DataAggregator
                 }
                 else
                 {
-                    ratingPerProduct[item.ArticleId].AccumulatedRating += item.Sterne.GetValueOrDefault();
-                    ratingPerProduct[item.ArticleId].NumberofRatings += 1;
+                    ratingPerProduct[name].AccumulatedRating += item.Sterne.GetValueOrDefault();
+                    ratingPerProduct[name].NumberofRatings += 1;
 
                 }
             }
 
-            return ratingPerProduct;
+            return DataTableConverter.RatingsPerProductToDataTable(ratingPerProduct);
 
 
         }
 
 
-        public static void getRawMaterialConsumptionOfMonth(int month)
+        public static DataTable getRawMaterialConsumptionOfMonth(int month)
         {
 
             List<SharedShortOrder> orders = dh.GetDoneOrdersByMonth(month);
             List<SharedOrderArticle> products  = new List<SharedOrderArticle>();
+            List<SharedOrderIngridient> usedIngridients = new List<SharedOrderIngridient>();
 
             foreach (var item in orders)
             {
@@ -82,6 +86,44 @@ namespace DataAggregator
                 products.AddRange(dh.GetArticelsforOrder(item.OrderID));
 
             }
+
+            foreach (var product in products)
+            {
+
+
+                usedIngridients.AddRange(dh.getRawMaterialForOrderProduct(product.id, product.quantity));
+
+            }
+
+            Dictionary<string, SharedAggregatedValueWithUnit> usedRawMaterial = new Dictionary<string, SharedAggregatedValueWithUnit>();
+            string name;
+
+            foreach (var ingr in usedIngridients)
+            {
+                name = ingr.name;
+
+                if (!usedRawMaterial.ContainsKey(name))
+                {
+
+                    usedRawMaterial.Add(name, new SharedAggregatedValueWithUnit
+                    {
+                        amount = ingr.amount,
+                        unit = ingr.unit
+
+                    });
+
+                }
+                else
+                {
+
+                    usedRawMaterial[name].amount += ingr.amount;
+
+                }
+
+            }
+
+            return DataTableConverter.RawMaterialToDataTable(usedRawMaterial);
+
 
 
 

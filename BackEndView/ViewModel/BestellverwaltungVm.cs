@@ -241,7 +241,9 @@ namespace BackEndView.ViewModel
 
         private void SaveBestellung()
         {
-        
+            SelectedBestellung.Bestellstatus = SelectedStatus;
+            SelectedBestellung.LieferDatum = LieferDatum;
+
              if(SelectedStatus != null && SelectedBestellung != null)
             {
                 

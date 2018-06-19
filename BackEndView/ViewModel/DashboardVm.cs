@@ -71,6 +71,7 @@ namespace BackEndView.ViewModel
         {
             OffeneBestellungen = dh.GetOfOrdersInCurrentMonthByType("offen").Count();
             GecancelteBestellungen = dh.GetOfOrdersInCurrentMonthByType("abgebrochen").Count();
+            GesamtBestellungen = dh.GetOfOrdersInCurrentMonthByType("alle").Count();
         }
 
         private void GenerateDemoData()
