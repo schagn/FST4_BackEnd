@@ -152,9 +152,10 @@ namespace BackEndView.ViewModel
         {
             dataHanlder = new DataHandler();
 
-            Maschen = new ObservableCollection<string>();
-            Kartons = new ObservableCollection<string>();
-            Sticker = new ObservableCollection<string>();
+            Maschen = new ObservableCollection<string>(dataHanlder.GetMaschen());
+            Kartons = new ObservableCollection<string>(dataHanlder.GetKarton());
+            Sticker = new ObservableCollection<string>(dataHanlder.GetSticker());
+            VerpackungsKomponenten = new ObservableCollection<string>();
            
 
             EditVerpackungBtnClick = new RelayCommand(EditVerpackung);
@@ -168,23 +169,32 @@ namespace BackEndView.ViewModel
                         SelectedVerpackung.Creation = Creation;
                         SelectedVerpackung.Price = Preis;
                         SelectedVerpackung.Visible = Visibility;
-                        SelectedVerpackung.Komponenten.Clear();
-                        foreach(var item in VerpackungsKomponenten)
+
+                        VerpackungsKomponenten.Clear();
+                        VerpackungsKomponenten.Add(SelectedKarton);
+                        VerpackungsKomponenten.Add(SelectedMasche);
+                        VerpackungsKomponenten.Add(SelectedSticker);
+                        foreach (var item in VerpackungsKomponenten)
                         {
                             SelectedVerpackung.Komponenten.Add(item);
+                            dataHanlder.CreateVerpackungskomponenten(SelectedVerpackung.VerpackungsId, SelectedKarton);
                         }
                         dataHanlder.UpdateVerpackung(SelectedVerpackung);
                     }
                     else
                     {
+                        Guid tempGuid = Guid.NewGuid();
                         dataHanlder.CreateVerpackung(new SharedVerpackung()
                         {
-                            VerpackungsId = Guid.NewGuid(),
+                            VerpackungsId = tempGuid,
                             Description = Beschreibung,
                             Price = Preis,
                             Creation = Creation,
                             Visible = Visibility
                         });
+                        dataHanlder.CreateVerpackungskomponenten(tempGuid, SelectedKarton);
+                        dataHanlder.CreateVerpackungskomponenten(tempGuid, SelectedMasche);
+                        dataHanlder.CreateVerpackungskomponenten(tempGuid, SelectedSticker);
                     }
                     CancelData();
                     RefreshList();
@@ -263,6 +273,7 @@ namespace BackEndView.ViewModel
 
             RaisePropertyChanged("Verpackungen");
             SelectedLöschenVerpackungsteil = null;
+            RefreshList();
         }
 
         private void CancelData()

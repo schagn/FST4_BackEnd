@@ -387,22 +387,18 @@ namespace DataRepository
                 ingredient_id = Guid.NewGuid(),
                 description = tempZutat.Beschreibung,
                 price = tempZutat.Preis,
-                ing_available = tempZutat.IsAvailable,
-                //category = tempZutat.Kategorie
-            };
+                ing_available = tempZutat.IsAvailable
+            };          
 
             model.ingredient.Add(zutat);
+
+            foreach (var item in tempZutat.Kategorie)
+            {
+                var kategorie = model.category.SingleOrDefault(x => x.description.Equals(item));
+                zutat.category.Add(kategorie);
+            }
+
             model.SaveChanges();
-        }
-
-        public void CreateZutatKategorie(SharedZutat tempZutat, List<string> categories)
-        {
-            //TODO
-        }
-
-        public void DeleteZutatKategorie(SharedZutat tempZutat, List<string> categories)
-        {
-            //TODO
         }
 
         public void UpdateZutat(SharedZutat tempZutat)
@@ -411,6 +407,12 @@ namespace DataRepository
             zutat.description = tempZutat.Beschreibung;
             zutat.price = tempZutat.Preis;
             zutat.ing_available = tempZutat.IsAvailable;
+
+            foreach (var item in tempZutat.Kategorie)
+            {
+                var kategorie = model.category.SingleOrDefault(x => x.description.Equals(item));
+                zutat.category.Add(kategorie);
+            }
 
             model.SaveChanges();
         }
@@ -790,34 +792,182 @@ namespace DataRepository
 
         public List<SharedPackage> GetPackages(string filterVisible, string filterCreation)
         {
-            //if (filterVisible.Equals("Sichtbar & Nicht Sichtbar"))
-            //{
-            //    if (filterCreation.Equals("Kreation"))
-            //    {
-            //        //return model.package.Where(x => x.)
-            //    }
-            //}
-            //else
-            //{
-            //    return model.package.Select(x => new SharedPackage()
-            //    {
-            //        Beschreibung = x.description,
-            //        //Creation = 
-            //    }).ToList();
-            //}
-            var package = model.package.Select(x => new SharedPackage()
+            if (filterVisible.Equals("Sichtbar & Nicht Sichtbar"))
             {
-                PackageId = x.package_id,
-                Beschreibung = x.description,
-                Preis = x.price,
-                Visible = x.pack_active,
-                Kuchen = x.article.Select(y => y.description).ToList()
-            }).ToList();
-            foreach (var item in package)
+                if (filterCreation.Equals("Kreation"))
+                {
+                    var list = model.package.Where(x => x.creation == true).Select(x => new SharedPackage()
+                    {
+                        PackageId = x.package_id,
+                        Beschreibung = x.description,
+                        Preis = x.price,
+                        Visible = x.pack_active,
+                        Creation = x.creation,
+                        Kuchen = x.article.Select(y => y.description).ToList()
+                    }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KuchenString = string.Join(", ", item.Kuchen);
+                    }
+                    return list;
+                }else if (filterCreation.Equals("Nicht Kreation"))
+                {
+                    var list = model.package.Where(x => x.creation == false).Select(x => new SharedPackage()
+                    {
+                        PackageId = x.package_id,
+                        Beschreibung = x.description,
+                        Preis = x.price,
+                        Visible = x.pack_active,
+                        Creation = x.creation,
+                        Kuchen = x.article.Select(y => y.description).ToList()
+                    }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KuchenString = string.Join(", ", item.Kuchen);
+                    }
+                    return list;
+                }
+                else
+                {
+                    var list = model.package.Select(x => new SharedPackage()
+                    {
+                        PackageId = x.package_id,
+                        Beschreibung = x.description,
+                        Preis = x.price,
+                        Visible = x.pack_active,
+                        Creation = x.creation,
+                        Kuchen = x.article.Select(y => y.description).ToList()
+                    }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KuchenString = string.Join(", ", item.Kuchen);
+                    }
+                    return list;
+                }
+            }else if (filterVisible.Equals("Sichtbar"))
             {
-                item.KuchenString = string.Join(", ", item.Kuchen);
+                if (filterCreation.Equals("Kreation"))
+                {
+                    var list = model.package.Where(x => x.creation == true && x.pack_active == true).Select(x => new SharedPackage()
+                    {
+                        PackageId = x.package_id,
+                        Beschreibung = x.description,
+                        Preis = x.price,
+                        Visible = x.pack_active,
+                        Creation = x.creation,
+                        Kuchen = x.article.Select(y => y.description).ToList()
+                    }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KuchenString = string.Join(", ", item.Kuchen);
+                    }
+                    return list;
+                }
+                else if (filterCreation.Equals("Nicht Kreation"))
+                {
+                    var list = model.package.Where(x => x.creation == false && x.pack_active == true).Select(x => new SharedPackage()
+                    {
+                        PackageId = x.package_id,
+                        Beschreibung = x.description,
+                        Preis = x.price,
+                        Visible = x.pack_active,
+                        Creation = x.creation,
+                        Kuchen = x.article.Select(y => y.description).ToList()
+                    }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KuchenString = string.Join(", ", item.Kuchen);
+                    }
+                    return list;
+                }
+                else
+                {
+                    var list = model.package.Where(x => x.pack_active == true).Select(x => new SharedPackage()
+                    {
+                        PackageId = x.package_id,
+                        Beschreibung = x.description,
+                        Preis = x.price,
+                        Visible = x.pack_active,
+                        Creation = x.creation,
+                        Kuchen = x.article.Select(y => y.description).ToList()
+                    }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KuchenString = string.Join(", ", item.Kuchen);
+                    }
+                    return list;
+                }
+            }else if(filterVisible.Equals("Nicht Sichtbar"))
+            {
+                if (filterCreation.Equals("Kreation"))
+                {
+                    var list = model.package.Where(x => x.creation == true && x.pack_active == false).Select(x => new SharedPackage()
+                    {
+                        PackageId = x.package_id,
+                        Beschreibung = x.description,
+                        Preis = x.price,
+                        Visible = x.pack_active,
+                        Creation = x.creation,
+                        Kuchen = x.article.Select(y => y.description).ToList()
+                    }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KuchenString = string.Join(", ", item.Kuchen);
+                    }
+                    return list;
+                }
+                else if (filterCreation.Equals("Nicht Kreation"))
+                {
+                    var list = model.package.Where(x => x.creation == false && x.pack_active == false).Select(x => new SharedPackage()
+                    {
+                        PackageId = x.package_id,
+                        Beschreibung = x.description,
+                        Preis = x.price,
+                        Visible = x.pack_active,
+                        Creation = x.creation,
+                        Kuchen = x.article.Select(y => y.description).ToList()
+                    }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KuchenString = string.Join(", ", item.Kuchen);
+                    }
+                    return list;
+                }
+                else
+                {
+                    var list = model.package.Where(x => x.pack_active == false).Select(x => new SharedPackage()
+                    {
+                        PackageId = x.package_id,
+                        Beschreibung = x.description,
+                        Preis = x.price,
+                        Visible = x.pack_active,
+                        Creation = x.creation,
+                        Kuchen = x.article.Select(y => y.description).ToList()
+                    }).ToList();
+                    foreach (var item in list)
+                    {
+                        item.KuchenString = string.Join(", ", item.Kuchen);
+                    }
+                    return list;
+                }
             }
-            return (package);
+            else
+            {
+                var list = model.package.Select(x => new SharedPackage()
+                {
+                    PackageId = x.package_id,
+                    Beschreibung = x.description,
+                    Preis = x.price,
+                    Visible = x.pack_active,
+                    Creation = x.creation,
+                    Kuchen = x.article.Select(y => y.description).ToList()
+                }).ToList();
+                foreach (var item in list)
+                {
+                    item.KuchenString = string.Join(", ", item.Kuchen);
+                }
+                return list;
+            }
         }
 
         public void CreatePackage(SharedPackage tempPackage)
@@ -827,7 +977,8 @@ namespace DataRepository
                 package_id = tempPackage.PackageId,
                 description = tempPackage.Beschreibung,
                 price = tempPackage.Preis,
-                pack_active = tempPackage.Visible
+                pack_active = tempPackage.Visible,
+                creation = tempPackage.Creation
             });
             model.SaveChanges();
         }
@@ -839,6 +990,7 @@ namespace DataRepository
             package.description = tempPackage.Beschreibung;
             package.price = tempPackage.Preis;
             package.pack_active = tempPackage.Visible;
+            package.creation = tempPackage.Creation;
 
             model.SaveChanges();
         }
@@ -852,6 +1004,21 @@ namespace DataRepository
         #endregion
 
         #region Verpackungsverwaltung
+
+        public List<string> GetMaschen()
+        {
+            return model.ingredient.Where(x => x.ingredient_type.description.Equals("Masche")).Select(x => x.description).ToList();
+        }
+
+        public List<string> GetKarton()
+        {
+            return model.ingredient.Where(x => x.ingredient_type.description.Equals("Karton")).Select(x => x.description).ToList();
+        }
+
+        public List<string> GetSticker()
+        {
+            return model.ingredient.Where(x => x.ingredient_type.description.Equals("Sticker")).Select(x => x.description).ToList();
+        }
 
         public List<SharedVerpackung> GetPackaging(string filterVisible, string filterCreation)
         {
@@ -1036,14 +1203,16 @@ namespace DataRepository
 
         public void CreateVerpackung(SharedVerpackung tempVerpackung)
         {
-             var verpackung = new article()
+            var tempArticleType = model.article_type.SingleOrDefault(x => x.description.Equals("Verpackung"));
+            var tempShape = model.shape.SingleOrDefault(x => x.description.Equals("keine From"));
+            var verpackung = new article()
              {
                  article_id = tempVerpackung.VerpackungsId,
-                 article_type = model.article_type.SingleOrDefault(x => x.description.Equals("Verpackung")),
+                 article_type = tempArticleType,
                  description = tempVerpackung.Description,
                  price = tempVerpackung.Price,
                  creation = tempVerpackung.Creation,
-                 //shape_id = null,
+                 shape = tempShape,
                  visible = tempVerpackung.Visible
              };
              model.article.Add(verpackung);
@@ -1052,13 +1221,16 @@ namespace DataRepository
 
         public void UpdateVerpackung(SharedVerpackung tempVerpackung)
         {
+            var tempArticleType = model.article_type.SingleOrDefault(x => x.description.Equals("Verpackung"));
+            var tempShape = model.shape.SingleOrDefault(x => x.description.Equals("keine From"));
+
             var verpackung = model.article.SingleOrDefault(x => x.article_id == tempVerpackung.VerpackungsId);
             verpackung.article_id = tempVerpackung.VerpackungsId;
-            verpackung.article_type = model.article_type.SingleOrDefault(x => x.description.Equals("Verpackung"));
+            verpackung.article_type = tempArticleType;
             verpackung.description = tempVerpackung.Description;
             verpackung.price = tempVerpackung.Price;
             verpackung.creation = tempVerpackung.Creation;
-            //shape_id = null,
+            verpackung.shape = tempShape;
             verpackung.visible = tempVerpackung.Visible;
 
             model.SaveChanges();
@@ -1072,6 +1244,11 @@ namespace DataRepository
                 ingredient = model.ingredient.SingleOrDefault(x => x.description.Equals(Komponente))
             });
             model.SaveChanges();
+        }
+
+        public void UpdateVerpackungkomponente(Guid Id, string Komponente)
+        {
+            //TODO
         }
 
         public void DeleteVerpackungskomponenten(Guid Id, string Komponente)

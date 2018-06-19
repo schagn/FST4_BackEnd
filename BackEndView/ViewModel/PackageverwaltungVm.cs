@@ -158,6 +158,7 @@ namespace BackEndView.ViewModel
                         SelectedPackage.Beschreibung = Beschreibung;
                         SelectedPackage.Preis = Preis;
                         SelectedPackage.Visible = Visibility;
+                        SelectedPackage.Creation = Creation;
                         dataHandler.UpdatePackage(SelectedPackage);
                     }
                     else
@@ -167,7 +168,8 @@ namespace BackEndView.ViewModel
                             PackageId = Guid.NewGuid(),
                             Beschreibung = Beschreibung,
                             Preis = Preis,
-                            Visible = Visibility
+                            Visible = Visibility,
+                            Creation = Creation
                         });
                     }
                     CancelData();
@@ -214,13 +216,10 @@ namespace BackEndView.ViewModel
             Beschreibung = SelectedPackage.Beschreibung;
             Visibility = SelectedPackage.Visible;
             Preis = SelectedPackage.Preis;
-            if(SelectedPackage.Kuchen == null)
+            Creation = selectedPackage.Creation;
+            foreach (var item in SelectedPackage.Kuchen)
             {
-                foreach (var item in SelectedPackage.Kuchen)
-                {
-                    PackageKomponenten.Add(item);
-                }
-
+                PackageKomponenten.Add(item);
             }
 
             IsEditingProcess = true;

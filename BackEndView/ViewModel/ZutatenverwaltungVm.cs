@@ -58,9 +58,9 @@ namespace BackEndView.ViewModel
 
         public ObservableCollection<string> Categories { get; set; }
 
-        private ObservableCollection<string> selectedCategorie;
+        private List<string> selectedCategorie;
 
-        public ObservableCollection<string> SelectedCategorie
+        public List<string> SelectedCategorie
         {
             get { return selectedCategorie; }
             set { selectedCategorie = value; RaisePropertyChanged(); }
@@ -95,7 +95,7 @@ namespace BackEndView.ViewModel
                         SelectedZutat.Beschreibung = ZutatenName;
                         SelectedZutat.Preis = ZutatenPreis;
                         SelectedZutat.IsAvailable = Visibility;
-                        //SelectedZutat.Kategorie = SelectedCategorie;
+                        SelectedZutat.Kategorie = SelectedCategorie;
                         dataHandler.UpdateZutat(selectedZutat);
                     }
                     else
@@ -106,7 +106,7 @@ namespace BackEndView.ViewModel
                             Beschreibung = ZutatenName,
                             Preis = ZutatenPreis,
                             IsAvailable = Visibility,
-                            //Kategorie = SelectedCategorie
+                            Kategorie = SelectedCategorie
                         });
                     }
                     CancelData();
@@ -145,7 +145,7 @@ namespace BackEndView.ViewModel
         {
             ZutatenName = SelectedZutat.Beschreibung;
             ZutatenPreis = SelectedZutat.Preis;
-            //SelectedCategorie = new ObservableCollection<string>(SelectedZutat.Kategorie);
+            SelectedCategorie = SelectedZutat.Kategorie;
             Visibility = SelectedZutat.IsAvailable;
 
             IsEditingProcess = true;
