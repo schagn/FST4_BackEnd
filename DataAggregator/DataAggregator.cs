@@ -67,8 +67,11 @@ namespace DataAggregator
             return ratingPerProduct;
 
 
+        }
     }
-    }
+
+
+
 
  
 }

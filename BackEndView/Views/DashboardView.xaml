@@ -41,8 +41,8 @@
                 <Label Content="Offene Bestellungen: " FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="50,0,0,0" Grid.Row="1"/>
                 <Label  FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1" Margin="20,0,0,0" Content="{Binding OffeneBestellungen}"/>
 
-                <Label Content="Verkaufte Produkte: " FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="50,0,0,0" Grid.Row="2"/>
-                <Label Content="pimmel" FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" Margin="20,0,0,0"/>
+                <Label Content="Gecancelte Bestellungen: " FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="50,0,0,0" Grid.Row="2"/>
+                <Label  FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" Margin="20,0,0,0"/>
 
             </Grid>
         </Border>

@@ -1,5 +1,6 @@
 ﻿using DataRepository;
 using GalaSoft.MvvmLight;
+using OfficeOpenXml;
 using OxyPlot;
 using SharedClasses;
 using System;
@@ -26,15 +27,15 @@ namespace BackEndView.ViewModel
         public int OffeneBestellungen
         {
             get { return offeneBestellungen; }
-            set { offeneBestellungen = value; }
+            set { offeneBestellungen = value; RaisePropertyChanged(); }
         }
 
-        private int verkaufteProdukte;
+        private int gecancelteBestellungen;
 
-        public int VerkaufteProdukte
+        public int GecancelteBestellungen
         {
-            get { return verkaufteProdukte; }
-            set { verkaufteProdukte = value; }
+            get { return gecancelteBestellungen; }
+            set { gecancelteBestellungen = value; RaisePropertyChanged(); }
         }
 
 
@@ -59,7 +60,8 @@ namespace BackEndView.ViewModel
 
         private void InitialzeDashboard()
         {
-            OffeneBestellungen = dh.GetOrdersByStatus("offen").Count();
+            OffeneBestellungen = dh.GetOfOrdersInCurrentMonthByType("offen").Count();
+            GecancelteBestellungen = dh.GetOfOrdersInCurrentMonthByType("abgebrochen").Count();
         }
 
         private void GenerateDemoData()
@@ -81,7 +83,12 @@ namespace BackEndView.ViewModel
                 new DataPoint(12,57000)
 
 
+              
+
+
             };
+
+            ExcelPackage exP = new ExcelPackage();
 
 
         }

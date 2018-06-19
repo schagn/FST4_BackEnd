@@ -1147,6 +1147,19 @@ namespace DataRepository
 
         #region Berichte
 
+
+        public List<SharedShortOrder> GetOfOrdersInCurrentMonthByType(string orderstatus)
+        {
+
+           return model.order.Where(x => x.order_date.Value.Month.Equals(DateTime.Now.Month) && x.status.Equals(orderstatus)).Select(y => new SharedShortOrder
+            {
+
+                OrderID = y.order_id
+
+
+            }).ToList();
+
+        }
         
 
 #endregion
