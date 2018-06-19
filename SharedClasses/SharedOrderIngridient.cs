@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace SharedClasses
 {
-    public class SharedShortOrder
+    public class SharedOrderIngridient
     {
 
-        public Guid OrderID { get; set; }
+        public string name;
+
+        public double amount;
+
+        public string unit;
 
 
     }

@@ -1151,13 +1151,71 @@ namespace DataRepository
         public List<SharedShortOrder> GetOfOrdersInCurrentMonthByType(string orderstatus)
         {
 
-           return model.order.Where(x => x.order_date.Value.Month.Equals(DateTime.Now.Month) && x.status.Equals(orderstatus)).Select(y => new SharedShortOrder
-            {
+            if (orderstatus != "alle") { 
+
+                return model.order.Where(x => x.order_date.Value.Month.Equals(DateTime.Now.Month) && x.status.Equals(orderstatus)).Select(y => new SharedShortOrder
+                {
+
+                    OrderID = y.order_id
+
+
+                }).ToList();
+
+            }else{
+
+                return model.order.Where(x => x.order_date.Value.Month.Equals(DateTime.Now.Month)).Select(y => new SharedShortOrder
+                {
+
+                    OrderID = y.order_id
+
+
+                }).ToList();
+
+            }
+        }
+
+
+        public List<SharedShortOrder> GetDoneOrdersByMonth(int month)
+        {
+
+            return model.order.Where(x=> x.order_date.Value.Month.Equals(month) && x.status.Equals("abgeschlossen")).Select(y=> new SharedShortOrder{
 
                 OrderID = y.order_id
 
 
+             }).ToList();
+
+
+        }
+
+
+        public List<SharedOrderArticle> GetArticelsforOrder(Guid orderId)
+        {
+
+            var order = model.order_has_articles.Where(x => x.order_id.Equals(orderId)).Select(y => new SharedOrderArticle
+            {
+
+                id = y.article_id,
+                name = y.article.description,
+                quantity = y.amount.GetValueOrDefault()
             }).ToList();
+
+            return order;
+        }
+
+        public List<SharedOrderIngridient> getRawMaterialForOrderProduct(Guid pID, int amountMultiplier)
+        {
+
+           var rawMat =  model.article_has_ingredient.Where(x => x.article_id.Equals(pID)).Select(y => new SharedOrderIngridient
+            {
+
+                name = y.ingredient.description,
+                unit = y.ingredient.unit,
+                amount = y.amount.GetValueOrDefault() * amountMultiplier
+
+            }).ToList();
+
+            return rawMat;
 
         }
         

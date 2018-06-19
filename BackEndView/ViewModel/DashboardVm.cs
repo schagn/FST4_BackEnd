@@ -38,6 +38,15 @@ namespace BackEndView.ViewModel
             set { gecancelteBestellungen = value; RaisePropertyChanged(); }
         }
 
+        private int gesamtBestellungen;
+
+        public int GesamtBestellungen
+        {
+            get { return gesamtBestellungen; }
+            set { gesamtBestellungen = value; }
+        }
+
+
 
         private ObservableCollection<SharedArticle> topProdukte;
 

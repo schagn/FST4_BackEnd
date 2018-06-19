@@ -42,7 +42,7 @@
                 <Label  FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1" Margin="20,0,0,0" Content="{Binding OffeneBestellungen}"/>
 
                 <Label Content="Gecancelte Bestellungen: " FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="50,0,0,0" Grid.Row="2"/>
-                <Label  FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" Margin="20,0,0,0"/>
+                <Label  FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" Margin="20,0,0,0" Content="{Binding GecancelteBestellungen}"/>
 
             </Grid>
         </Border>

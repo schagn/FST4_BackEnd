@@ -11,6 +11,7 @@ namespace SharedClasses
 
         public Guid id;
         public string name;
+        public int quantity;
 
 
         override

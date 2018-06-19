@@ -68,7 +68,29 @@ namespace DataAggregator
 
 
         }
+
+
+        public static void getRawMaterialConsumptionOfMonth(int month)
+        {
+
+            List<SharedShortOrder> orders = dh.GetDoneOrdersByMonth(month);
+            List<SharedOrderArticle> products  = new List<SharedOrderArticle>();
+
+            foreach (var item in orders)
+            {
+
+                products.AddRange(dh.GetArticelsforOrder(item.OrderID));
+
+            }
+
+
+
+        }
+
     }
+
+
+   
 
 
 
