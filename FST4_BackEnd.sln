@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Util
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAggregator", "DataAggregator\DataAggregator.csproj", "{AFBEC872-B5C2-4987-ADD6-27C130E6E50E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TEST", "TEST\TEST.csproj", "{A8077AA1-810E-46C4-B025-3ABD66CADB41}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{AFBEC872-B5C2-4987-ADD6-27C130E6E50E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFBEC872-B5C2-4987-ADD6-27C130E6E50E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFBEC872-B5C2-4987-ADD6-27C130E6E50E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8077AA1-810E-46C4-B025-3ABD66CADB41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8077AA1-810E-46C4-B025-3ABD66CADB41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8077AA1-810E-46C4-B025-3ABD66CADB41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8077AA1-810E-46C4-B025-3ABD66CADB41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

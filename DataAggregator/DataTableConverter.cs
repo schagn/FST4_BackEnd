@@ -48,6 +48,8 @@ namespace DataAggregator
 
             }
 
+            return ratingPerProductTable;
+
 
         }
 
