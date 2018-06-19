@@ -33,10 +33,12 @@ namespace DataRepository
         public virtual DbSet<category> category { get; set; }
         public virtual DbSet<city> city { get; set; }
         public virtual DbSet<ingredient> ingredient { get; set; }
+        public virtual DbSet<ingredient_type> ingredient_type { get; set; }
         public virtual DbSet<mass> mass { get; set; }
         public virtual DbSet<mass_has_ingredient> mass_has_ingredient { get; set; }
         public virtual DbSet<order> order { get; set; }
         public virtual DbSet<order_has_articles> order_has_articles { get; set; }
+        public virtual DbSet<order_has_package> order_has_package { get; set; }
         public virtual DbSet<package> package { get; set; }
         public virtual DbSet<person> person { get; set; }
         public virtual DbSet<rating> rating { get; set; }
