@@ -995,6 +995,24 @@ namespace DataRepository
             model.SaveChanges();
         }
 
+        public void CreatePackageItem(string selectedPackage, string kuchen)
+        {
+            var tempPackage = model.package.SingleOrDefault(x => x.description.Equals(selectedPackage));
+            var tempKuchen = model.article.SingleOrDefault(x => x.description.Equals(kuchen));
+
+            tempPackage.article.Add(tempKuchen);
+            model.SaveChanges();
+        }
+
+        public void DeletePackageItem(string selectedPackage, string kuchen)
+        {
+            var tempPackage = model.package.SingleOrDefault(x => x.description.Equals(selectedPackage));
+            var tempKuchen = model.article.SingleOrDefault(x => x.description.Equals(kuchen));
+
+            tempPackage.article.Remove(tempKuchen);
+            model.SaveChanges();
+        }
+
         public void DeletePackage(SharedPackage tempPackage)
         {
             model.package.Remove(model.package.SingleOrDefault(x => x.package_id == tempPackage.PackageId));
@@ -1201,10 +1219,12 @@ namespace DataRepository
             }
         }
 
+        
+        //db nicht auf selben stand bzw. noch nicht befüllt, deshalb funktioniert das noch nicht
         public void CreateVerpackung(SharedVerpackung tempVerpackung)
         {
             var tempArticleType = model.article_type.SingleOrDefault(x => x.description.Equals("Verpackung"));
-            var tempShape = model.shape.SingleOrDefault(x => x.description.Equals("keine From"));
+            var tempShape = model.shape.SingleOrDefault(x => x.description.Equals("keine Form"));
             var verpackung = new article()
              {
                  article_id = tempVerpackung.VerpackungsId,
@@ -1222,7 +1242,7 @@ namespace DataRepository
         public void UpdateVerpackung(SharedVerpackung tempVerpackung)
         {
             var tempArticleType = model.article_type.SingleOrDefault(x => x.description.Equals("Verpackung"));
-            var tempShape = model.shape.SingleOrDefault(x => x.description.Equals("keine From"));
+            var tempShape = model.shape.SingleOrDefault(x => x.description.Equals("keine Form"));
 
             var verpackung = model.article.SingleOrDefault(x => x.article_id == tempVerpackung.VerpackungsId);
             verpackung.article_id = tempVerpackung.VerpackungsId;
@@ -1241,14 +1261,10 @@ namespace DataRepository
             model.article_has_ingredient.Add(new article_has_ingredient()
             {
                 article = model.article.SingleOrDefault(x => x.article_id == Id),
-                ingredient = model.ingredient.SingleOrDefault(x => x.description.Equals(Komponente))
+                ingredient = model.ingredient.SingleOrDefault(x => x.description.Equals(Komponente)),
+                amount = 1
             });
             model.SaveChanges();
-        }
-
-        public void UpdateVerpackungkomponente(Guid Id, string Komponente)
-        {
-            //TODO
         }
 
         public void DeleteVerpackungskomponenten(Guid Id, string Komponente)

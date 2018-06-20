@@ -143,9 +143,6 @@ namespace BackEndView.ViewModel
             KuchenArten.Add("Kuchenkreationen");
             SelectedKuchenArt = "Standardkuchen";
 
-            //db
-            
-
             PackageKomponenten = new ObservableCollection<string>();
 
             EditPackageBtnClick = new RelayCommand(EditPackage);
@@ -232,79 +229,20 @@ namespace BackEndView.ViewModel
             RaisePropertyChanged("Packages");
         }
 
-        private void SavePackage()
-        {
-            if (IsEditingProcess == true)
-            {
-                foreach (var item in Packages)
-                {
-                    if (item.PackageId == SelectedPackage.PackageId)
-                    {
-                        item.Beschreibung = Beschreibung;
-                        item.Visible = Visibility;
-                        item.Preis = Preis;
-                        item.Creation = Creation;
-                        item.Kuchen.Add(SelectedKuchen);
-
-                        dataHandler.UpdatePackage(item);
-                    }
-                }
-            }
-            else
-            {
-                dataHandler.CreatePackage(new SharedPackage()
-                {
-                    Beschreibung = Beschreibung,
-                    PackageId = Guid.NewGuid(),
-                    Visible = Visibility,
-                    Preis = Preis,
-                    Creation = Creation,
-                    //kuchen = new ObservableCollection<SharedArticle>()
-                });
-            }
-
-            Beschreibung = "";
-            Visibility = false;
-            Creation = false;
-            Preis = 0;
-
-            RefreshList(SelectedVisibilityFilter, SelectedCreationFilter);
-
-            IsEditingProcess = false;
-        }
-
         private void SavePackageItem()
         {
-            //dataHandler
+            dataHandler.CreatePackageItem(Beschreibung, SelectedKuchen);
+            PackageKomponenten.Add(SelectedKuchen);
+            RefreshList(SelectedVisibilityFilter, SelectedCreationFilter);
+            RaisePropertyChanged("Packages");
         }
 
         private void KomponenteLöschen()
         {
-
-            foreach (var item in Packages)
-            {
-                if (item.PackageId == SelectedPackage.PackageId)
-                {
-                    foreach (var teil in item.Kuchen)
-                    {
-                        if (teil.Contains(SelectedLöschenKuchen))
-                        {
-                            item.Kuchen.Remove(teil);
-                            break;
-                        }
-                    }
-
-                }
-            }
-
-            //SelectedBestellung.Artikel.Remove(SelectedProdukt);
+            dataHandler.DeletePackageItem(Beschreibung, SelectedLöschenKuchen);
+            PackageKomponenten.Remove(SelectedLöschenKuchen);
+            RefreshList(SelectedVisibilityFilter, SelectedCreationFilter);
             RaisePropertyChanged("Packages");
-            SelectedLöschenKuchen = null;
-            SelectedPackage = null;
-            Beschreibung = "";
-            Visibility = false;
-            Creation = false;
-            Preis = 0;
         }
 
         private void CancelData()
