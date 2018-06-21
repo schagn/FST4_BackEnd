@@ -492,6 +492,21 @@ namespace DataRepository
 
             model.category.Add(regel);
             model.SaveChanges();
+
+            CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
+            StatementModel statementModel = new StatementModel();
+            statementModel.Type = "Create";
+            statementModel.TableName = "category";
+            statementModel.PrimaryKeyNames = new ArrayOfString() { "category_id" };
+            statementModel.PrimaryKeyValues = new ArrayOfString() { tempRegel.RegelwerkId.ToString() };
+            statementModel.Columns = new ArrayOfString();
+            statementModel.Values = new ArrayOfString();
+            statementModel.Columns.Add("description");
+            statementModel.Values.Add(tempRegel.Beschreibung);
+            statementModel.Columns.Add("cat_active");
+            statementModel.Values.Add(tempRegel.IsAvailable.ToString());
+            statementModel.Sender = "Backend";
+            string response = client.InsertStatement(statementModel);
         }
 
         public void UpdateRegel(SharedRegelwerk tempRegel)
@@ -501,6 +516,21 @@ namespace DataRepository
             regel.description = tempRegel.Beschreibung;
             regel.cat_active = tempRegel.IsAvailable;
             model.SaveChanges();
+
+            CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
+            StatementModel statementModel = new StatementModel();
+            statementModel.Type = "Update";
+            statementModel.TableName = "category";
+            statementModel.PrimaryKeyNames = new ArrayOfString() { "category_id" };
+            statementModel.PrimaryKeyValues = new ArrayOfString() { tempRegel.RegelwerkId.ToString() };
+            statementModel.Columns = new ArrayOfString();
+            statementModel.Values = new ArrayOfString();
+            statementModel.Columns.Add("description");
+            statementModel.Values.Add(tempRegel.Beschreibung);
+            statementModel.Columns.Add("cat_active");
+            statementModel.Values.Add(tempRegel.IsAvailable.ToString());
+            statementModel.Sender = "Backend";
+            string response = client.InsertStatement(statementModel);
         }
 
         public void DeleteRegel(SharedRegelwerk tempRegel)
@@ -508,6 +538,17 @@ namespace DataRepository
 
             model.category.Remove(model.category.SingleOrDefault(x => x.category_id == tempRegel.RegelwerkId));
             model.SaveChanges();
+
+            CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
+            StatementModel statementModel = new StatementModel();
+            statementModel.Type = "Delete";
+            statementModel.TableName = "category";
+            statementModel.PrimaryKeyNames = new ArrayOfString() { "category_id" };
+            statementModel.PrimaryKeyValues = new ArrayOfString() { tempRegel.RegelwerkId.ToString() };
+            statementModel.Columns = new ArrayOfString();
+            statementModel.Values = new ArrayOfString();
+            statementModel.Sender = "Backend";
+            string response = client.InsertStatement(statementModel);
         }
 
         #endregion
@@ -595,6 +636,20 @@ namespace DataRepository
 
             model.SaveChanges();
 
+            CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
+            StatementModel statementModel = new StatementModel();
+            statementModel.Type = "Update";
+            statementModel.TableName = "order";
+            statementModel.PrimaryKeyNames = new ArrayOfString() { "order_id" };
+            statementModel.PrimaryKeyValues = new ArrayOfString() { ord.BestellId.ToString() };
+            statementModel.Columns = new ArrayOfString();
+            statementModel.Values = new ArrayOfString();
+            statementModel.Columns.Add("delivery_date");
+            statementModel.Values.Add(ord.LieferDatum.ToString());
+            statementModel.Columns.Add("status");
+            statementModel.Values.Add(ord.Bestellstatus);
+            statementModel.Sender = "Backend";
+            string response = client.InsertStatement(statementModel);
         }
 
          
@@ -674,6 +729,29 @@ namespace DataRepository
 
 
             model.SaveChanges();
+
+            CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
+            StatementModel statementModel = new StatementModel();
+            statementModel.Type = "Delete";
+            statementModel.TableName = "order_has_articles";
+            statementModel.PrimaryKeyNames = new ArrayOfString() { "order_id", "article_id" };
+            statementModel.PrimaryKeyValues = new ArrayOfString() { orderId.ToString(), productId.ToString() };
+            statementModel.Columns = new ArrayOfString();
+            statementModel.Values = new ArrayOfString();
+            statementModel.Sender = "Backend";
+            string response = client.InsertStatement(statementModel);
+
+            StatementModel statementModel1 = new StatementModel();
+            statementModel1.Type = "Update";
+            statementModel1.TableName = "order";
+            statementModel1.PrimaryKeyNames = new ArrayOfString() { "order_id",};
+            statementModel1.PrimaryKeyValues = new ArrayOfString() { orderId.ToString() };
+            statementModel1.Columns = new ArrayOfString();
+            statementModel1.Values = new ArrayOfString();
+            statementModel1.Columns.Add("total_amount");
+            statementModel1.Values.Add(order.total_amount.ToString());
+            statementModel1.Sender = "Backend";
+            string response1 = client.InsertStatement(statementModel1);
         }
             
         
@@ -726,6 +804,37 @@ namespace DataRepository
             model.person.Add(customer);
             model.SaveChanges();
 
+            CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
+            StatementModel statementModel = new StatementModel();
+            statementModel.Type = "Create";
+            statementModel.TableName = "person";
+            statementModel.PrimaryKeyNames = new ArrayOfString() { "person_id" };
+            statementModel.PrimaryKeyValues = new ArrayOfString() { k.KundenId.ToString() };
+            statementModel.Columns = new ArrayOfString();
+            statementModel.Values = new ArrayOfString();
+            statementModel.Columns.Add("firstname");
+            statementModel.Values.Add(k.VorName);
+            statementModel.Columns.Add("lastname");
+            statementModel.Values.Add(k.NachName);
+            statementModel.Columns.Add("e-mail");
+            statementModel.Values.Add(k.EMail);
+            //statementModel.Columns.Add("phone_number");
+            //statementModel.Values.Add(k.);
+            statementModel.Columns.Add("password");
+            statementModel.Values.Add(k.Passwort);
+            statementModel.Columns.Add("birthdate");
+            statementModel.Values.Add(k.Geburtsdatum.ToString());
+            statementModel.Columns.Add("street");
+            statementModel.Values.Add(k.Strasse);
+            statementModel.Columns.Add("country");
+            statementModel.Values.Add(k.Land);
+            statementModel.Columns.Add("zip_code");
+            statementModel.Values.Add(k.PLZ.ToString());
+            statementModel.Columns.Add("type_id");
+            statementModel.Values.Add(customer.type.ToString());
+            statementModel.Sender = "Backend";
+            string response = client.InsertStatement(statementModel);
+
         }
         
         public void CreateCityIfNotExisting(SharedCity city)
@@ -742,7 +851,19 @@ namespace DataRepository
                 model.city.Add(newCity);
                 model.SaveChanges();
 
-            }
+                CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
+                StatementModel statementModel = new StatementModel();
+                statementModel.Type = "Create";
+                statementModel.TableName = "city";
+                statementModel.PrimaryKeyNames = new ArrayOfString() { "zip_code" };
+                statementModel.PrimaryKeyValues = new ArrayOfString() { city.ZipCode.ToString() };
+                statementModel.Columns = new ArrayOfString();
+                statementModel.Values = new ArrayOfString();
+                statementModel.Columns.Add("name");
+                statementModel.Values.Add(city.Name);
+                statementModel.Sender = "Backend";
+                string response = client.InsertStatement(statementModel);
+            }            
         }
       
 
@@ -750,6 +871,17 @@ namespace DataRepository
         {
             model.person.Remove(model.person.SingleOrDefault(x => x.person_id.Equals(k.KundenId)));
             model.SaveChanges();
+
+            CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
+            StatementModel statementModel = new StatementModel();
+            statementModel.Type = "Delete";
+            statementModel.TableName = "person";
+            statementModel.PrimaryKeyNames = new ArrayOfString() { "person_id" };
+            statementModel.PrimaryKeyValues = new ArrayOfString() { k.KundenId.ToString() };
+            statementModel.Columns = new ArrayOfString();
+            statementModel.Values = new ArrayOfString();
+            statementModel.Sender = "Backend";
+            string response = client.InsertStatement(statementModel);
         }
 
         public void UpdateCustomer(SharedKunde k)
