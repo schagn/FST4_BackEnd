@@ -311,12 +311,36 @@ namespace DataRepository
             var rating = model.rating.SingleOrDefault(x => x.article_id == tempRating.ArticleId && x.person_id == tempRating.PersonId);
             rating.visible = tempRating.Visible;
             model.SaveChanges();
+
+            CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
+            StatementModel statementModel = new StatementModel();
+            statementModel.Type = "Update";
+            statementModel.TableName = "rating";
+            statementModel.PrimaryKeyNames = new ArrayOfString() { "article_id", "person_id" };
+            statementModel.PrimaryKeyValues = new ArrayOfString() { tempRating.ArticleId.ToString(), tempRating.PersonId.ToString() };
+            statementModel.Columns = new ArrayOfString();
+            statementModel.Values = new ArrayOfString();
+            statementModel.Columns.Add("visible");
+            statementModel.Values.Add(tempRating.Visible.ToString());
+            statementModel.Sender = "Backend";
+            string response = client.InsertStatement(statementModel);
         }
 
         public void DeleteRating(SharedBewertung selectedRating)
         {
             model.rating.Remove(model.rating.SingleOrDefault(x => x.article_id == selectedRating.ArticleId && x.person_id == selectedRating.PersonId));
             model.SaveChanges();
+
+            CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
+            StatementModel statementModel = new StatementModel();
+            statementModel.Type = "Delete";
+            statementModel.TableName = "rating";
+            statementModel.PrimaryKeyNames = new ArrayOfString() { "article_id", "person_id" };
+            statementModel.PrimaryKeyValues = new ArrayOfString() { selectedRating.ArticleId.ToString(), selectedRating.PersonId.ToString() };
+            statementModel.Columns = new ArrayOfString();
+            statementModel.Values = new ArrayOfString();
+            statementModel.Sender = "Backend";
+            string response = client.InsertStatement(statementModel);
         }
 
         #endregion

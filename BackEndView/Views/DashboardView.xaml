@@ -8,13 +8,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="550" d:DesignWidth="950" 
              DataContext="{Binding Dashboard, Mode=OneWay, Source={StaticResource Locator}}">
-    
+
     <Grid>
         <Border BorderBrush="Black" BorderThickness="1"  Width="910"  Height="480" Margin="20,20,20,20" Grid.RowSpan="2" VerticalAlignment="Top">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="400"/>
+                    <ColumnDefinition Width="175"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -31,18 +32,23 @@
                     <oxy:LineSeries ItemsSource="{Binding Sales}" DataFieldX="X" DataFieldY="Y"/>
                 </oxy:Plot>
 
-                <StackPanel Grid.Column="2" Margin="5,5,30,5">
+                <StackPanel Grid.Column="2" Margin="5,5,30,5" Grid.ColumnSpan="2">
                     <Label Content="Top 5 Produkte " FontWeight="Bold" FontSize="17" Margin="10,7,10,5"/>
                     <Border BorderBrush="Black" BorderThickness="0.4">
                         <ListBox Height="287"/>
                     </Border>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Gesamte Bestellungen: " FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,20,0,0"/>
+                        <Label  FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="40,20,0,0" Content="{Binding OffeneBestellungen}"/>
+                    </StackPanel>
                 </StackPanel>
+                
+                <Label Content="Offene Bestellungen: " Grid.Column="2" Grid.Row="1" FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                <Label  FontSize="13" VerticalAlignment="Top" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" Margin="20,0,0,0" Content="{Binding OffeneBestellungen}"/>
 
-                <Label Content="Offene Bestellungen: " FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="50,0,0,0" Grid.Row="1"/>
-                <Label  FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1" Margin="20,0,0,0" Content="{Binding OffeneBestellungen}"/>
+                <Label Content="Gecancelte Bestellungen: " Grid.Column="2" Grid.Row="2" FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                <Label  FontSize="13" Grid.Row="2" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,0,0,0" Content="{Binding GecancelteBestellungen}"/>
 
-                <Label Content="Gecancelte Bestellungen: " FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="50,0,0,0" Grid.Row="2"/>
-                <Label  FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" Margin="20,0,0,0" Content="{Binding GecancelteBestellungen}"/>
 
             </Grid>
         </Border>
@@ -50,6 +56,7 @@
         <Label Content="Berichte erstellen: "  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="310,505,195,15" FontSize="13"/>
         <Button Content="Bewertung / Produkt" Height="30" Width="150"  Margin="605,505,195,15"/>
         <Button Content="Rohmaterialverbrauch" Height="30" Width="150"  Margin="780,505,20,15"/>
-        <ComboBox Height="30" Width="100" Margin="100,505,750,15"/>
+        <Label Content="Periode: " FontSize="13"  Margin="10,505,708,15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <ComboBox Height="30" Width="100" Margin="200,505,750,15" />
     </Grid>
 </UserControl>
