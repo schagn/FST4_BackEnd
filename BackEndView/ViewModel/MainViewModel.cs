@@ -41,6 +41,7 @@ namespace BackEndView.ViewModel
         public MainViewModel()
         {
             InitialiseButtons();
+            CurrentDetailView = nav.NavigateTo("Dashboard");
 
             
         }

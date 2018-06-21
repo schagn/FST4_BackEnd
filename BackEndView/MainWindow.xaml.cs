@@ -24,6 +24,7 @@ namespace BackEndView
         public MainWindow()
         {
             InitializeComponent();
+            ButtonDasbboard.Background = new SolidColorBrush(Colors.CadetBlue);
         }
 
         private void MakeAllGrey()
