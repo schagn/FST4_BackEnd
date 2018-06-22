@@ -763,10 +763,12 @@ namespace DataRepository
         public List<SharedKunde> GetAllCustomers()
         {
 
-            var customers = model.person.Where(x=> x.type.description.Equals("Kunde") || x.type.description.Equals("Firmenkunde")).Select(x => new SharedKunde()
+
+            var customers = model.person.Where(x => x.type.description.Equals("Kunde") || x.type.description.Equals("Firmenkunde")).Select(x => new SharedKunde()
             {
                 KundenId = x.person_id,
                 EMail = x.e_mail,
+                IsBusinessCustomer = model.business_customer.Any(y => y.person_id.Equals(x.person_id)),
                 Geburtsdatum = x.birthdate.Value,
                 VorName = x.firstname,
                 NachName = x.lastname,
@@ -775,6 +777,7 @@ namespace DataRepository
                 Ort = x.city.name,
                 Passwort = x.password,
                 Strasse = x.street
+                
 
             }).ToList();
 
@@ -795,6 +798,8 @@ namespace DataRepository
                 password = k.Passwort,
                 birthdate = k.Geburtsdatum,
                 street = k.Strasse,
+                zip_code = k.PLZ,
+                valid = 1,
                 city = model.city.SingleOrDefault(x => x.zip_code.Equals(k.PLZ)),
                 country = k.Land,
                 type = model.type.SingleOrDefault(y => y.description.Equals("Kunde"))
@@ -833,7 +838,47 @@ namespace DataRepository
             statementModel.Columns.Add("type_id");
             statementModel.Values.Add(customer.type.ToString());
             statementModel.Sender = "Backend";
-            string response = client.InsertStatement(statementModel);
+            //string response = client.InsertStatement(statementModel);
+
+        }
+
+
+        public void AddBusinessCustomer(SharedKunde k, string VAT)
+        {
+            CreateCityIfNotExisting(new SharedCity(k.PLZ, k.Ort));
+            Guid id = Guid.NewGuid();
+            var customer = new person()
+            {
+                person_id = id,
+                firstname = k.VorName,
+                lastname = k.NachName,
+                e_mail = k.EMail,
+                password = k.Passwort,
+                birthdate = k.Geburtsdatum,
+                street = k.Strasse,
+                valid = 1,
+                zip_code = k.PLZ,
+                city = model.city.SingleOrDefault(x => x.zip_code.Equals(k.PLZ)),
+                country = k.Land,
+                type = model.type.SingleOrDefault(y => y.description.Equals("Kunde"))
+
+
+            };
+
+            var business = new business_customer()
+            {
+                description = k.NachName,
+                person_id = id,
+                VAT_Nr = VAT
+
+
+            };
+
+            model.person.Add(customer);
+            model.business_customer.Add(business);
+            model.SaveChanges();
+
+
 
         }
         
@@ -862,13 +907,19 @@ namespace DataRepository
                 statementModel.Columns.Add("name");
                 statementModel.Values.Add(city.Name);
                 statementModel.Sender = "Backend";
-                string response = client.InsertStatement(statementModel);
+                //string response = client.InsertStatement(statementModel);
             }            
         }
       
 
         public void DeleteCustomer(SharedKunde k)
         {
+            if(k.IsBusinessCustomer == true)
+            {
+                model.business_customer.Remove(model.business_customer.SingleOrDefault(x => x.person_id.Equals(k.KundenId)));
+                model.SaveChanges();
+            }
+
             model.person.Remove(model.person.SingleOrDefault(x => x.person_id.Equals(k.KundenId)));
             model.SaveChanges();
 
@@ -881,7 +932,7 @@ namespace DataRepository
             statementModel.Columns = new ArrayOfString();
             statementModel.Values = new ArrayOfString();
             statementModel.Sender = "Backend";
-            string response = client.InsertStatement(statementModel);
+            //string response = client.InsertStatement(statementModel);
         }
 
         public void UpdateCustomer(SharedKunde k)

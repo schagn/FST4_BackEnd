@@ -14,7 +14,7 @@ namespace BackEndView.ViewModel
 {
     public class KundenverwaltungVm : ViewModelBase
     {
-        //TODO PASSWORT !!!!! 
+        
 
         public RelayCommand CancelDataBtnClick { get; set; }
         public RelayCommand EditKundeBtnClick { get; set; }
@@ -97,9 +97,9 @@ namespace BackEndView.ViewModel
             set { isBusinessCustomer = value;RaisePropertyChanged(); }
         }
 
-        private float uid;
+        private string uid;
 
-        public float UID
+        public string UID
         {
             get { return uid; }
             set { uid = value; RaisePropertyChanged(); }
@@ -184,8 +184,10 @@ namespace BackEndView.ViewModel
 
         private void DeleteSelectedKunde(SharedKunde k)
         {
-
-            dh.DeleteCustomer(k);
+            
+            
+                dh.DeleteCustomer(k);
+            
             RefreshCustomers();
             RaisePropertyChanged("Kunden");
         }
@@ -231,8 +233,16 @@ namespace BackEndView.ViewModel
                     Passwort = Passwort
                     
                 };
-                dh.AddCusomter(newCustomer);
-                
+
+                if (IsBusinessCustomer == true && UID != null)
+                {
+
+                    dh.AddBusinessCustomer(newCustomer,UID);
+                }
+                else
+                {
+                    dh.AddCusomter(newCustomer);
+                }
             }
 
             RefreshCustomers();
@@ -247,6 +257,8 @@ namespace BackEndView.ViewModel
             Land = "";
             Passwort = "";
             IsVisible = false;
+            IsBusinessCustomer = false;
+            UID = "";
         }
 
         private void FilterList(string selectedFilterMethode)
