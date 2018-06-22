@@ -84,19 +84,18 @@ namespace DataRepository
                 description = sharedArticle.Description,
                 price = sharedArticle.Price,
                 shape = tempShape,
-                visible = sharedArticle.Visible
+                visible = sharedArticle.Visible,
+                timestamp = DateTime.Now
             };
             model.article.Add(article);
             model.SaveChanges();
 
             if (!String.IsNullOrEmpty(filePath) && File.Exists(filePath) && (Path.GetExtension(filePath) == ".jpg" || Path.GetExtension(filePath) == ".png"))
             {
-                if (!Directory.Exists(ConfigurationManager.AppSettings["imageFolder"]))
-                {
-                    Directory.CreateDirectory(ConfigurationManager.AppSettings["imageFolder"]);
-                }
-                string tempDestFile = Path.Combine(ConfigurationManager.AppSettings["imageFolder"], tempGuid + Path.GetExtension(filePath));
-                File.Copy(filePath, tempDestFile);
+                FTPHelper ftpClient = new FTPHelper(ConfigurationManager.AppSettings["FTPUrl"],
+                                                    ConfigurationManager.AppSettings["FTPUsername"],
+                                                    ConfigurationManager.AppSettings["FTPPassword"]);
+                ftpClient.upload(ConfigurationManager.AppSettings["FTPSubdirectory"] + tempGuid + Path.GetExtension(filePath), filePath);
             }
 
             CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
@@ -157,16 +156,15 @@ namespace DataRepository
             article.price = tempArticle.Price;
             article.shape = tempShape;
             article.visible = tempArticle.Visible;
+            article.timestamp = DateTime.Now;
             model.SaveChanges();
 
             if (!String.IsNullOrEmpty(filePath) && File.Exists(filePath) && (Path.GetExtension(filePath) == ".jpg" || Path.GetExtension(filePath) == ".png"))
             {
-                if (!Directory.Exists(ConfigurationManager.AppSettings["imageFolder"]))
-                {
-                    Directory.CreateDirectory(ConfigurationManager.AppSettings["imageFolder"]);
-                }
-                string tempDestFile = Path.Combine(ConfigurationManager.AppSettings["imageFolder"], article.article_id + Path.GetExtension(filePath));
-                File.Copy(filePath, tempDestFile, true);
+                FTPHelper ftpClient = new FTPHelper(ConfigurationManager.AppSettings["FTPUrl"],
+                                                   ConfigurationManager.AppSettings["FTPUsername"],
+                                                   ConfigurationManager.AppSettings["FTPPassword"]);
+                ftpClient.upload(ConfigurationManager.AppSettings["FTPSubdirectory"] + article.article_id + Path.GetExtension(filePath), filePath);
             }
 
             CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
