@@ -47,7 +47,6 @@ namespace BackEndView.ViewModel
         }
 
 
-
         private ObservableCollection<SharedArticle> topProdukte;
 
         public ObservableCollection<SharedArticle> TopProdukte
@@ -56,11 +55,30 @@ namespace BackEndView.ViewModel
             set { topProdukte = value; }
         }
 
+
+        private List<string> perioden;
+
+        public List<string> Perioden
+        {
+            get { return perioden; }
+            set { perioden = value; }
+        }
+
+        private string selectedPeriode;
+
+        public string SelectedPeriode
+        {
+            get { return selectedPeriode; }
+            set { selectedPeriode = value; }
+        }
+
+
+
         private DataHandler dh;
 
         public DashboardVm()
         {
-
+            Perioden = new List<string> { "Jänner", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "Novermber", "Dezember" };
             dh = new DataHandler();
             InitialzeDashboard();
             GenerateDemoData();

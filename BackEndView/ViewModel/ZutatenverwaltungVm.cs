@@ -21,6 +21,10 @@ namespace BackEndView.ViewModel
 
         public RelayCommand SaveZutatBtnClick { get; set; }
 
+        public RelayCommand SaveZutatKategorieBtnClick { get; set; }
+
+        public RelayCommand ZutatKategorieLöschenBtnClick { get; set; }
+
         public ObservableCollection<SharedZutat> Zutaten { get; set; }
 
         private string zutatenName;
@@ -58,13 +62,31 @@ namespace BackEndView.ViewModel
 
         public ObservableCollection<string> Categories { get; set; }
 
-        private List<string> selectedCategorie;
+        private string selectedCategorie;
 
-        public List<string> SelectedCategorie
+        public string SelectedCategorie
         {
             get { return selectedCategorie; }
             set { selectedCategorie = value; RaisePropertyChanged(); }
         }
+
+        private ObservableCollection<string> zutatKategorien;
+
+        public ObservableCollection<string> ZutatKategorien
+        {
+            get { return zutatKategorien; }
+            set { zutatKategorien = value; }
+        }
+
+        private string selectedLöschenKategorie;
+
+        public string SelectedLöschenKategorie
+        {
+            get { return selectedLöschenKategorie; }
+            set { selectedLöschenKategorie = value; }
+        }
+
+
 
         public ObservableCollection<string> FilterMethoden { get; set; }
 
@@ -84,6 +106,7 @@ namespace BackEndView.ViewModel
         public ZutatenverwaltungVm()
         {
             dataHandler = new DataHandler();
+            ZutatKategorien = new ObservableCollection<string>();
 
             EditZutatBtnClick = new RelayCommand(EditZutat);
 
@@ -95,7 +118,6 @@ namespace BackEndView.ViewModel
                         SelectedZutat.Beschreibung = ZutatenName;
                         SelectedZutat.Preis = ZutatenPreis;
                         SelectedZutat.IsAvailable = Visibility;
-                        SelectedZutat.Kategorie = SelectedCategorie;
                         dataHandler.UpdateZutat(selectedZutat);
                     }
                     else
@@ -105,8 +127,7 @@ namespace BackEndView.ViewModel
                             ZutatenId = Guid.NewGuid(),
                             Beschreibung = ZutatenName,
                             Preis = ZutatenPreis,
-                            IsAvailable = Visibility,
-                            Kategorie = SelectedCategorie
+                            IsAvailable = Visibility
                         });
                     }
                     CancelData();
@@ -119,6 +140,10 @@ namespace BackEndView.ViewModel
                 {
                     DeleteSelectedProduct(SelectedZutat);
                 });
+
+            SaveZutatKategorieBtnClick = new RelayCommand(SaveZutatKategorie);
+
+            ZutatKategorieLöschenBtnClick = new RelayCommand(LöschenZutatKategorie);
 
             CancelDataBtnClick = new RelayCommand(CancelData);
 
@@ -145,11 +170,35 @@ namespace BackEndView.ViewModel
         {
             ZutatenName = SelectedZutat.Beschreibung;
             ZutatenPreis = SelectedZutat.Preis;
-            SelectedCategorie = SelectedZutat.Kategorie;
+            if (ZutatKategorien != null)
+            {
+                ZutatKategorien.Clear();
+            }
+            foreach(var item in SelectedZutat.Kategorie)
+            {
+                ZutatKategorien.Add(item);
+            }
             Visibility = SelectedZutat.IsAvailable;
 
             IsEditingProcess = true;
         }
+
+        private void SaveZutatKategorie()
+        {
+            dataHandler.CreateZutatKategorie(ZutatenName, SelectedCategorie);
+            ZutatKategorien.Add(SelectedCategorie);
+            RefreshList(SelectedFilterMethode);
+            RaisePropertyChanged("Zutat");
+        }
+
+        private void LöschenZutatKategorie()
+        {
+            dataHandler.DeleteZutatKategorie(ZutatenName, SelectedLöschenKategorie);
+            //ZutatKategorien.Remove(SelectedCategorie);
+            RefreshList(SelectedFilterMethode);
+            RaisePropertyChanged("Zutat");
+        }
+
 
         private void DeleteSelectedProduct(SharedZutat p)
         {
@@ -164,6 +213,7 @@ namespace BackEndView.ViewModel
             Visibility = false;
             SelectedCategorie = null;
             SelectedZutat = null;
+            ZutatKategorien = null;
 
             IsEditingProcess = false;
 

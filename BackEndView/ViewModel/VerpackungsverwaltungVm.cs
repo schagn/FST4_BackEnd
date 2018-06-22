@@ -169,8 +169,10 @@ namespace BackEndView.ViewModel
                         SelectedVerpackung.Creation = Creation;
                         SelectedVerpackung.Price = Preis;
                         SelectedVerpackung.Visible = Visibility;
-
-                        VerpackungsKomponenten.Clear();
+                        if(VerpackungsKomponenten != null)
+                        {
+                            VerpackungsKomponenten.Clear();
+                        }
                         VerpackungsKomponenten.Add(SelectedKarton);
                         VerpackungsKomponenten.Add(SelectedMasche);
                         VerpackungsKomponenten.Add(SelectedSticker);
@@ -269,7 +271,7 @@ namespace BackEndView.ViewModel
         private void KomponenteLöschen()
         {
 
-            dataHanlder.DeleteVerpackungskomponenten(SelectedVerpackung.VerpackungsId, SelectedLöschenVerpackungsteil);
+            dataHanlder.DeleteVerpackungskomponenten(Beschreibung, SelectedLöschenVerpackungsteil);
 
             RaisePropertyChanged("Verpackungen");
             SelectedLöschenVerpackungsteil = null;
