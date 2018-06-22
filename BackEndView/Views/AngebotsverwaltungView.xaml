@@ -64,7 +64,7 @@
         <Label Content="Filter:" Width="50" Margin="0,190,860,335"/>
         <ComboBox Height="20" Width="150" Margin="40,191,700,339" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <DataGrid Margin="20,216,19.667,50" Width="910" ItemsSource="{Binding Angebote}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedAngebot}">
+        <DataGrid Margin="20,216,19.667,50" Width="910" IsReadOnly="true" ItemsSource="{Binding Angebote}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedAngebot}">
             <DataGrid.Columns>
                 <!--<DataGridTextColumn Header="Produkt" Binding="{Binding Produkt}"/>-->
                 <DataGridTextColumn Header="Code" Binding="{Binding Code}"/>

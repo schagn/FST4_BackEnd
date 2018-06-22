@@ -49,7 +49,7 @@
         <Label Content="Filter:" Width="50" Margin="0,190,860,335"/>
         <ComboBox Height="20" Width="150" Margin="40,191,700,339" ItemsSource="{Binding FilterMethoden}" SelectedItem="{Binding SelectedFilterMethode, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <DataGrid Margin="20,216,19.667,50" Width="910"  ItemsSource="{Binding Regelwerke}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedRegelwerk}">
+        <DataGrid Margin="20,216,19.667,50" Width="910" IsReadOnly="true" ItemsSource="{Binding Regelwerke}" AutoGenerateColumns="false" SelectedItem="{Binding SelectedRegelwerk}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Beschreibung" Binding="{Binding Beschreibung}"/>
               
