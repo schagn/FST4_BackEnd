@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="d138d6c7-6b06-4d10-9b04-dd77ac37d7dc" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="87b41ae4-bd5a-4a14-8546-39000be5d5ac" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -22,8 +22,8 @@
     <MetadataSource Address="http://localhost/FST4_Sync/CreateWebservice.asmx" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="CreateWebservice.wsdl" MetadataType="Wsdl" ID="cffd9a68-13ca-4a36-a895-7dbfdd971896" SourceId="1" SourceUrl="http://localhost/FST4_Sync/CreateWebservice.asmx?wsdl" />
-    <MetadataFile FileName="CreateWebservice.disco" MetadataType="Disco" ID="7ea77b78-52dd-4c7a-8ffd-878dd721311d" SourceId="1" SourceUrl="http://localhost/FST4_Sync/CreateWebservice.asmx?disco" />
+    <MetadataFile FileName="CreateWebservice.wsdl" MetadataType="Wsdl" ID="793ff731-9228-43f5-a689-8dd50d429d49" SourceId="1" SourceUrl="http://localhost/FST4_Sync/CreateWebservice.asmx?wsdl" />
+    <MetadataFile FileName="CreateWebservice.disco" MetadataType="Disco" ID="12f0cbe0-6935-44d9-b2e8-27a3a1f4e427" SourceId="1" SourceUrl="http://localhost/FST4_Sync/CreateWebservice.asmx?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
