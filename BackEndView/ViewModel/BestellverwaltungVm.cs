@@ -187,8 +187,7 @@ namespace BackEndView.ViewModel
 
             CustomerMailService.InformCustomerAboutDeletedProduct(SelectedBestellung, dh.GetEmailCustomerForOrder(selectedBestellung), SelectedProdukt);
 
-            // Kundenemail mit das Produkt "blablabla" wurde aus deiner Bestellung gelöscht
-            // Differenzbetrag wird an ihre Bezahlmethode zurücküberwiesen
+            
 
 
         }

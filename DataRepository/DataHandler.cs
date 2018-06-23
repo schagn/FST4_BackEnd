@@ -839,6 +839,7 @@ namespace DataRepository
                 KundenId = x.person_id,
                 EMail = x.e_mail,
                 IsBusinessCustomer = model.business_customer.Any(y => y.person_id.Equals(x.person_id)),
+                UID = model.business_customer.Where(y => x.person_id.Equals(y.person_id)).Select(z=> z.VAT_Nr).FirstOrDefault(),
                 Geburtsdatum = x.birthdate.Value,
                 VorName = x.firstname,
                 NachName = x.lastname,
@@ -1094,6 +1095,8 @@ namespace DataRepository
                 Land = x.country,
                 PLZ = x.city.zip_code,
                 Ort = x.city.name,
+                UID = model.business_customer.Where(y => x.person_id.Equals(y.person_id)).Select(z => z.VAT_Nr).FirstOrDefault(),
+                IsBusinessCustomer = model.business_customer.Any(y => y.person_id.Equals(x.person_id)),
                 Passwort = x.password,
                 Strasse = x.street
 

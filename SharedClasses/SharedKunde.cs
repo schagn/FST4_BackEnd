@@ -91,9 +91,9 @@ namespace SharedClasses
             set { isBusinessCustomer = value; RaisePropertyChanged(); }
         }
 
-        private float uid;
+        private string uid;
 
-        public float UID
+        public string UID
         {
             get { return uid; }
             set { uid = value; RaisePropertyChanged(); }
