@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAggregator", "DataAggre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TEST", "TEST\TEST.csproj", "{A8077AA1-810E-46C4-B025-3ABD66CADB41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelReportGeneration", "ExcelReportGeneration\ExcelReportGeneration.csproj", "{A8F7FE3E-DFF1-4341-8DA9-C2897D7D5D5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{A8077AA1-810E-46C4-B025-3ABD66CADB41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8077AA1-810E-46C4-B025-3ABD66CADB41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8077AA1-810E-46C4-B025-3ABD66CADB41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8F7FE3E-DFF1-4341-8DA9-C2897D7D5D5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8F7FE3E-DFF1-4341-8DA9-C2897D7D5D5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8F7FE3E-DFF1-4341-8DA9-C2897D7D5D5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8F7FE3E-DFF1-4341-8DA9-C2897D7D5D5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

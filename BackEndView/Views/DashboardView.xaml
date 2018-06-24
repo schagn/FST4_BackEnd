@@ -9,7 +9,7 @@
              d:DesignHeight="550" d:DesignWidth="950" 
              DataContext="{Binding Dashboard, Mode=OneWay, Source={StaticResource Locator}}">
 
-    <Grid>
+    <Grid Margin="4,0,-4,0">
         <Border BorderBrush="Black" BorderThickness="1"  Width="910"  Height="480" Margin="20,20,20,20" Grid.RowSpan="2" VerticalAlignment="Top">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -54,9 +54,9 @@
         </Border>
 
         <Label Content="Berichte erstellen: "  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="310,505,195,15" FontSize="13"/>
-        <Button Content="Bewertung / Produkt" Height="30" Width="150"  Margin="605,505,195,15"/>
-        <Button Content="Rohmaterialverbrauch" Height="30" Width="150"  Margin="780,505,20,15"/>
-        <Label Content="Periode: " FontSize="13"  Margin="10,505,708,15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <ComboBox Height="30" Width="100" Margin="200,505,750,15" ItemsSource="{Binding Perioden}" SelectedItem="{Binding SelectedPeriode}"  />
+        <Button Content="Bewertung / Produkt" Height="30" Width="150"  Margin="605,505,195,15" Command="{Binding RatingReportBtnClicked}"/>
+        <Button Content="Rohmaterialverbrauch" Height="30" Width="150"  Margin="780,505,20,15" Command="{Binding RawMaterialReportBtnClicked}"/>
+        <Label Content="Periode: " FontSize="13"  Margin="118,506,772,16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <ComboBox Height="30" Width="100" Margin="214,506,636,14" ItemsSource="{Binding Perioden}" SelectedItem="{Binding SelectedPeriode}"  />
     </Grid>
 </UserControl>

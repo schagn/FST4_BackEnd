@@ -1,5 +1,7 @@
 ﻿using DataRepository;
+using ExcelReportGeneration;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using OfficeOpenXml;
 using OxyPlot;
 using SharedClasses;
@@ -9,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace BackEndView.ViewModel
 {
@@ -69,19 +72,54 @@ namespace BackEndView.ViewModel
         public string SelectedPeriode
         {
             get { return selectedPeriode; }
-            set { selectedPeriode = value; }
+            set { selectedPeriode = value; RaisePropertyChanged(); }
         }
 
+        public RelayCommand RawMaterialReportBtnClicked { get; set; }
+
+        public RelayCommand RatingReportBtnClicked { get; set; }
+
+        public ObservableCollection<int> NumerischePerioden { get; set; }
 
 
         private DataHandler dh;
+        private ExcelReportGenerator reportGenerator;
 
         public DashboardVm()
         {
-            Perioden = new List<string> { "Jänner", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "Novermber", "Dezember" };
+            Perioden = new List<string> {"Alle", "Jänner", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "Novermber", "Dezember" };
             dh = new DataHandler();
+            reportGenerator = new ExcelReportGenerator();
+            RawMaterialReportBtnClicked = new RelayCommand(CreateRawMaterialExcelReport);
+            RatingReportBtnClicked = new RelayCommand(CreateRatingExcelReport);
             InitialzeDashboard();
+            NumerischePerioden = new ObservableCollection<int>()
+            {
+                0,1,2,3,4,5,6,7,8,9,10,11,12
+            };
+
             GenerateDemoData();
+
+        }
+
+        private void CreateRatingExcelReport()
+        {
+
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+            string savePath = dialog.SelectedPath;
+
+            reportGenerator.GenerateRatingExcelReport(savePath);
+
+        }
+
+        private void CreateRawMaterialExcelReport()
+        {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+            string savePath = dialog.SelectedPath;
+
+            reportGenerator.GenerateRawMaterialExcelReport(MonthToIntConverter.GetIntForMonth(selectedPeriode), savePath);
 
         }
 
@@ -110,7 +148,7 @@ namespace BackEndView.ViewModel
                 new DataPoint(11,45000),
                 new DataPoint(12,57000)
 
-
+                
               
 
 
