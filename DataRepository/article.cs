@@ -22,6 +22,7 @@ namespace DataRepository
             this.order_has_articles = new HashSet<order_has_articles>();
             this.rating = new HashSet<rating>();
             this.package = new HashSet<package>();
+
         }
     
         public System.Guid article_id { get; set; }

@@ -173,14 +173,26 @@ namespace BackEndView.ViewModel
                         {
                             VerpackungsKomponenten.Clear();
                         }
-                        VerpackungsKomponenten.Add(SelectedKarton);
-                        VerpackungsKomponenten.Add(SelectedMasche);
-                        VerpackungsKomponenten.Add(SelectedSticker);
-                        foreach (var item in VerpackungsKomponenten)
+                        if(SelectedKarton != null)
                         {
-                            SelectedVerpackung.Komponenten.Add(item);
-                            dataHanlder.CreateVerpackungskomponenten(SelectedVerpackung.VerpackungsId, SelectedKarton);
+                            VerpackungsKomponenten.Add(SelectedKarton);
                         }
+                        if(SelectedMasche != null)
+                        {
+                            VerpackungsKomponenten.Add(SelectedMasche);
+                        }
+                        if(SelectedSticker != null)
+                        {
+                            VerpackungsKomponenten.Add(SelectedSticker);
+                        } 
+                        if(VerpackungsKomponenten != null)
+                        {
+                            foreach (var item in VerpackungsKomponenten)
+                            {
+                                SelectedVerpackung.Komponenten.Add(item);
+                                dataHanlder.UpdateVerpackungskomponenten(SelectedVerpackung.VerpackungsId, item);
+                            }
+                        }                        
                         dataHanlder.UpdateVerpackung(SelectedVerpackung);
                     }
                     else
@@ -194,9 +206,18 @@ namespace BackEndView.ViewModel
                             Creation = Creation,
                             Visible = Visibility
                         });
-                        dataHanlder.CreateVerpackungskomponenten(tempGuid, SelectedKarton);
-                        dataHanlder.CreateVerpackungskomponenten(tempGuid, SelectedMasche);
-                        dataHanlder.CreateVerpackungskomponenten(tempGuid, SelectedSticker);
+                        if (SelectedKarton != null)
+                        {
+                            dataHanlder.CreateVerpackungskomponenten(tempGuid, SelectedKarton);
+                        }
+                        if (SelectedMasche != null)
+                        {
+                            dataHanlder.CreateVerpackungskomponenten(tempGuid, SelectedMasche);
+                        }
+                        if (SelectedSticker != null)
+                        {
+                            dataHanlder.CreateVerpackungskomponenten(tempGuid, SelectedSticker);
+                        }                  
                     }
                     CancelData();
                     RefreshList();
@@ -289,7 +310,7 @@ namespace BackEndView.ViewModel
             SelectedKarton = "";
             SelectedMasche = "";
             SelectedSticker = "";
-            VerpackungsKomponenten = null;
+            VerpackungsKomponenten = new ObservableCollection<string>();
 
             IsEditingProcess = false;
 

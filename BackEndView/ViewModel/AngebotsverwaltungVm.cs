@@ -141,8 +141,7 @@ namespace BackEndView.ViewModel {
 
         private void DeleteSelectedAngebot(SharedAngebot a)
         {
-            //client.deleteZutat
-            //client Zutaten neu abfragen
+            dh.DeleteSpecialOffer(a);
             Angebote.Remove(a);
             RaisePropertyChanged("Angebote");
         }

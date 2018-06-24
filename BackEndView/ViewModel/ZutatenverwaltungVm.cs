@@ -186,7 +186,7 @@ namespace BackEndView.ViewModel
         private void SaveZutatKategorie()
         {
             dataHandler.CreateZutatKategorie(ZutatenName, SelectedCategorie);
-            ZutatKategorien.Add(SelectedCategorie);
+            //ZutatKategorien.Add(SelectedCategorie);
             RefreshList(SelectedFilterMethode);
             RaisePropertyChanged("Zutat");
         }
