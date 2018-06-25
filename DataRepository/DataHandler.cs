@@ -1535,7 +1535,7 @@ namespace DataRepository
                 }
                 else
                 {
-                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung")).Select(x => new SharedVerpackung()
+                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") || x.article_type.description.Equals("Kundenverpackung")).Select(x => new SharedVerpackung()
                     {
                         VerpackungsId = x.article_id,
                         Description = x.description,
@@ -1588,7 +1588,7 @@ namespace DataRepository
                 }
                 else
                 {
-                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == true).Select(x => new SharedVerpackung()
+                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") || x.article_type.description.Equals("Kundenverpackung") && x.visible == true).Select(x => new SharedVerpackung()
                     {
                         VerpackungsId = x.article_id,
                         Description = x.description,
@@ -1641,7 +1641,7 @@ namespace DataRepository
                 }
                 else
                 {
-                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == false).Select(x => new SharedVerpackung()
+                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") || x.article_type.description.Equals("Kundenverpackung") && x.visible == false).Select(x => new SharedVerpackung()
                     {
                         VerpackungsId = x.article_id,
                         Description = x.description,
@@ -1659,7 +1659,7 @@ namespace DataRepository
             }
             else
             {
-                var list = model.article.Where(x => x.article_type.description.Equals("Verpackung")).Select(x => new SharedVerpackung()
+                var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") || x.article_type.description.Equals("Kundenverpackung")).Select(x => new SharedVerpackung()
                 {
                     VerpackungsId = x.article_id,
                     Description = x.description,
