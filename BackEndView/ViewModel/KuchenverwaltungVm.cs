@@ -210,7 +210,7 @@ namespace BackEndView.ViewModel
             switch (SelectedCreationFilter)
             {
                 case "Kreation":
-                    Articles = new ObservableCollection<SharedArticle>(Articles.Where(x => x.Creation));
+                    Articles = new ObservableCollection<SharedArticle>(Articles.Where(x => x.Creation && x.ArticleTypeDescription.Equals("Kundenkreation")));
                     break;
                 case "Nicht Kreation":
                     Articles = new ObservableCollection<SharedArticle>(Articles.Where(x => !x.Creation));

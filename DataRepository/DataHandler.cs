@@ -651,12 +651,13 @@ namespace DataRepository
 
         public List<SharedBestellung> GetAllOrders()
         {
-            
+
             double? voucherValue;
 
-            
 
-            var orders =  model.order.Select(x => new SharedBestellung()
+
+
+            var orders = model.order.Select(x => new SharedBestellung()
             {
                 BestellId = x.order_id,
                 Artikel = x.order_has_articles.Select(y => new SharedOrderArticle()
@@ -673,12 +674,23 @@ namespace DataRepository
 
             }).ToList();
 
+
+
+
             foreach (var item in orders)
             {
 
                 voucherValue = GetOrderVaucherValue(item.BestellId);
+                var packages = model.order_has_package.Where(x => x.fk_order_id.Equals(item.BestellId)).Select(y => new SharedOrderArticle()
+                {
+                    id = y.package.package_id,
+                    name = y.package.description
 
-                if(voucherValue != 0)
+                }).ToList();
+
+                item.Artikel.AddRange(packages);
+
+                if (voucherValue != 0)
                 {
                     item.GutscheinUsed = true;
                 }
@@ -691,7 +703,7 @@ namespace DataRepository
             }
 
             return orders;
-            
+
         }
 
         private double? GetOrderVaucherValue(Guid orderId)
@@ -748,15 +760,13 @@ namespace DataRepository
             string response = client.InsertStatement(statementModel);
         }
 
-         
+
         public List<SharedBestellung> GetOrdersByStatus(string selectedFilterMethode)
         {
 
             double? voucherValue;
 
-
-
-            var orders = model.order.Where(order=> order.status.Equals(selectedFilterMethode)).Select(x => new SharedBestellung()
+            var orders = model.order.Where(order => order.status.Equals(selectedFilterMethode)).Select(x => new SharedBestellung()
             {
                 BestellId = x.order_id,
                 Artikel = x.order_has_articles.Select(y => new SharedOrderArticle()
@@ -776,6 +786,14 @@ namespace DataRepository
             {
 
                 voucherValue = GetOrderVaucherValue(item.BestellId);
+                var packages = model.order_has_package.Where(x => x.fk_order_id.Equals(item.BestellId)).Select(y => new SharedOrderArticle()
+                {
+                    id = y.package.package_id,
+                    name = y.package.description
+
+                }).ToList();
+
+                item.Artikel.AddRange(packages);
 
                 if (voucherValue != 0)
                 {
@@ -1483,7 +1501,7 @@ namespace DataRepository
             {
                 if (filterCreation.Equals("Kreation"))
                 {
-                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.creation == true).Select(x => new SharedVerpackung()
+                    var list = model.article.Where(x => x.article_type.description.Equals("Kundenverpackung") && x.creation == true).Select(x => new SharedVerpackung()
                     {
                         VerpackungsId = x.article_id,
                         Description = x.description,
@@ -1536,7 +1554,7 @@ namespace DataRepository
             {
                 if (filterCreation.Equals("Kreation"))
                 {
-                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == true && x.creation == true).Select(x => new SharedVerpackung()
+                    var list = model.article.Where(x => x.article_type.description.Equals("Kundenverpackung") && x.visible == true && x.creation == true).Select(x => new SharedVerpackung()
                     {
                         VerpackungsId = x.article_id,
                         Description = x.description,
@@ -1589,7 +1607,7 @@ namespace DataRepository
             {
                 if (filterCreation.Equals("Kreation"))
                 {
-                    var list = model.article.Where(x => x.article_type.description.Equals("Verpackung") && x.visible == false && x.creation == true).Select(x => new SharedVerpackung()
+                    var list = model.article.Where(x => x.article_type.description.Equals("Kundenverpackung") && x.visible == false && x.creation == true).Select(x => new SharedVerpackung()
                     {
                         VerpackungsId = x.article_id,
                         Description = x.description,
