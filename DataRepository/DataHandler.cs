@@ -94,11 +94,11 @@ namespace DataRepository
             {
                 if (ConfigurationManager.AppSettings["UploadPicturesLocal"].Trim().Equals("true", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    if (!Directory.Exists(ConfigurationManager.AppSettings["imageFolder"]))
+                    if (!Directory.Exists(ConfigurationManager.AppSettings["LocalImageFolder"]))
                     {
-                        Directory.CreateDirectory(ConfigurationManager.AppSettings["imageFolder"]);
+                        Directory.CreateDirectory(ConfigurationManager.AppSettings["LocalImageFolder"]);
                     }
-                    string tempDestFile = Path.Combine(ConfigurationManager.AppSettings["imageFolder"], tempGuid + Path.GetExtension(filePath));
+                    string tempDestFile = Path.Combine(ConfigurationManager.AppSettings["LocalImageFolder"], tempGuid + Path.GetExtension(filePath));
                     File.Copy(filePath, tempDestFile);
                 }
                 else
@@ -175,11 +175,11 @@ namespace DataRepository
             {
                 if (ConfigurationManager.AppSettings["UploadPicturesLocal"].Trim().Equals("true", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    if (!Directory.Exists(ConfigurationManager.AppSettings["imageFolder"]))
+                    if (!Directory.Exists(ConfigurationManager.AppSettings["LocalImageFolder"]))
                     {
-                        Directory.CreateDirectory(ConfigurationManager.AppSettings["imageFolder"]);
+                        Directory.CreateDirectory(ConfigurationManager.AppSettings["LocalImageFolder"]);
                     }
-                    string tempDestFile = Path.Combine(ConfigurationManager.AppSettings["imageFolder"], article.article_id + Path.GetExtension(filePath));
+                    string tempDestFile = Path.Combine(ConfigurationManager.AppSettings["LocalImageFolder"], article.article_id + Path.GetExtension(filePath));
                     File.Copy(filePath, tempDestFile, true);
                 }
                 else

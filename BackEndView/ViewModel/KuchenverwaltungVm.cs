@@ -151,15 +151,15 @@ namespace BackEndView.ViewModel
             Creation = SelectedArticle != null ? SelectedArticle.Creation : false;
             Visible = SelectedArticle != null ? SelectedArticle.Visible : false;
             SelectedShape = SelectedArticle != null ? SelectedArticle.ShapeDescription : null;
-            if(Directory.Exists(ConfigurationManager.AppSettings["imageFolder"]))
+            if(Directory.Exists(ConfigurationManager.AppSettings["LocalImageFolder"]))
             {
-                if(File.Exists(Path.Combine(ConfigurationManager.AppSettings["imageFolder"], SelectedArticle.ArticleId + ".jpg")))
+                if(File.Exists(Path.Combine(ConfigurationManager.AppSettings["LocalImageFolder"], SelectedArticle.ArticleId + ".jpg")))
                 {
-                    FilePath = Path.Combine(ConfigurationManager.AppSettings["imageFolder"], SelectedArticle.ArticleId + ".jpg");
+                    FilePath = Path.Combine(ConfigurationManager.AppSettings["LocalImageFolder"], SelectedArticle.ArticleId + ".jpg");
                 }
-                if (File.Exists(Path.Combine(ConfigurationManager.AppSettings["imageFolder"], SelectedArticle.ArticleId + ".png")))
+                if (File.Exists(Path.Combine(ConfigurationManager.AppSettings["LocalImageFolder"], SelectedArticle.ArticleId + ".png")))
                 {
-                    FilePath = Path.Combine(ConfigurationManager.AppSettings["imageFolder"], SelectedArticle.ArticleId + ".png");
+                    FilePath = Path.Combine(ConfigurationManager.AppSettings["LocalImageFolder"], SelectedArticle.ArticleId + ".png");
                 }
             }
         }
