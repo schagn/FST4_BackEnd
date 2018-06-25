@@ -92,10 +92,22 @@ namespace DataRepository
 
             if (!String.IsNullOrEmpty(filePath) && File.Exists(filePath) && (Path.GetExtension(filePath) == ".jpg" || Path.GetExtension(filePath) == ".png"))
             {
-                FTPHelper ftpClient = new FTPHelper(ConfigurationManager.AppSettings["FTPUrl"],
-                                                    ConfigurationManager.AppSettings["FTPUsername"],
-                                                    ConfigurationManager.AppSettings["FTPPassword"]);
-                ftpClient.upload(ConfigurationManager.AppSettings["FTPSubdirectory"] + tempGuid + Path.GetExtension(filePath), filePath);
+                if (ConfigurationManager.AppSettings["UploadPicturesLocal"].Trim().Equals("true", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    if (!Directory.Exists(ConfigurationManager.AppSettings["imageFolder"]))
+                    {
+                        Directory.CreateDirectory(ConfigurationManager.AppSettings["imageFolder"]);
+                    }
+                    string tempDestFile = Path.Combine(ConfigurationManager.AppSettings["imageFolder"], tempGuid + Path.GetExtension(filePath));
+                    File.Copy(filePath, tempDestFile);
+                }
+                else
+                {
+                    FTPHelper ftpClient = new FTPHelper(ConfigurationManager.AppSettings["FTPUrl"],
+                                                        ConfigurationManager.AppSettings["FTPUsername"],
+                                                        ConfigurationManager.AppSettings["FTPPassword"]);
+                    ftpClient.upload(ConfigurationManager.AppSettings["FTPSubdirectory"] + tempGuid + Path.GetExtension(filePath), filePath);
+                }
             }
 
             CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
@@ -161,10 +173,22 @@ namespace DataRepository
 
             if (!String.IsNullOrEmpty(filePath) && File.Exists(filePath) && (Path.GetExtension(filePath) == ".jpg" || Path.GetExtension(filePath) == ".png"))
             {
-                FTPHelper ftpClient = new FTPHelper(ConfigurationManager.AppSettings["FTPUrl"],
-                                                   ConfigurationManager.AppSettings["FTPUsername"],
-                                                   ConfigurationManager.AppSettings["FTPPassword"]);
-                ftpClient.upload(ConfigurationManager.AppSettings["FTPSubdirectory"] + article.article_id + Path.GetExtension(filePath), filePath);
+                if (ConfigurationManager.AppSettings["UploadPicturesLocal"].Trim().Equals("true", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    if (!Directory.Exists(ConfigurationManager.AppSettings["imageFolder"]))
+                    {
+                        Directory.CreateDirectory(ConfigurationManager.AppSettings["imageFolder"]);
+                    }
+                    string tempDestFile = Path.Combine(ConfigurationManager.AppSettings["imageFolder"], article.article_id + Path.GetExtension(filePath));
+                    File.Copy(filePath, tempDestFile, true);
+                }
+                else
+                {
+                    FTPHelper ftpClient = new FTPHelper(ConfigurationManager.AppSettings["FTPUrl"],
+                                                       ConfigurationManager.AppSettings["FTPUsername"],
+                                                       ConfigurationManager.AppSettings["FTPPassword"]);
+                    ftpClient.upload(ConfigurationManager.AppSettings["FTPSubdirectory"] + article.article_id + Path.GetExtension(filePath), filePath);
+                }
             }
 
             CreateWebServiceSoapClient client = new CreateWebServiceSoapClient();
