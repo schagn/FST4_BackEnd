@@ -2085,6 +2085,30 @@ namespace DataRepository
 
         }
 
+
+
+        public int GetActiveCustomersInCurrentMonth()
+        {
+
+            
+            List<Guid> activeCustomerIds = new List<Guid>();
+
+            foreach (var item in model.order.Where(x=> x.order_date.Value.Month.Equals(DateTime.Now.Month)))
+            {
+
+                if (!activeCustomerIds.Contains(item.person_id))
+                {
+                    activeCustomerIds.Add(item.person_id);
+
+                }
+            }
+
+            return activeCustomerIds.Count();
+
+
+
+        }
+
         #endregion
     }
 }

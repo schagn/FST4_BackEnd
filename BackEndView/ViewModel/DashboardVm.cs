@@ -82,6 +82,33 @@ namespace BackEndView.ViewModel
 
         public ObservableCollection<int> NumerischePerioden { get; set; }
 
+        private int allCustomers;
+
+        public int AllCustomers
+        {
+            get { return allCustomers; }
+            set { allCustomers = value; }
+        }
+
+        private int activeCustomers;
+
+        public int ActiveCustomers
+        {
+            get { return activeCustomers; }
+            set { activeCustomers = value; }
+        }
+
+        private int abgeschlosseneBestellungen;
+
+        public int AbgeschlosseneBestellungen
+        {
+            get { return abgeschlosseneBestellungen; }
+            set { abgeschlosseneBestellungen = value; }
+        }
+
+
+
+
 
         private DataHandler dh;
         private ExcelReportGenerator reportGenerator;
@@ -127,9 +154,12 @@ namespace BackEndView.ViewModel
 
         private void InitialzeDashboard()
         {
+            AllCustomers = dh.GetAllCustomers().Count();
+            ActiveCustomers = dh.GetActiveCustomersInCurrentMonth();
             OffeneBestellungen = dh.GetOfOrdersInCurrentMonthByType("offen").Count();
             GecancelteBestellungen = dh.GetOfOrdersInCurrentMonthByType("abgebrochen").Count();
             GesamtBestellungen = dh.GetOfOrdersInCurrentMonthByType("alle").Count();
+            AbgeschlosseneBestellungen = dh.GetOfOrdersInCurrentMonthByType("abgeschlossen").Count();
             TopProdukte = GenerateTop5Products();
         }
 
