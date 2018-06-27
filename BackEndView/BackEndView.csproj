@@ -249,6 +249,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataAggregator\DataAggregator.csproj">
+      <Project>{afbec872-b5c2-4987-add6-27c130e6e50e}</Project>
+      <Name>DataAggregator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataRepository\DataRepository.csproj">
       <Project>{24186D74-7796-4DF1-9E19-78693623A00A}</Project>
       <Name>DataRepository</Name>

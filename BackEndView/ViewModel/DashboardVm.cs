@@ -50,13 +50,14 @@ namespace BackEndView.ViewModel
         }
 
 
-        private ObservableCollection<SharedArticle> topProdukte;
+        private ObservableCollection<SharedProductMonthSales> topProdukte;
 
-        public ObservableCollection<SharedArticle> TopProdukte
+        public ObservableCollection<SharedProductMonthSales> TopProdukte
         {
             get { return topProdukte; }
             set { topProdukte = value; }
         }
+
 
 
         private List<string> perioden;
@@ -89,6 +90,7 @@ namespace BackEndView.ViewModel
         {
             Perioden = new List<string> {"Alle", "Jänner", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "Novermber", "Dezember" };
             dh = new DataHandler();
+            TopProdukte = new ObservableCollection<SharedProductMonthSales>();
             reportGenerator = new ExcelReportGenerator();
             RawMaterialReportBtnClicked = new RelayCommand(CreateRawMaterialExcelReport);
             RatingReportBtnClicked = new RelayCommand(CreateRatingExcelReport);
@@ -128,6 +130,15 @@ namespace BackEndView.ViewModel
             OffeneBestellungen = dh.GetOfOrdersInCurrentMonthByType("offen").Count();
             GecancelteBestellungen = dh.GetOfOrdersInCurrentMonthByType("abgebrochen").Count();
             GesamtBestellungen = dh.GetOfOrdersInCurrentMonthByType("alle").Count();
+            TopProdukte = GenerateTop5Products();
+        }
+
+        private ObservableCollection<SharedProductMonthSales> GenerateTop5Products()
+        {
+            var tmpList = DataAggregator.DataAggregator.GetTop5ProductsPerMonth(DateTime.Now.Month);
+            tmpList.Sort((p1, p2) => -1*p1.TimesSold.CompareTo(p2.TimesSold));
+
+            return new ObservableCollection<SharedProductMonthSales>(tmpList.Take(5));
         }
 
         private void GenerateDemoData()
@@ -140,13 +151,8 @@ namespace BackEndView.ViewModel
                 new DataPoint(3,16000),
                 new DataPoint(4, 22000),
                 new DataPoint(5,27000),
-                new DataPoint(6,20000),
-                new DataPoint(7,19000),
-                new DataPoint(8,26000),
-                new DataPoint(9,29000),
-                new DataPoint(10,32000),
-                new DataPoint(11,45000),
-                new DataPoint(12,57000)
+                new DataPoint(6,32000),
+                
 
                 
               
@@ -154,7 +160,7 @@ namespace BackEndView.ViewModel
 
             };
 
-            ExcelPackage exP = new ExcelPackage();
+           
 
 
         }

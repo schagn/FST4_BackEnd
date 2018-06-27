@@ -71,6 +71,7 @@
     <Compile Include="SharedKunde.cs" />
     <Compile Include="SharedOrderArticle.cs" />
     <Compile Include="SharedPackage.cs" />
+    <Compile Include="SharedProductMonthSales.cs" />
     <Compile Include="SharedRegelwerk.cs" />
     <Compile Include="SharedOrderIngridient.cs" />
     <Compile Include="SharedShortOrder.cs" />

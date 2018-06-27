@@ -35,19 +35,20 @@
                 <StackPanel Grid.Column="2" Margin="5,5,30,5" Grid.ColumnSpan="2">
                     <Label Content="Top 5 Produkte " FontWeight="Bold" FontSize="17" Margin="10,7,10,5"/>
                     <Border BorderBrush="Black" BorderThickness="0.4">
-                        <ListBox Height="287"/>
+                        <ListBox ItemsSource="{Binding TopProdukte}" Height="287"/>
                     </Border>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Gesamte Bestellungen: " FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,20,0,0"/>
-                        <Label  FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="40,20,0,0" Content="{Binding OffeneBestellungen}"/>
+                        <Label  FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="40,20,0,0" Content="{Binding GesamtBestellungen}" />
                     </StackPanel>
                 </StackPanel>
                 
                 <Label Content="Offene Bestellungen: " Grid.Column="2" Grid.Row="1" FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,0,0,0"/>
                 <Label  FontSize="13" VerticalAlignment="Top" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" Margin="20,0,0,0" Content="{Binding OffeneBestellungen}"/>
 
-                <Label Content="Gecancelte Bestellungen: " Grid.Column="2" Grid.Row="2" FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                <Label Content="Abgebrochene Bestellungen: " Grid.Column="2" Grid.Row="2" FontSize="13" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,0,0,0"/>
                 <Label  FontSize="13" Grid.Row="2" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,0,0,0" Content="{Binding GecancelteBestellungen}"/>
+                <Label Content="Kunden gesamt" HorizontalAlignment="Left" Margin="128,31,0,0" Grid.Row="1" VerticalAlignment="Top"/>
 
 
             </Grid>

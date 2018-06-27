@@ -40,6 +40,52 @@ namespace DataAggregator
 
         }
 
+        public static List<SharedProductMonthSales> GetTop5ProductsPerMonth(int month)
+        {
+
+            List<SharedOrderArticle> soldArticelsPerMonth = dh.GetSoldProductsPerMonth(month);
+            Dictionary<Guid, SharedProductMonthSales> MonthlySalesPerProduct = new Dictionary<Guid, SharedProductMonthSales>();
+
+            foreach (var item in soldArticelsPerMonth)
+            {
+                var id = item.id;
+
+                if (!MonthlySalesPerProduct.ContainsKey(id))
+                {
+
+                    MonthlySalesPerProduct.Add(id, new SharedProductMonthSales
+                    {
+                        Id = id,
+                        name = item.name,
+                        TimesSold = item.quantity
+
+                    });
+
+                }
+                else
+                {
+                    MonthlySalesPerProduct[id].TimesSold += item.quantity;
+
+
+                }
+
+            }
+
+            List<SharedProductMonthSales> monthlySalesPerProductList = new List<SharedProductMonthSales>();
+
+            foreach (var entry in MonthlySalesPerProduct)
+            {
+
+                monthlySalesPerProductList.Add(entry.Value);
+
+            }
+
+            return monthlySalesPerProductList;
+            
+
+
+        }
+
         public static DataTable getRatingPerProduct()
         {
 

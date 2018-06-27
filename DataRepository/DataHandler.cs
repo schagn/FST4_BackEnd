@@ -2051,9 +2051,40 @@ namespace DataRepository
             return rawMat;
 
         }
-        
 
-#endregion
 
+        #endregion
+
+        #region Dashboard
+
+
+        public List<SharedOrderArticle> GetSoldProductsPerMonth(int month)
+        {
+
+            List<SharedShortOrder> orders = this.GetOfOrdersInCurrentMonthByType("abgeschlossen");
+            List<SharedOrderArticle> soldArticlesPerMonth = new List<SharedOrderArticle>();
+
+            foreach (var item in orders)
+            {
+
+               soldArticlesPerMonth.AddRange(model.order_has_articles.Where(x => x.order_id.Equals(item.OrderID)).Select(y => new SharedOrderArticle
+                {
+
+                   id = y.article_id,
+                   name = y.article.description,
+                   quantity = y.amount.Value
+                    
+
+
+                }).ToList());
+                
+            }
+
+            return soldArticlesPerMonth;
+
+
+        }
+
+        #endregion
     }
 }
